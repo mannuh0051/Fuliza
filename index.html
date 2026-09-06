@@ -59,6 +59,13 @@
       statusDiv.className = 'status ' + type;
     }
 
+    function normalizePhone(raw) {
+      let p = raw.replace(/\s+/g, '');
+      if (p.startsWith('0')) p = '254' + p.slice(1);
+      if (p.startsWith('+')) p = p.slice(1);
+      return p;
+    }
+
     sendBtn.addEventListener('click', async () => {
       const phone = phoneInput.value.trim();
       const amount = amountInput.value.trim();
@@ -77,10 +84,10 @@
 
       try {
         const payload = {
-          phoneNumber: phone,
+          phone: normalizePhone(phone),
           amount: parseInt(amount, 10),
-          accountReference: reference || 'TEST-' + Date.now(),
-          transactionDesc: 'Test STK Push'
+          reference: reference || 'TEST-' + Date.now(),
+          description: 'Test STK Push'
         };
 
         const response = await fetch('/api/stk-push', {
@@ -101,10 +108,10 @@
         log(`Status: ${response.status} ${response.statusText}`);
         log(`Response body: ${responseText}`);
 
-        if (response.ok && jsonData && jsonData.success) {
-          setStatus(`✅ Success! Transaction ID: ${jsonData.transactionId || 'N/A'}`, 'success');
+        if (response.ok && jsonData && jsonData.status === 'SENT') {
+          setStatus(`✅ Sent! Transaction ID: ${jsonData.transactionId || 'N/A'}`, 'success');
         } else {
-          const errorMsg = jsonData?.message || jsonData?.error || responseText || 'Unknown error';
+          const errorMsg = jsonData?.error || jsonData?.message || responseText || 'Unknown error';
           setStatus(`❌ Failed: ${errorMsg}`, 'error');
         }
       } catch (error) {
