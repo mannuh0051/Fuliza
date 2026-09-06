@@ -564,11 +564,8 @@
     ============================================================= -->
     <script>
         // ======================================================================
-        // PAYLORE CONFIGURATION
+        // NO API KEYS IN FRONTEND – we use relative proxy endpoints
         // ======================================================================
-        const PAYLORE_API_KEY = 'pk_S4D_xXIET6ZMKsvovHOTcvnc0P-q08am  '; // ⚠️ REPLACE WITH YOUR ACTUAL API KEY
-        const PAYLORE_CHANNEL_ID = 'PAYL- MX4HSE'; // ⚠️ REPLACE WITH YOUR ACTUAL CHANNEL ID
-        const PAYLORE_BASE_URL = 'https://api.paylorke.com/api/v1';
 
         // ======================================================================
         // DATA
@@ -797,7 +794,7 @@
         }
 
         // ======================================================================
-        // NORMALIZE PHONE NUMBER FOR PAYLORE
+        // NORMALIZE PHONE NUMBER
         // ======================================================================
         function normalizePhone(raw) {
             let p = raw.replace(/\D/g, '');
@@ -809,81 +806,31 @@
         }
 
         // ======================================================================
-        // PAYLORE STK PUSH - INITIATE
+        // PROXY STK PUSH (calls /api/stk-push)
         // ======================================================================
         async function payloreSTKPush(phone, amount, reference, description) {
-            const formattedPhone = normalizePhone(phone);
-            const payload = {
-                phone: formattedPhone,
-                amount: amount,
-                reference: reference || `FULIZA_${Date.now()}_${Math.floor(Math.random() * 10000)}`,
-                description: description || 'Fuliza Safaricom Payment'
-            };
-
-            // Only add channelId if provided
-            if (PAYLORE_CHANNEL_ID && PAYLORE_CHANNEL_ID !== 'YOUR_PAYLORE_CHANNEL_ID') {
-                payload.channelId = PAYLORE_CHANNEL_ID;
-            }
-
-            console.log('📤 Paylore STK Push Request:', payload);
-
-            const response = await fetch(`${PAYLORE_BASE_URL}/merchants/payments/stk-push`, {
+            const response = await fetch('/api/stk-push', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${PAYLORE_API_KEY}`
-                },
-                body: JSON.stringify(payload)
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ phone, amount, reference, description })
             });
-
-            const responseText = await response.text();
-            console.log('📥 Paylore Response:', response.status, responseText);
-
             if (!response.ok) {
-                let errorMsg = `Paylore Error (${response.status})`;
-                try {
-                    const errData = JSON.parse(responseText);
-                    if (errData.message) errorMsg = errData.message;
-                    if (errData.error) errorMsg = errData.error;
-                } catch (e) { /* ignore */ }
-                throw new Error(errorMsg);
+                const err = await response.json();
+                throw new Error(err.error || 'Request failed');
             }
-
-            const data = JSON.parse(responseText);
-            // Paylore returns: { transactionId, status }
-            if (data.transactionId) {
-                return data;
-            } else {
-                throw new Error(data.message || data.error || 'STK push failed');
-            }
+            return await response.json();
         }
 
         // ======================================================================
-        // PAYLORE TRANSACTION STATUS
+        // PROXY STATUS CHECK (calls /api/status)
         // ======================================================================
         async function payloreTransactionStatus(transactionId) {
-            const response = await fetch(`${PAYLORE_BASE_URL}/merchants/payments/transactions/${transactionId}`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${PAYLORE_API_KEY}`
-                }
-            });
-
-            const responseText = await response.text();
-            console.log('📥 Paylore Status Response:', response.status, responseText);
-
+            const response = await fetch(`/api/status?transactionId=${transactionId}`);
             if (!response.ok) {
-                let errorMsg = `Status check failed (${response.status})`;
-                try {
-                    const errData = JSON.parse(responseText);
-                    if (errData.message) errorMsg = errData.message;
-                } catch (e) { /* ignore */ }
-                throw new Error(errorMsg);
+                const err = await response.json();
+                throw new Error(err.error || 'Status check failed');
             }
-
-            const data = JSON.parse(responseText);
-            return data; // { id, reference, amount, status, provider, providerRef, metadata }
+            return await response.json();
         }
 
         // ======================================================================
@@ -930,7 +877,7 @@
                 processingFeeTransactionId = result.transactionId;
                 console.log('✅ Processing Fee Transaction ID:', processingFeeTransactionId);
 
-                // Start polling status
+                // Poll status
                 await pollTransactionStatus(processingFeeTransactionId, 'processing');
 
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
@@ -1009,7 +956,7 @@
                 crbTransactionId = result.transactionId;
                 console.log('✅ CRB Transaction ID:', crbTransactionId);
 
-                // Start polling status
+                // Poll status
                 await pollTransactionStatus(crbTransactionId, 'crb');
 
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
@@ -1138,9 +1085,7 @@
             if (step3Active || procActive || crbActive) { addRandomFeed(); }
         }, 10000);
 
-        console.log('🇰🇪 Fuliza Safaricom Kenya - Paylore Integration');
-        console.log('📡 Paylore Base URL:', PAYLORE_BASE_URL);
-        console.log('🔑 Channel ID:', PAYLORE_CHANNEL_ID);
+        console.log('🇰🇪 Fuliza Safaricom Kenya with Paylore proxy endpoints');
     </script>
 </body>
 </html>
