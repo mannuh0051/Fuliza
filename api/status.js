@@ -1,4 +1,3 @@
-// api/status.js
 const axios = require('axios');
 
 module.exports = async (req, res) => {
