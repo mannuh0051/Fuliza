@@ -3,61 +3,93 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>STK Push Test</title>
+  <title>Complete Your Payment</title>
   <style>
-    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; }
-    .container { max-width: 500px; margin: 0 auto; background: white; padding: 24px; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    h2 { margin-top: 0; }
-    label { display: block; margin: 12px 0 4px; font-weight: 600; }
-    input, button { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-    button { background: #0d5f2f; color: white; font-weight: 700; border: none; cursor: pointer; margin-top: 16px; }
-    button:disabled { opacity: 0.6; }
-    #log { background: #1e1e1e; color: #ddd; padding: 12px; border-radius: 6px; font-family: monospace; font-size: 13px; white-space: pre-wrap; word-wrap: break-word; margin-top: 16px; max-height: 400px; overflow-y: auto; }
-    .status { font-weight: 700; margin-top: 12px; }
-    .success { color: #0ca678; }
-    .error { color: #fa5252; }
+    body { font-family: sans-serif; padding: 20px; background: #f5f5f5; margin: 0; }
+    .container { max-width: 420px; margin: 40px auto; background: white; padding: 28px; border-radius: 14px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+    h2 { margin-top: 0; text-align: center; }
+    label { display: block; margin: 14px 0 4px; font-weight: 600; font-size: 14px; }
+    input, button { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; }
+    button { background: #0d5f2f; color: white; font-weight: 700; border: none; cursor: pointer; margin-top: 20px; }
+    button:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .screen { display: none; text-align: center; }
+    .screen.active { display: block; }
+
+    .spinner { width: 44px; height: 44px; border: 4px solid #e0e0e0; border-top-color: #0d5f2f; border-radius: 50%; margin: 24px auto; animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .icon-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 12px auto 20px; font-size: 32px; }
+    .icon-success { background: #e6f7ee; color: #0ca678; }
+    .icon-fail { background: #ffecec; color: #fa5252; }
+
+    p.sub { color: #666; font-size: 14px; margin-top: 8px; }
+    .amount { font-size: 28px; font-weight: 800; margin: 8px 0; }
   </style>
 </head>
 <body>
 <div class="container">
-  <h2>🔍 STK Push Test (Paylore)</h2>
-  <p>This page sends a raw request to <code>/api/stk-push</code> and shows the response.</p>
 
-  <label for="phone">Phone number (e.g. 0712345678)</label>
-  <input type="tel" id="phone" placeholder="0712345678" value="0712345678">
+  <!-- FORM SCREEN -->
+  <div id="screen-form" class="screen active">
+    <h2>Pay with M-Pesa</h2>
 
-  <label for="amount">Amount (KSh)</label>
-  <input type="number" id="amount" placeholder="200" value="200">
+    <label for="phone">Phone number</label>
+    <input type="tel" id="phone" placeholder="0712345678" value="0712345678">
 
-  <label for="reference">Reference (optional)</label>
-  <input type="text" id="reference" placeholder="TEST-123" value="TEST-123">
+    <label for="amount">Amount (KSh)</label>
+    <input type="number" id="amount" placeholder="200" value="200">
 
-  <button id="sendBtn">Send STK Push</button>
+    <label for="reference">Reference (optional)</label>
+    <input type="text" id="reference" placeholder="ORDER-123" value="">
 
-  <div id="log">Click the button to see the response...</div>
-  <div id="statusMsg" class="status"></div>
+    <button id="sendBtn">Pay Now</button>
+  </div>
+
+  <!-- WAITING SCREEN -->
+  <div id="screen-waiting" class="screen">
+    <h2>Check your phone</h2>
+    <div class="spinner"></div>
+    <p class="sub">Enter your M-Pesa PIN to complete the payment of<br><strong id="waitingAmount"></strong></p>
+  </div>
+
+  <!-- SUCCESS SCREEN -->
+  <div id="screen-success" class="screen">
+    <div class="icon-circle icon-success">✓</div>
+    <h2>Payment Successful</h2>
+    <div class="amount" id="successAmount"></div>
+    <p class="sub" id="successRef"></p>
+  </div>
+
+  <!-- FAILURE SCREEN -->
+  <div id="screen-failure" class="screen">
+    <div class="icon-circle icon-fail">✕</div>
+    <h2>Payment Not Completed</h2>
+    <p class="sub">The payment wasn't completed. You can try again.</p>
+    <button id="retryBtn">Try Again</button>
+  </div>
+
 </div>
 
 <script>
   (function() {
+    const screens = {
+      form: document.getElementById('screen-form'),
+      waiting: document.getElementById('screen-waiting'),
+      success: document.getElementById('screen-success'),
+      failure: document.getElementById('screen-failure')
+    };
+
+    function showScreen(name) {
+      Object.values(screens).forEach(s => s.classList.remove('active'));
+      screens[name].classList.add('active');
+    }
+
     const phoneInput = document.getElementById('phone');
     const amountInput = document.getElementById('amount');
     const referenceInput = document.getElementById('reference');
     const sendBtn = document.getElementById('sendBtn');
-    const logDiv = document.getElementById('log');
-    const statusDiv = document.getElementById('statusMsg');
-
-    function log(message, isError = false) {
-      const prefix = isError ? '❌ ' : '✅ ';
-      const time = new Date().toLocaleTimeString();
-      logDiv.textContent += `\n[${time}] ${prefix}${message}`;
-      logDiv.scrollTop = logDiv.scrollHeight;
-    }
-
-    function setStatus(message, type = '') {
-      statusDiv.textContent = message;
-      statusDiv.className = 'status ' + type;
-    }
+    const retryBtn = document.getElementById('retryBtn');
 
     function normalizePhone(raw) {
       let p = raw.replace(/\s+/g, '');
@@ -66,62 +98,84 @@
       return p;
     }
 
-    sendBtn.addEventListener('click', async () => {
-      const phone = phoneInput.value.trim();
-      const amount = amountInput.value.trim();
-      const reference = referenceInput.value.trim();
+    // Poll every 3s, give up after ~90s (30 attempts) — customer never sees these details,
+    // just the "check your phone" spinner the whole time.
+    const POLL_INTERVAL_MS = 3000;
+    const MAX_ATTEMPTS = 30;
 
-      if (!phone || !amount) {
-        setStatus('⚠️ Please enter phone and amount.', 'error');
-        return;
+    async function pollStatus(transactionId, amount, reference) {
+      for (let attempt = 0; attempt < MAX_ATTEMPTS; attempt++) {
+        await new Promise(r => setTimeout(r, POLL_INTERVAL_MS));
+
+        try {
+          const res = await fetch(`/api/status?transactionId=${encodeURIComponent(transactionId)}`);
+          if (!res.ok) continue; // transient error — just keep polling silently
+
+          const data = await res.json();
+          const status = data.status;
+
+          if (status === 'COMPLETED') {
+            document.getElementById('successAmount').textContent = `KSh ${amount}`;
+            document.getElementById('successRef').textContent = reference ? `Ref: ${reference}` : '';
+            showScreen('success');
+            return;
+          }
+
+          if (status === 'FAILED' || status === 'CANCELLED' || status === 'REJECTED') {
+            showScreen('failure');
+            return;
+          }
+
+          // Anything else (PENDING, etc.) — keep waiting silently.
+        } catch (e) {
+          // Network hiccup — keep polling silently, don't alarm the customer.
+        }
       }
 
-      // Disable button
+      // Exhausted attempts with no final status — treat as not completed.
+      showScreen('failure');
+    }
+
+    async function startPayment() {
+      const phone = phoneInput.value.trim();
+      const amount = amountInput.value.trim();
+      const reference = referenceInput.value.trim() || ('ORDER-' + Date.now());
+
+      if (!phone || !amount) return;
+
       sendBtn.disabled = true;
-      sendBtn.textContent = 'Sending...';
-      logDiv.textContent = '⏳ Sending request...';
-      setStatus('⏳ Sending...', '');
+      document.getElementById('waitingAmount').textContent = `KSh ${amount}`;
+      showScreen('waiting');
 
       try {
-        const payload = {
-          phone: normalizePhone(phone),
-          amount: parseInt(amount, 10),
-          reference: reference || 'TEST-' + Date.now(),
-          description: 'Test STK Push'
-        };
-
         const response = await fetch('/api/stk-push', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+          body: JSON.stringify({
+            phone: normalizePhone(phone),
+            amount: parseInt(amount, 10),
+            reference,
+            description: 'Payment'
+          })
         });
 
-        // Read response as text first
-        const responseText = await response.text();
-        let jsonData = null;
-        try {
-          jsonData = JSON.parse(responseText);
-        } catch (e) {
-          // Not JSON
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok || !data || !data.transactionId) {
+          showScreen('failure');
+          return;
         }
 
-        log(`Status: ${response.status} ${response.statusText}`);
-        log(`Response body: ${responseText}`);
-
-        if (response.ok && jsonData && jsonData.status === 'SENT') {
-          setStatus(`✅ Sent! Transaction ID: ${jsonData.transactionId || 'N/A'}`, 'success');
-        } else {
-          const errorMsg = jsonData?.error || jsonData?.message || responseText || 'Unknown error';
-          setStatus(`❌ Failed: ${errorMsg}`, 'error');
-        }
-      } catch (error) {
-        log(`⚠️ Fetch error: ${error.message}`, true);
-        setStatus(`❌ Network error: ${error.message}`, 'error');
+        pollStatus(data.transactionId, amount, reference);
+      } catch (e) {
+        showScreen('failure');
       } finally {
         sendBtn.disabled = false;
-        sendBtn.textContent = 'Send STK Push';
       }
-    });
+    }
+
+    sendBtn.addEventListener('click', startPayment);
+    retryBtn.addEventListener('click', () => showScreen('form'));
   })();
 </script>
 </body>
